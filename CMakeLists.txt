@@ -18,8 +18,8 @@ message("Configuring elfbox version ${VERSION}")
 
 add_subdirectory(src)
 
-find_package(TinyXML2)
-find_package(ZLIB)
+#find_package(TinyXML2)
+#find_package(ZLIB)
 find_package(SDL)
 
 #允许gdb调试

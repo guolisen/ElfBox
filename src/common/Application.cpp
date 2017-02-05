@@ -4,14 +4,19 @@
 #include <common/Application.h>
 #include <common/IElfBoxEngine.h>
 #include <common/ElfBoxEngine.h>
+#include <common/Context.h>
 
 namespace elfbox
 {
-    Application::Application(std::shared_ptr<IApplicationCore> applicationCore) :
+    Application::Application(
+        std::shared_ptr<IApplicationCore> applicationCore,
+        std::shared_ptr<Context> context) :
         elfBoxEngine_(std::make_shared<ElfBoxEngine>()),
         applicationCore_(applicationCore),
-        log_(std::make_shared<BaseLogger>(this))
+        context_(context),
+        log_(context_->getComponent<BaseLogger>())
     {
+        //log_->setLogDomain(this);
         ELFBOX_LOGDEBUG(log_, "Application::Application() %d %s", 111, "OK");
     }
 
@@ -58,10 +63,12 @@ namespace elfbox
 
 }
 
-int appMain()
+void appMain()
 {
-    elfbox::Application app(0);
-    app.run();
+    elfbox::ContextPtr context = std::make_shared<elfbox::Context>();
+    
+    //context->addComponent(std::make_shared<elfbox::BaseLogger>(nullptr));
 
-    return 1;
+    elfbox::Application app(0, context);
+    app.run();
 }

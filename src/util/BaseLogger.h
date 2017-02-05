@@ -27,23 +27,33 @@ namespace elfbox
         LogSeverityLevel_Invalid = 7
     };
 
-    class ILogger
+    class ILogger: public IObject
     {
+        ELF_OBJECT(ILogger, IObject);
     public:
         virtual ~ILogger() = default;
 
         virtual void log(LogSeverityLevel level, const std::string& logStr) = 0;
+        virtual void setLogDomain(const IObject* obj) = 0;
     };
 
     class BaseLogger: public ILogger
     {
+        ELF_OBJECT(BaseLogger, ILogger);
     public:
         explicit BaseLogger(const IObject* obj) : obj_(obj) {};
         virtual ~BaseLogger() = default;
 
         static std::string ToString(const char* formatString, ...);
         virtual void log(LogSeverityLevel level, const std::string& logStr);
+
+        virtual void setLogDomain(const IObject* obj)
+        {
+            obj_ = obj;
+        }
+
     private:
+        // TODO: weak_ptr
         const IObject* obj_;
     };
 
@@ -51,13 +61,27 @@ namespace elfbox
 }
 
 #ifdef ELFBOX_LOGGING
-#define ELFBOX_LOGTRACE(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_Trace, BaseLogger::ToString(format, ##__VA_ARGS__))
-#define ELFBOX_LOGDEBUG(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_Debug, BaseLogger::ToString(format, ##__VA_ARGS__))
-#define ELFBOX_LOGINFO(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_Info, BaseLogger::ToString(format, ##__VA_ARGS__))
-#define ELFBOX_LOGWARNING(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_Warning, BaseLogger::ToString(format, ##__VA_ARGS__))
-#define ELFBOX_LOGERROR(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_Error, BaseLogger::ToString(format, ##__VA_ARGS__))
-#define ELFBOX_LOGVIP(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_Vip, BaseLogger::ToString(format, ##__VA_ARGS__))
-#define ELFBOX_LOGUSERDEBUG(logObjPtr, format, ...) logObjPtr->log(LogSeverityLevel_UserDebug, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGTRACE(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_Trace, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGDEBUG(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_Debug, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGINFO(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_Info, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGWARNING(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_Warning, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGERROR(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_Error, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGVIP(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_Vip, BaseLogger::ToString(format, ##__VA_ARGS__))
+#define ELFBOX_LOGUSERDEBUG(logObjPtr, format, ...) \
+    if (logObjPtr) \
+        logObjPtr->log(LogSeverityLevel_UserDebug, BaseLogger::ToString(format, ##__VA_ARGS__))
 #else
 #define ELFBOX_LOGTRACE(...) ((void)0)
 #define ELFBOX_LOGDEBUG(...) ((void)0)

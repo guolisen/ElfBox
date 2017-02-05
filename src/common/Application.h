@@ -9,13 +9,15 @@ namespace elfbox
 {
     class IElfBoxEngine;
     class IApplicationCore;
+    class Context;
 
     class Application :public IObject
     {
         ELF_OBJECT(Application, IObject);
 
     public:
-        Application(std::shared_ptr<IApplicationCore> applicationCore);
+        Application(std::shared_ptr<IApplicationCore> applicationCore,
+            std::shared_ptr<Context> context);
         virtual ~Application();
         virtual void run();
         virtual bool setup();
@@ -25,10 +27,11 @@ namespace elfbox
     private:
         std::shared_ptr<IElfBoxEngine> elfBoxEngine_;
         std::shared_ptr<IApplicationCore> applicationCore_;
+        std::shared_ptr<Context> context_;
 
         LoggerPtr log_;
     };
 }
 
-extern int appMain();
+extern void appMain();
 #endif
