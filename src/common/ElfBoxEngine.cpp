@@ -1,9 +1,12 @@
 #include <common/ElfBoxEngine.h>
-
+#include <util/BaseLogger.h>
 namespace elfbox
 {
-    ElfBoxEngine::ElfBoxEngine()
+    ElfBoxEngine::ElfBoxEngine(ContextPtr context) : context_(context)
     {
+        LoggerPtr log =  context_->getComponent<BaseLogger>(nullptr);
+
+        ELFBOX_LOGERROR(log, "Test!!!!");
     }
 
     ElfBoxEngine::~ElfBoxEngine()
@@ -12,5 +15,8 @@ namespace elfbox
 
     void ElfBoxEngine::run()
     {
+        LoggerPtr log = context_->getComponent<BaseLogger>(nullptr);
+
+        ELFBOX_LOGERROR(log, "Run!!!!");
     }
 }

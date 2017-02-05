@@ -1,6 +1,7 @@
 #ifndef common_Context
 #define common_Context
 
+#include <functional>
 #include <memory>
 #include <map>
 #include <common/IObject.h>
@@ -18,12 +19,25 @@ namespace elfbox
         void addComponent(std::shared_ptr<IObject> obj);
 
         template <class T>
-        std::shared_ptr<T> getComponent()
+        std::shared_ptr<T> getComponent(std::function<void(IObjectPtr)> func)
         {
+
+            std::string s = T::GetTypeNameStatic();
+            for (auto aaf : componentMap_)
+            {
+                int aa = componentMap_.size();
+                aa++;
+            }
+
             ComponentMapType::iterator iter = componentMap_.find(T::GetTypeNameStatic());
             if (iter == componentMap_.end())
                 return std::shared_ptr<T>();
-            return std::dynamic_pointer_cast<T>(iter->second);
+
+            std::shared_ptr<T> targetObject = std::dynamic_pointer_cast<T>(iter->second);
+            if (func)
+                func(targetObject);
+
+            return targetObject;
         }
 
     private:

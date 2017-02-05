@@ -11,12 +11,11 @@ namespace elfbox
     Application::Application(
         std::shared_ptr<IApplicationCore> applicationCore,
         std::shared_ptr<Context> context) :
-        elfBoxEngine_(std::make_shared<ElfBoxEngine>()),
-        applicationCore_(applicationCore),
         context_(context),
-        log_(context_->getComponent<BaseLogger>())
+        elfBoxEngine_(context_->getComponent<ElfBoxEngine>(nullptr)),
+        applicationCore_(applicationCore),
+        log_(context_->getComponent<BaseLogger>(nullptr))
     {
-        //log_->setLogDomain(this);
         ELFBOX_LOGDEBUG(log_, "Application::Application() %d %s", 111, "OK");
     }
 
@@ -60,14 +59,14 @@ namespace elfbox
             applicationCore_->terminat();
         return false;
     }
-
 }
 
 void appMain()
 {
     elfbox::ContextPtr context = std::make_shared<elfbox::Context>();
     
-    //context->addComponent(std::make_shared<elfbox::BaseLogger>(nullptr));
+    context->addComponent(std::make_shared<elfbox::BaseLogger>());
+    context->addComponent(std::make_shared<elfbox::ElfBoxEngine>(context));
 
     elfbox::Application app(0, context);
     app.run();

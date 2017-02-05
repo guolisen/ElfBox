@@ -17,17 +17,17 @@ namespace elfbox
         return static_cast<std::string>(buffer);
     }
 
-    void BaseLogger::log(LogSeverityLevel level, const std::string& logStr)
+    void BaseLogger::log(const IObject* obj, LogSeverityLevel level, const std::string& logStr)
     {
         char buffer[LOG_BUFFER_SIZE] = { 0 };
         
-        if (!obj_)
+        if (!obj)
         {
             _snprintf(buffer, LOG_BUFFER_SIZE, "[%d][Unknow]: %s\n", (int)level, logStr.c_str());
         }
         else
         {
-            _snprintf(buffer, LOG_BUFFER_SIZE, "[%d][%s]: %s\n", (int)level, obj_->GetTypeName().c_str(), logStr.c_str());
+            _snprintf(buffer, LOG_BUFFER_SIZE, "[%d][%s]: %s\n", (int)level, obj->GetTypeName().c_str(), logStr.c_str());
         }
        
         printf(buffer);

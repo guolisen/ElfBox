@@ -20,15 +20,16 @@ namespace elfbox
             std::shared_ptr<Context> context);
         virtual ~Application();
         virtual void run();
+
+    private:
         virtual bool setup();
         virtual bool start();
         virtual bool terminat();
 
-    private:
+        std::shared_ptr<Context> context_;
         std::shared_ptr<IElfBoxEngine> elfBoxEngine_;
         std::shared_ptr<IApplicationCore> applicationCore_;
-        std::shared_ptr<Context> context_;
-
+       
         LoggerPtr log_;
     };
 }
