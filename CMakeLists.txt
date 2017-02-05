@@ -21,6 +21,7 @@ add_subdirectory(src)
 #find_package(TinyXML2)
 #find_package(ZLIB)
 find_package(SDL)
+find_package(SDL_Image)
 
 #允许gdb调试
 #set(CMAKE_BUILD_TYPE "Debug")

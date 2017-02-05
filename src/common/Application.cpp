@@ -5,6 +5,12 @@
 #include <common/IElfBoxEngine.h>
 #include <common/ElfBoxEngine.h>
 #include <common/Context.h>
+#include <graphics/IGraphics.h>
+#include <graphics/Graphics.h>
+#include <graphics/GraphicsSDLImpl.h>
+#include <system/IWindow.h>
+#include <system/Window.h>
+#include <system/WindowSDLImpl.h>
 
 namespace elfbox
 {
@@ -12,9 +18,9 @@ namespace elfbox
         std::shared_ptr<IApplicationCore> applicationCore,
         std::shared_ptr<Context> context) :
         context_(context),
-        elfBoxEngine_(context_->getComponent<ElfBoxEngine>(nullptr)),
+        elfBoxEngine_(context_->getComponent<IElfBoxEngine>(nullptr)),
         applicationCore_(applicationCore),
-        log_(context_->getComponent<BaseLogger>(nullptr))
+        log_(context_->getComponent<ILogger>(nullptr))
     {
         ELFBOX_LOGDEBUG(log_, "Application::Application() %d %s", 111, "OK");
     }
@@ -38,6 +44,9 @@ namespace elfbox
     bool Application::setup()
     {
         ELFBOX_LOGDEBUG(log_, "Application::setup() %d %s", 111, "OK");
+
+        elfBoxEngine_->Initialize();
+
         if (applicationCore_)
             applicationCore_->setup();
 
@@ -67,6 +76,14 @@ void appMain()
     
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
     context->addComponent(std::make_shared<elfbox::ElfBoxEngine>(context));
+
+    elfbox::GraphicsPtr graphics = std::make_shared<elfbox::Graphics>(
+        std::make_shared<elfbox::GraphicsImpl>(context));
+    context->addComponent(graphics);
+
+    elfbox::WindowPtr window = std::make_shared<elfbox::Window>(
+        std::make_shared<elfbox::WindowImpl>(context));
+    context->addComponent(window);
 
     elfbox::Application app(0, context);
     app.run();

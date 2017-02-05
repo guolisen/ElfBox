@@ -11,6 +11,8 @@ namespace elfbox
     public:
         IElfBoxEngine() {};
         virtual ~IElfBoxEngine() {};
+
+        virtual bool Initialize() = 0;
         virtual void run() = 0;
     };
 }

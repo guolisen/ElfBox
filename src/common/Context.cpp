@@ -9,6 +9,11 @@ namespace elfbox
         if (iter != componentMap_.end())
             return;
 
-        componentMap_.insert(std::make_pair(obj->GetTypeName(), obj));
+        std::string objName = obj->GetTypeName();
+        const TypeInfo* baseTypeInfo = obj->GetTypeInfo()->GetBaseTypeInfo();
+        if (baseTypeInfo)
+            objName = baseTypeInfo->GetTypeName();
+
+        componentMap_.insert(std::make_pair(objName, obj));
     }
 }

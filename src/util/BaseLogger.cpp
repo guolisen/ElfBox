@@ -20,7 +20,7 @@ namespace elfbox
     void BaseLogger::log(const IObject* obj, LogSeverityLevel level, const std::string& logStr)
     {
         char buffer[LOG_BUFFER_SIZE] = { 0 };
-        
+        //TODO: _snprintf is only for Win32
         if (!obj)
         {
             _snprintf(buffer, LOG_BUFFER_SIZE, "[%d][Unknow]: %s\n", (int)level, logStr.c_str());

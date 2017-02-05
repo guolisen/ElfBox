@@ -5,6 +5,7 @@
 #include <memory>
 #include <map>
 #include <common/IObject.h>
+#include <common/Error.h>
 
 namespace elfbox
 {
@@ -21,14 +22,6 @@ namespace elfbox
         template <class T>
         std::shared_ptr<T> getComponent(std::function<void(IObjectPtr)> func)
         {
-
-            std::string s = T::GetTypeNameStatic();
-            for (auto aaf : componentMap_)
-            {
-                int aa = componentMap_.size();
-                aa++;
-            }
-
             ComponentMapType::iterator iter = componentMap_.find(T::GetTypeNameStatic());
             if (iter == componentMap_.end())
                 return std::shared_ptr<T>();

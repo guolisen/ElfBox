@@ -12,8 +12,9 @@ namespace elfbox
     public:
         ElfBoxEngine(ContextPtr context);
         virtual ~ElfBoxEngine();
-        virtual void run();
 
+        virtual bool Initialize();
+        virtual void run();
     private:
         ContextPtr context_;
     };
