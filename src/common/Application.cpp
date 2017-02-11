@@ -45,7 +45,7 @@ namespace elfbox
     {
         ELFBOX_LOGDEBUG(log_, "Application::setup() %d %s", 111, "OK");
 
-        elfBoxEngine_->Initialize();
+        //elfBoxEngine_->Initialize();
 
         if (applicationCore_)
             applicationCore_->setup();
@@ -69,6 +69,80 @@ namespace elfbox
         return false;
     }
 }
+#include <system/ThreadPool.h>
+#include <Windows.h>
+
+struct TestNum
+{
+    int a = 0;
+    int b = 0;
+    int c = 0;
+    int d = 0;
+    int e = 0;
+
+}gVar;
+
+void test()
+{
+    for (int a = 1; a < 10; a++)
+    {
+        printf("ddddddddddddd\n");
+        gVar.a++;
+        ::Sleep(1);
+    }
+    
+}
+void test2()
+{
+    for (int a = 1; a < 10; a++)
+    {
+        printf("dsdfsfd\n");
+        gVar.b++;
+        ::Sleep(1);
+    }
+
+}
+void test3()
+{
+    for (int a = 1; a < 5; a++)
+    {
+        printf("3333333333333\n");
+        gVar.c++;
+        ::Sleep(1);
+    }
+
+}
+void test4()
+{
+    for (int a = 1; a < 2; a++)
+    {
+        printf("444444444444\n");
+        gVar.d++;
+        ::Sleep(1);
+    }
+
+}
+void test5()
+{
+    for (int a = 1; a < 3; a++)
+    {
+        printf("55555555555\n");
+        gVar.e++;
+        ::Sleep(1);
+    }
+
+}
+
+void test6()
+{
+    for (int a = 1; a < 20; a++)
+    {
+        printf("55555555555\n");
+        gVar.e++;
+        ::Sleep(1000);
+    }
+
+}
 
 void appMain()
 {
@@ -87,4 +161,24 @@ void appMain()
 
     elfbox::Application app(0, context);
     app.run();
+
+    elfbox::ThreadPool pool;
+    pool.createThreads(3);
+
+    pool.attach(std::bind(&test), -1);
+    pool.attach(std::bind(&test2), -1);
+    pool.attach(std::bind(&elfbox::Application::run, &app), -1);
+    pool.attach(std::bind(&test3), -1);
+    pool.attach(std::bind(&test4), -1);
+    pool.attach(std::bind(&test5), -1);
+
+    pool.complete(-1);
+
+    auto item = pool.attach(std::bind(&test6), -1);
+    pool.attach(std::bind(&test3), -1);
+    pool.attach(std::bind(&test4), -1);
+    pool.attach(std::bind(&test5), -1);
+
+    pool.waitForJob(item);
+    printf("sddddd\n");
 }
