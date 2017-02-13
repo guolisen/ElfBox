@@ -11,6 +11,8 @@
 #include <system/IWindow.h>
 #include <system/Window.h>
 #include <system/WindowSDLImpl.h>
+#include <system/ThreadPool.h>
+#include <Windows.h>
 
 namespace elfbox
 {
@@ -71,9 +73,8 @@ bool Application::terminat()
     return false;
 }
 }
+}
 
-#include <system/ThreadPool.h>
-#include <Windows.h>
 
 struct TestNum
 {
@@ -150,13 +151,12 @@ void test6()
     }
 
 }
-}
 void appMain()
 {
-    elfbox::ContextPtr context = std::make_shared<elfbox::Context>();
+    elfbox::common::ContextPtr context = std::make_shared<elfbox::common::Context>();
 
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
-    context->addComponent(std::make_shared<elfbox::ElfBoxEngine>(context));
+    context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
     elfbox::graphics::GraphicsPtr graphics = std::make_shared<elfbox::graphics::Graphics>(
             std::make_shared<elfbox::graphics::GraphicsImpl>(context));
@@ -166,7 +166,7 @@ void appMain()
             std::make_shared<elfbox::system::WindowImpl>(context));
     context->addComponent(window);
 
-    elfbox::Application app(0, context);
+    elfbox::common::Application app(0, context);
     app.run();
 
     elfbox::system::ThreadPool pool;
@@ -174,7 +174,7 @@ void appMain()
 
     pool.attach(std::bind(&testkk), -1);
     pool.attach(std::bind(&test2), -1);
-    pool.attach(std::bind(&elfbox::Application::run, &app), -1);
+    pool.attach(std::bind(&elfbox::common::Application::run, &app), -1);
     pool.attach(std::bind(&test3), -1);
     pool.attach(std::bind(&test4), -1);
     pool.attach(std::bind(&test5), -1);

@@ -21,22 +21,13 @@ add_subdirectory(src)
 #find_package(TinyXML2)
 #find_package(ZLIB)
 find_package(SDL2)
-#find_package(SDL_Image)
 
 #set(SDL2_INCLUDE_DIR "E:/code/lib/SDL2-2.0.5/include")
 #set(SDL2_IMAGE_INCLUDE_DIR "E:/code/lib/SDL2_image-2.0.1/include")
 #set(SDL2MAIN_LIBRARY "E:/code/lib/SDL2-2.0.5/lib/x86/SDL2main.lib")
 #set(SDL2_LIBRARY "E:/code/lib/SDL2-2.0.5/lib/x86/SDL2.lib")
-set(SDL2_IMAGE_LIBRARY "/usr/lib/libSDL2_image.dll.a")
-
-message("!!!!!!!!! ${SDL2_LIBRARY}")
-message("!!!!!!!!! ${SDL2_IMAGE_LIBRARY}")
-#message("!!!!!!!!! ${SDLMAIN_LIBRARY}")
-
-#允许gdb调试
-#set(CMAKE_BUILD_TYPE "Debug")
-#set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -Od -Wall -g -ggdb")
-#set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+#set(SDL2_IMAGE_LIBRARY "/usr/lib/libSDL2_image.dll.a")
+#set(SDL2_IMAGE_LIBRARY "E:/code/lib/SDL2_image-2.0.1/lib/x86/SDL2_image.lib")
 
 #添加C++11支持及其他选项
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
@@ -46,14 +37,14 @@ add_executable(run_tests test/testmain.cpp)
 #include_directories(${TINYXML2_INCLUDE_DIR})
 #include_directories(${ZLIB_INCLUDE_DIRS})
 include_directories(${SDL2_INCLUDE_DIR})
-#include_directories(${SDL2_IMAGE_INCLUDE_DIR})
+include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
 #target_link_libraries(run_tests libelfbox ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES} 
 #	${SDL_LIBRARY} ${SDL_IMAGE_LIBRARY} ${SDLMAIN_LIBRARY})
 target_link_libraries(run_tests libelfbox
-		${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2MAIN_LIBRARY})
+		 ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY} )
 
 #install(FILES ${HEADERS} DESTINATION include/tmxparser)
 #install(TARGETS tmxparser tmxparser_static DESTINATION lib)

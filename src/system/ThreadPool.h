@@ -8,7 +8,7 @@
 #include <functional>
 #include <mutex>
 #include <common/IObject.h>
-#include <system/Thread.h>
+#include <system/detail/Thread.h>
 
 namespace elfbox
 {
@@ -28,9 +28,9 @@ struct WorkItem
 
 typedef std::shared_ptr<WorkItem> WorkItemPtr;
 
-class ThreadPool : public IObject
+class ThreadPool : public common::IObject
 {
-ELF_OBJECT(ThreadPool, IObject);
+ELF_OBJECT(ThreadPool, common::IObject);
 
 public:
     ThreadPool();
@@ -66,7 +66,7 @@ private:
 
     void returnToCache(WorkItemPtr item);
 
-    std::vector<std::shared_ptr<Thread>> threads_;
+    std::vector<std::shared_ptr<detail::Thread>> threads_;
     std::list<WorkItemPtr> poolItems_;
     std::list<WorkItemPtr> workItems_;
     std::list<WorkItemPtr> queue_;

@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include <system/Thread.h>
+#include <system/detail/Thread.h>
 #include <system/ThreadPool.h>
 
 namespace elfbox
@@ -35,7 +35,7 @@ void ThreadPool::createThreads(unsigned numThreads)
 
     for (unsigned i = 0; i < numThreads; ++i)
     {
-        std::shared_ptr<Thread> thread(new Thread(std::bind(&ThreadPool::processItems, this, i + 1)));
+        std::shared_ptr<detail::Thread> thread(new detail::Thread(std::bind(&ThreadPool::processItems, this, i + 1)));
         thread->Run();
         threads_.push_back(thread);
     }

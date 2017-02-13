@@ -66,6 +66,7 @@
 #  License text for the above reference.)
 
 SET(SDL2_SEARCH_PATHS
+        /lib
         ~/Library/Frameworks
         /Library/Frameworks
         /usr/local
@@ -74,6 +75,7 @@ SET(SDL2_SEARCH_PATHS
         /opt/local # DarwinPorts
         /opt/csw # Blastwave
         /opt
+        E:/code/lib/
         )
 
 FIND_PATH(SDL2_INCLUDE_DIR SDL.h
@@ -83,8 +85,23 @@ FIND_PATH(SDL2_INCLUDE_DIR SDL.h
         PATHS ${SDL2_SEARCH_PATHS}
         )
 
+FIND_PATH(SDL2_IMAGE_INCLUDE_DIR SDL_image.h
+        HINTS
+        $ENV{SDL2DIR}
+        PATH_SUFFIXES include/SDL2 include
+        PATHS ${SDL2_SEARCH_PATHS}
+        )
+
 FIND_LIBRARY(SDL2_LIBRARY_TEMP
         NAMES SDL2
+        HINTS
+        $ENV{SDL2DIR}
+        PATH_SUFFIXES lib64 lib
+        PATHS ${SDL2_SEARCH_PATHS}
+        )
+
+FIND_LIBRARY(SDL2_IMAGE_LIBRARY
+        NAMES SDL2_image
         HINTS
         $ENV{SDL2DIR}
         PATH_SUFFIXES lib64 lib

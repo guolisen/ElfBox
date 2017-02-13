@@ -1,4 +1,4 @@
-#include <system/Thread.h>
+#include <system/detail/Thread.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -9,6 +9,8 @@
 namespace elfbox
 {
 namespace system
+{
+namespace detail
 {
 #ifdef _WIN32
 
@@ -31,13 +33,13 @@ void *ThreadFunctionStatic(void *data)
 
 #endif
 
-ThreadID Thread::mainThreadID;
-
 Thread::Thread(const std::function<void()> &workFunc) :
         handle_(0),
         shouldRun_(false),
         workFunc_(workFunc)
 {
+    //only create this class in main thread
+    mainThreadID_ = GetCurrentThreadID();
 }
 
 Thread::~Thread()
@@ -99,11 +101,6 @@ void Thread::SetPriority(int priority)
 #endif
 }
 
-void Thread::SetMainThread()
-{
-    mainThreadID = GetCurrentThreadID();
-}
-
 ThreadID Thread::GetCurrentThreadID()
 {
 #ifdef _WIN32
@@ -115,9 +112,10 @@ ThreadID Thread::GetCurrentThreadID()
 
 bool Thread::IsMainThread()
 {
-    return GetCurrentThreadID() == mainThreadID;
+    return GetCurrentThreadID() == mainThreadID_;
 }
 
+}
 }
 }
 
