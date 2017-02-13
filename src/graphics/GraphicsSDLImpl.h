@@ -8,17 +8,23 @@
 
 namespace elfbox
 {
-    class GraphicsImpl : public IObject
-    {
-        ELF_OBJECT(GraphicsImpl, IObject);
-    public:
-        GraphicsImpl(ContextPtr context);
-        virtual ~GraphicsImpl() = default;
+namespace graphics
+{
 
-        virtual bool Initialize();
-    private:
-        ContextPtr context_;
-        LoggerPtr log_;
-    };
+class GraphicsImpl : public common::IObject
+{
+ELF_OBJECT(GraphicsImpl, common::IObject);
+public:
+    GraphicsImpl(common::ContextPtr context);
+
+    virtual ~GraphicsImpl() = default;
+
+    virtual bool Initialize();
+
+private:
+    common::ContextPtr context_;
+    LoggerPtr log_;
+};
+}
 }
 #endif

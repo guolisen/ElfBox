@@ -5,16 +5,21 @@
 
 namespace elfbox
 {
-    class IGraphics : public IObject
-    {
-        ELF_OBJECT(IGraphics, IObject);
-    public:
-        IGraphics() = default;
-        virtual ~IGraphics() = default;
+namespace graphics
+{
 
-        virtual bool Initialize() = 0;
-    };
+class IGraphics : public common::IObject
+{
+ELF_OBJECT(IGraphics, common::IObject);
+public:
+    IGraphics() = default;
 
-    typedef std::shared_ptr<IGraphics> GraphicsPtr;
+    virtual ~IGraphics() = default;
+
+    virtual bool Initialize() = 0;
+};
+
+typedef std::shared_ptr<IGraphics> GraphicsPtr;
+}
 }
 #endif

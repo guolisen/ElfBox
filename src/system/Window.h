@@ -8,19 +8,26 @@
 
 namespace elfbox
 {
-    class WindowImpl;
-    class Window : public IWindow
-    {
-        ELF_OBJECT(Window, IWindow);
-    public:
-        Window(std::shared_ptr<WindowImpl> impl);
-        virtual ~Window() = default;
+namespace system
+{
+class WindowImpl;
 
-        virtual bool Initialize();
-        bool CreateWindow(const std::string& winName,
-            int width, int height, unsigned int winflag);
-    private:
-        std::shared_ptr<WindowImpl> impl_;
-    };
+class Window : public IWindow
+{
+ELF_OBJECT(Window, IWindow);
+public:
+    Window(std::shared_ptr<WindowImpl> impl);
+
+    virtual ~Window() = default;
+
+    virtual bool Initialize();
+
+    bool CreateWindow(const std::string &winName,
+                      int width, int height, unsigned int winflag);
+
+private:
+    std::shared_ptr<WindowImpl> impl_;
+};
+}
 }
 #endif

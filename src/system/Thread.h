@@ -13,7 +13,8 @@ typedef unsigned ThreadID;
 
 namespace elfbox
 {
-
+namespace system
+{
 class Thread
 {
 public:
@@ -39,6 +40,7 @@ protected:
     static ThreadID mainThreadID;
 };
 
+}
 }
 
 #endif

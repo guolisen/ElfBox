@@ -21,6 +21,10 @@ namespace elfbox
     {
         char buffer[LOG_BUFFER_SIZE] = { 0 };
         //TODO: _snprintf is only for Win32
+#ifndef WIN32
+#define _snprintf snprintf
+#endif
+
         if (!obj)
         {
             _snprintf(buffer, LOG_BUFFER_SIZE, "[%d][Unknow]: %s\n", (int)level, logStr.c_str());

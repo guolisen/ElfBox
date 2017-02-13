@@ -14,61 +14,64 @@
 
 namespace elfbox
 {
-    Application::Application(
-        std::shared_ptr<IApplicationCore> applicationCore,
+namespace common
+{
+Application::Application(
+        std::shared_ptr<common::IApplicationCore> applicationCore,
         std::shared_ptr<Context> context) :
         context_(context),
         elfBoxEngine_(context_->getComponent<IElfBoxEngine>(nullptr)),
         applicationCore_(applicationCore),
         log_(context_->getComponent<ILogger>(nullptr))
-    {
-        ELFBOX_LOGDEBUG(log_, "Application::Application() %d %s", 111, "OK");
-    }
-
-    Application::~Application()
-    {
-        ELFBOX_LOGDEBUG(log_, "~Application::Application() %d %s", 111, "OK");
-    }
-
-    void Application::run()
-    {
-        ELFBOX_LOGDEBUG(log_, "Application::run() %d %s", 111, "OK");
-        setup();
-        start();
-
-        elfBoxEngine_->run();
-
-        terminat();
-    }
-
-    bool Application::setup()
-    {
-        ELFBOX_LOGDEBUG(log_, "Application::setup() %d %s", 111, "OK");
-
-        //elfBoxEngine_->Initialize();
-
-        if (applicationCore_)
-            applicationCore_->setup();
-
-        return false;
-    }
-
-    bool Application::start()
-    {
-        ELFBOX_LOGDEBUG(log_, "Application::start() %d %s", 111, "OK");
-        if (applicationCore_)
-            applicationCore_->start();
-        return false;
-    }
-
-    bool Application::terminat()
-    {
-        ELFBOX_LOGDEBUG(log_, "Application::terminat() %d %s", 111, "OK");
-        if (applicationCore_)
-            applicationCore_->terminat();
-        return false;
-    }
+{
+    ELFBOX_LOGDEBUG(log_, "Application::Application() %d %s", 111, "OK");
 }
+
+Application::~Application()
+{
+    ELFBOX_LOGDEBUG(log_, "~Application::Application() %d %s", 111, "OK");
+}
+
+void Application::run()
+{
+    ELFBOX_LOGDEBUG(log_, "Application::run() %d %s", 111, "OK");
+    setup();
+    start();
+
+    elfBoxEngine_->run();
+
+    terminat();
+}
+
+bool Application::setup()
+{
+    ELFBOX_LOGDEBUG(log_, "Application::setup() %d %s", 111, "OK");
+
+    elfBoxEngine_->Initialize();
+
+    if (applicationCore_)
+        applicationCore_->setup();
+
+    return false;
+}
+
+bool Application::start()
+{
+    ELFBOX_LOGDEBUG(log_, "Application::start() %d %s", 111, "OK");
+    if (applicationCore_)
+        applicationCore_->start();
+    return false;
+}
+
+bool Application::terminat()
+{
+    ELFBOX_LOGDEBUG(log_, "Application::terminat() %d %s", 111, "OK");
+    if (applicationCore_)
+        applicationCore_->terminat();
+    return false;
+}
+}
+
 #include <system/ThreadPool.h>
 #include <Windows.h>
 
@@ -80,9 +83,9 @@ struct TestNum
     int d = 0;
     int e = 0;
 
-}gVar;
+} gVar;
 
-void test()
+void testkk()
 {
     for (int a = 1; a < 10; a++)
     {
@@ -90,8 +93,9 @@ void test()
         gVar.a++;
         ::Sleep(1);
     }
-    
+
 }
+
 void test2()
 {
     for (int a = 1; a < 10; a++)
@@ -102,6 +106,7 @@ void test2()
     }
 
 }
+
 void test3()
 {
     for (int a = 1; a < 5; a++)
@@ -112,6 +117,7 @@ void test3()
     }
 
 }
+
 void test4()
 {
     for (int a = 1; a < 2; a++)
@@ -122,6 +128,7 @@ void test4()
     }
 
 }
+
 void test5()
 {
     for (int a = 1; a < 3; a++)
@@ -143,29 +150,29 @@ void test6()
     }
 
 }
-
+}
 void appMain()
 {
     elfbox::ContextPtr context = std::make_shared<elfbox::Context>();
-    
+
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
     context->addComponent(std::make_shared<elfbox::ElfBoxEngine>(context));
 
-    elfbox::GraphicsPtr graphics = std::make_shared<elfbox::Graphics>(
-        std::make_shared<elfbox::GraphicsImpl>(context));
+    elfbox::graphics::GraphicsPtr graphics = std::make_shared<elfbox::graphics::Graphics>(
+            std::make_shared<elfbox::graphics::GraphicsImpl>(context));
     context->addComponent(graphics);
 
-    elfbox::WindowPtr window = std::make_shared<elfbox::Window>(
-        std::make_shared<elfbox::WindowImpl>(context));
+    elfbox::system::WindowPtr window = std::make_shared<elfbox::system::Window>(
+            std::make_shared<elfbox::system::WindowImpl>(context));
     context->addComponent(window);
 
     elfbox::Application app(0, context);
     app.run();
 
-    elfbox::ThreadPool pool;
+    elfbox::system::ThreadPool pool;
     pool.createThreads(3);
 
-    pool.attach(std::bind(&test), -1);
+    pool.attach(std::bind(&testkk), -1);
     pool.attach(std::bind(&test2), -1);
     pool.attach(std::bind(&elfbox::Application::run, &app), -1);
     pool.attach(std::bind(&test3), -1);

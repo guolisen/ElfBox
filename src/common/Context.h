@@ -9,35 +9,38 @@
 
 namespace elfbox
 {
-    class Context :public IObject
+namespace common
+{
+class Context : public IObject
+{
+ELF_OBJECT(Context, IObject);
+    typedef std::map<std::string, std::shared_ptr<IObject>> ComponentMapType;
+public:
+    Context() = default;
+
+    virtual ~Context() = default;
+
+    void addComponent(std::shared_ptr<IObject> obj);
+
+    template<class T>
+    std::shared_ptr<T> getComponent(std::function<void(IObjectPtr)> func)
     {
-        ELF_OBJECT(Context, IObject);
-        typedef std::map<std::string, std::shared_ptr<IObject>> ComponentMapType;
-    public:
-        Context() = default;
-        virtual ~Context() = default;
+        ComponentMapType::iterator iter = componentMap_.find(T::GetTypeNameStatic());
+        if (iter == componentMap_.end())
+            return std::shared_ptr<T>();
 
-        void addComponent(std::shared_ptr<IObject> obj);
+        std::shared_ptr<T> targetObject = std::dynamic_pointer_cast<T>(iter->second);
+        if (func)
+            func(targetObject);
 
-        template <class T>
-        std::shared_ptr<T> getComponent(std::function<void(IObjectPtr)> func)
-        {
-            ComponentMapType::iterator iter = componentMap_.find(T::GetTypeNameStatic());
-            if (iter == componentMap_.end())
-                return std::shared_ptr<T>();
+        return targetObject;
+    }
 
-            std::shared_ptr<T> targetObject = std::dynamic_pointer_cast<T>(iter->second);
-            if (func)
-                func(targetObject);
+private:
+    ComponentMapType componentMap_;
+};
 
-            return targetObject;
-        }
-
-    private:
-        ComponentMapType componentMap_;
-    };
-
-    typedef std::shared_ptr<Context> ContextPtr;
+typedef std::shared_ptr<Context> ContextPtr;
 }
-
+}
 #endif

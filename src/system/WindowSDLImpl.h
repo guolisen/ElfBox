@@ -8,20 +8,26 @@
 
 namespace elfbox
 {
-    class WindowImpl : public IObject
-    {
-        ELF_OBJECT(WindowImpl, IObject);
-    public:
-        WindowImpl(ContextPtr context);
-        virtual ~WindowImpl() = default;
+namespace system
+{
+class WindowImpl : public common::IObject
+{
+ELF_OBJECT(WindowImpl, common::IObject);
+public:
+    WindowImpl(common::ContextPtr context);
 
-        virtual bool Initialize();
-        bool CreateWindow(const std::string& winName,
-            int width, int height, unsigned int winflag);
-    private:
-        ContextPtr context_;
-        SDL_Window* window_;
-        LoggerPtr log_;
-    };
+    virtual ~WindowImpl() = default;
+
+    virtual bool Initialize();
+
+    bool CreateWindow(const std::string &winName,
+                      int width, int height, unsigned int winflag);
+
+private:
+    common::ContextPtr context_;
+    SDL_Window *window_;
+    LoggerPtr log_;
+};
+}
 }
 #endif

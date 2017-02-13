@@ -5,12 +5,14 @@
 
 namespace elfbox
 {
+namespace system
+{
 
 ThreadPool::ThreadPool() :
-    shutDown_(false),
-    pausing_(false),
-    paused_(false),
-    tolerance_(2)
+        shutDown_(false),
+        pausing_(false),
+        paused_(false),
+        tolerance_(2)
 {
 }
 
@@ -64,8 +66,7 @@ void ThreadPool::addWorkItem(WorkItemPtr item)
         if (queue_.empty())
         {
             queue_.push_back(item);
-        }
-        else
+        } else
         {
             for (std::list<WorkItemPtr>::iterator i = queue_.begin(); i != queue_.end(); ++i)
             {
@@ -158,8 +159,7 @@ void ThreadPool::complete(unsigned priority)
             if (queue_.empty())
                 pause();
         }
-    }
-    else
+    } else
     {
         // No worker threads: ensure all high-priority items are completed in the main thread
         while (!queue_.empty() && queue_.front()->priority_ >= priority)
@@ -176,7 +176,7 @@ void ThreadPool::complete(unsigned priority)
 
 bool ThreadPool::isCompleted(unsigned priority) const
 {
-    for (std::list<WorkItemPtr >::const_iterator i = workItems_.begin(); i != workItems_.end(); ++i)
+    for (std::list<WorkItemPtr>::const_iterator i = workItems_.begin(); i != workItems_.end(); ++i)
     {
         if ((*i)->priority_ >= priority && !(*i)->completed_)
             return false;
@@ -218,14 +218,13 @@ void ThreadPool::processItems(unsigned threadIndex)
 
 void ThreadPool::cacheProcess()
 {
-    for (std::list<WorkItemPtr >::iterator i = workItems_.begin(); i != workItems_.end();)
+    for (std::list<WorkItemPtr>::iterator i = workItems_.begin(); i != workItems_.end();)
     {
         if ((*i)->completed_)
         {
             returnToCache(*i);
             i = workItems_.erase(i);
-        }
-        else
+        } else
             ++i;
     }
 
@@ -240,7 +239,7 @@ void ThreadPool::arrangeCache()
 
     int overflowSize = currentSize - tolerance_;
 
-    for (unsigned i = 0; poolItems_.size() > 0 && i < (unsigned)overflowSize; i++)
+    for (unsigned i = 0; poolItems_.size() > 0 && i < (unsigned) overflowSize; i++)
         poolItems_.pop_front();
 }
 
@@ -253,4 +252,5 @@ void ThreadPool::returnToCache(WorkItemPtr item)
     poolItems_.push_back(item);
 }
 
+}
 }

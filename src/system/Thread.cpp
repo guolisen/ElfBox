@@ -8,7 +8,8 @@
 
 namespace elfbox
 {
-
+namespace system
+{
 #ifdef _WIN32
 
 DWORD WINAPI ThreadFunctionStatic(void* data)
@@ -20,11 +21,11 @@ DWORD WINAPI ThreadFunctionStatic(void* data)
 
 #else
 
-void* ThreadFunctionStatic(void* data)
+void *ThreadFunctionStatic(void *data)
 {
-    Thread* thread = static_cast<Thread*>(data);
+    Thread *thread = static_cast<Thread *>(data);
     thread->ThreadFunction();
-    pthread_exit((void*)0);
+    pthread_exit((void *) 0);
     return 0;
 }
 
@@ -32,10 +33,10 @@ void* ThreadFunctionStatic(void* data)
 
 ThreadID Thread::mainThreadID;
 
-Thread::Thread(const std::function<void()>& workFunc) :
-    handle_(0),
-    shouldRun_(false),
-    workFunc_(workFunc)
+Thread::Thread(const std::function<void()> &workFunc) :
+        handle_(0),
+        shouldRun_(false),
+        workFunc_(workFunc)
 {
 }
 
@@ -62,7 +63,7 @@ bool Thread::Run()
     pthread_attr_t type;
     pthread_attr_init(&type);
     pthread_attr_setdetachstate(&type, PTHREAD_CREATE_JOINABLE);
-    pthread_create((pthread_t*)handle_, &type, ThreadFunctionStatic, this);
+    pthread_create((pthread_t *) handle_, &type, ThreadFunctionStatic, this);
 #endif
     return handle_ != 0;
 }
@@ -77,7 +78,7 @@ void Thread::Stop()
     WaitForSingleObject((HANDLE)handle_, INFINITE);
     CloseHandle((HANDLE)handle_);
 #else
-    pthread_t* thread = (pthread_t*)handle_;
+    pthread_t *thread = (pthread_t *) handle_;
     if (thread)
         pthread_join(*thread, 0);
     delete thread;
@@ -118,3 +119,5 @@ bool Thread::IsMainThread()
 }
 
 }
+}
+

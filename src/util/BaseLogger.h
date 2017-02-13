@@ -27,13 +27,13 @@ namespace elfbox
         LogSeverityLevel_Invalid = 7
     };
 
-    class ILogger: public IObject
+class ILogger : public common::IObject
     {
-        ELF_OBJECT(ILogger, IObject);
+ELF_OBJECT(ILogger, common::IObject);
     public:
         virtual ~ILogger() = default;
 
-        virtual void log(const IObject* obj, LogSeverityLevel level, const std::string& logStr) = 0;
+    virtual void log(const common::IObject *obj, LogSeverityLevel level, const std::string &logStr) = 0;
     };
 
     class BaseLogger: public ILogger
@@ -44,7 +44,7 @@ namespace elfbox
         virtual ~BaseLogger() = default;
 
         static std::string ToString(const char* formatString, ...);
-        virtual void log(const IObject* obj, LogSeverityLevel level, const std::string& logStr);
+        virtual void log(const common::IObject *obj, LogSeverityLevel level, const std::string &logStr);
 
     };
 

@@ -4,14 +4,17 @@
 
 namespace elfbox
 {
-    Graphics::Graphics(std::shared_ptr<GraphicsImpl> impl) :
+namespace graphics
+{
+Graphics::Graphics(std::shared_ptr<GraphicsImpl> impl) :
         impl_(impl)
-    {
-    }
+{
+}
 
-    bool Graphics::Initialize()
-    {
-        impl_->Initialize();
-        return true;
-    }
+bool Graphics::Initialize()
+{
+    impl_->Initialize();
+    return true;
+}
+}
 }

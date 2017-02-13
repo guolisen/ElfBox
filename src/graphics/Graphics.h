@@ -8,17 +8,23 @@
 
 namespace elfbox
 {
-    class GraphicsImpl;
-    class Graphics : public IGraphics
-    {
-        ELF_OBJECT(Graphics, IGraphics);
-    public:
-        Graphics(std::shared_ptr<GraphicsImpl> impl);
-        virtual ~Graphics() = default;
+namespace graphics
+{
+class GraphicsImpl;
 
-        virtual bool Initialize();
-    private:
-        std::shared_ptr<GraphicsImpl> impl_;
-    };
+class Graphics : public IGraphics
+{
+ELF_OBJECT(Graphics, IGraphics);
+public:
+    Graphics(std::shared_ptr<GraphicsImpl> impl);
+
+    virtual ~Graphics() = default;
+
+    virtual bool Initialize();
+
+private:
+    std::shared_ptr<GraphicsImpl> impl_;
+};
+}
 }
 #endif

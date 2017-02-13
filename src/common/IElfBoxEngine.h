@@ -5,15 +5,21 @@
 
 namespace elfbox
 {
-    class IElfBoxEngine :public IObject
-    {
-        ELF_OBJECT(IElfBoxEngine, IObject);
-    public:
-        IElfBoxEngine() {};
-        virtual ~IElfBoxEngine() {};
+namespace common
+{
+class IElfBoxEngine : public IObject
+{
+ELF_OBJECT(IElfBoxEngine, IObject);
+public:
+    IElfBoxEngine()
+    {};
 
-        virtual bool Initialize() = 0;
-        virtual void run() = 0;
-    };
+    virtual ~IElfBoxEngine()
+    {};
+
+    virtual bool Initialize() = 0;
+    virtual void run() = 0;
+};
+}
 }
 #endif

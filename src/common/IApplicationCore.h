@@ -5,17 +5,23 @@
 
 namespace elfbox
 {
-    class IApplicationCore : public IObject
-    {
-        ELF_OBJECT(IApplicationCore, IObject);
-    public:
-        IApplicationCore() = default;
-        virtual ~IApplicationCore() = default;
+namespace common
+{
+class IApplicationCore : public IObject
+{
+ELF_OBJECT(IApplicationCore, IObject);
+public:
+    IApplicationCore() = default;
 
-        virtual bool setup() = 0;
-        virtual bool start() = 0;
-        virtual bool terminat() = 0;
+    virtual ~IApplicationCore() = default;
 
-    };
+    virtual bool setup() = 0;
+
+    virtual bool start() = 0;
+
+    virtual bool terminat() = 0;
+
+};
+}
 }
 #endif

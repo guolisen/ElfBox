@@ -6,17 +6,23 @@
 
 namespace elfbox
 {
-    class ElfBoxEngine : public IElfBoxEngine
-    {
-        ELF_OBJECT(ElfBoxEngine, IElfBoxEngine);
-    public:
-        ElfBoxEngine(ContextPtr context);
-        virtual ~ElfBoxEngine();
+namespace common
+{
+class ElfBoxEngine : public IElfBoxEngine
+{
+ELF_OBJECT(ElfBoxEngine, IElfBoxEngine);
+public:
+    ElfBoxEngine(ContextPtr context);
 
-        virtual bool Initialize();
-        virtual void run();
-    private:
-        ContextPtr context_;
-    };
+    virtual ~ElfBoxEngine();
+
+    virtual bool Initialize();
+
+    virtual void run();
+
+private:
+    ContextPtr context_;
+};
+}
 }
 #endif

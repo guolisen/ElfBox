@@ -7,31 +7,37 @@
 
 namespace elfbox
 {
-    class IElfBoxEngine;
-    class IApplicationCore;
-    class Context;
+namespace common
+{
+class IElfBoxEngine;
 
-    class Application :public IObject
-    {
-        ELF_OBJECT(Application, IObject);
+class IApplicationCore;
 
-    public:
-        Application(std::shared_ptr<IApplicationCore> applicationCore,
-            std::shared_ptr<Context> context);
-        virtual ~Application();
-        virtual void run();
+class Context;
 
-    private:
-        virtual bool setup();
-        virtual bool start();
-        virtual bool terminat();
+class Application : public IObject
+{
+ELF_OBJECT(Application, IObject);
 
-        std::shared_ptr<Context> context_;
-        std::shared_ptr<IElfBoxEngine> elfBoxEngine_;
-        std::shared_ptr<IApplicationCore> applicationCore_;
-       
-        LoggerPtr log_;
-    };
+public:
+    Application(std::shared_ptr<IApplicationCore> applicationCore,
+                std::shared_ptr<Context> context);
+
+    virtual ~Application();
+    virtual void run();
+
+private:
+    virtual bool setup();
+    virtual bool start();
+    virtual bool terminat();
+
+    std::shared_ptr<Context> context_;
+    std::shared_ptr<IElfBoxEngine> elfBoxEngine_;
+    std::shared_ptr<IApplicationCore> applicationCore_;
+
+    LoggerPtr log_;
+};
+}
 }
 
 extern void appMain();

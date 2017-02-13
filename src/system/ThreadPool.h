@@ -12,6 +12,8 @@
 
 namespace elfbox
 {
+namespace system
+{
 
 struct WorkItem
 {
@@ -19,37 +21,49 @@ struct WorkItem
     unsigned priority_;
     volatile bool completed_;
 
-    WorkItem(): priority_(0),
-        completed_(false) {}
+    WorkItem() : priority_(0),
+                 completed_(false)
+    {}
 };
 
 typedef std::shared_ptr<WorkItem> WorkItemPtr;
 
 class ThreadPool : public IObject
 {
-    ELF_OBJECT(ThreadPool, IObject);
+ELF_OBJECT(ThreadPool, IObject);
 
 public:
     ThreadPool();
+
     ~ThreadPool();
 
     void createThreads(unsigned numThreads);
+
     WorkItemPtr attach(std::function<void(unsigned)> function, unsigned priority);
+
     void pause();
+
     void resume();
+
     void complete(unsigned priority);
+
     void waitForJob(WorkItemPtr item);
 
     bool isCompleted(unsigned priority) const;
+
     bool isPause();
 
 private:
     WorkItemPtr getFreeItem();
+
     void addWorkItem(WorkItemPtr item);
+
     void processItems(unsigned threadIndex);
 
     void cacheProcess();
+
     void arrangeCache();
+
     void returnToCache(WorkItemPtr item);
 
     std::vector<std::shared_ptr<Thread>> threads_;
@@ -63,6 +77,7 @@ private:
     bool paused_;
     int tolerance_;
 };
+}
 }
 
 #endif
