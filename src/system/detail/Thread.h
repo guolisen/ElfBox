@@ -3,13 +3,7 @@
 
 #include <functional>
 #include <common/IObject.h>
-
-#ifndef _WIN32
-#include <pthread.h>
-typedef pthread_t ThreadID;
-#else
-typedef unsigned ThreadID;
-#endif
+#include <system/detail/IThread.h>
 
 namespace elfbox
 {
@@ -17,8 +11,10 @@ namespace system
 {
 namespace detail
 {
-class Thread
+
+class Thread: public IThread
 {
+ELF_OBJECT(Thread, IThread)
 public:
     Thread(const std::function<void()> &workFunc);
     virtual ~Thread();

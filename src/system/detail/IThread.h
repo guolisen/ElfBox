@@ -10,10 +10,18 @@ namespace system
 {
 namespace detail
 {
-class IThread
+#ifndef _WIN32
+#include <pthread.h>
+typedef pthread_t ThreadID;
+#else
+typedef unsigned ThreadID;
+#endif
+
+class IThread: public common::IObject
 {
+    ELF_OBJECT(IThread, common::IObject)
 public:
-    virtual ~IThread();
+    virtual ~IThread() = default;
 
     virtual bool Run() = 0;
     virtual void Stop() = 0;
