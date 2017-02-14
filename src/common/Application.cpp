@@ -168,27 +168,29 @@ void appMain()
             std::make_shared<elfbox::system::WindowImpl>(context));
     context->addComponent(window);
 
-    elfbox::system::ThreadPoolPtr threadPool = std::make_shared<elfbox::system::ThreadPool>();
+    elfbox::system::ThreadPoolPtr threadPool = std::make_shared<elfbox::system::ThreadPool>(
+            elfbox::system::detail::Thread::getFactory());
     context->addComponent(threadPool);
 
     elfbox::common::Application app(0, context);
     app.run();
 
     /////////////////////////////////////////////////////////
-#if 0
-    elfbox::system::ThreadPool pool;
-    pool.createThreads(3);
+#if 1
+    elfbox::system::ThreadPoolPtr pool = std::make_shared<elfbox::system::ThreadPool>(
+        elfbox::system::detail::Thread::getFactory());
+    pool->createThreads(3);
 
-    pool.attach(std::bind(&testkk), -1);
-    pool.attach(std::bind(&test2), -1);
-    //pool.attach(std::bind(&elfbox::common::Application::start, &app), -1);
-    pool.attach(std::bind(&test3), -1);
-    pool.attach(std::bind(&test4), -1);
-    pool.attach(std::bind(&test5), -1);
+    pool->attach(std::bind(&testkk), -1);
+    pool->attach(std::bind(&test2), -1);
+    //pool->attach(std::bind(&elfbox::common::Application::start, &app), -1);
+    pool->attach(std::bind(&test3), -1);
+    pool->attach(std::bind(&test4), -1);
+    pool->attach(std::bind(&test5), -1);
 
-    pool.complete(-1);
+    pool->complete(-1);
 
-    auto item = pool.attach(std::bind(&test6), -1);
+    auto item = pool->attach(std::bind(&test6), -1);
     pool.attach(std::bind(&test3), -1);
     pool.attach(std::bind(&test4), -1);
     pool.attach(std::bind(&test5), -1);

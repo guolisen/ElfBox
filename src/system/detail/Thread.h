@@ -31,6 +31,13 @@ public:
     virtual ThreadID GetCurrentThreadID();
     virtual bool IsMainThread();
 
+    static Factory getFactory()
+    {
+        return [](const std::function<void()>& workFunc)
+        {
+            return std::make_shared<Thread>(workFunc);
+        }; // NOLINT
+    }
 protected:
     void *handle_;
     volatile bool shouldRun_;

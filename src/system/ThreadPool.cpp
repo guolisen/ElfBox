@@ -8,11 +8,12 @@ namespace elfbox
 namespace system
 {
 
-ThreadPool::ThreadPool() :
+ThreadPool::ThreadPool(detail::IThread::Factory factory) :
         shutDown_(false),
         pausing_(false),
         paused_(false),
-        tolerance_(2)
+        tolerance_(2),
+        threadFactory_(factory)
 {
 }
 
@@ -35,7 +36,8 @@ void ThreadPool::createThreads(unsigned numThreads)
 
     for (unsigned i = 0; i < numThreads; ++i)
     {
-        std::shared_ptr<detail::Thread> thread(new detail::Thread(std::bind(&ThreadPool::processItems, this, i + 1)));
+        std::shared_ptr<detail::IThread> thread = threadFactory_(
+                std::bind(&ThreadPool::processItems, this, i + 1));
         thread->Run();
         threads_.push_back(thread);
     }

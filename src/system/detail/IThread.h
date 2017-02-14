@@ -21,6 +21,8 @@ class IThread: public common::IObject
 {
     ELF_OBJECT(IThread, common::IObject)
 public:
+    typedef std::function<std::shared_ptr<IThread>(const std::function<void()>&)> Factory;
+
     virtual ~IThread() = default;
 
     virtual bool Run() = 0;

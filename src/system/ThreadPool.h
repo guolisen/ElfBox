@@ -21,7 +21,7 @@ class ThreadPool : public IThreadPool
 ELF_OBJECT(ThreadPool, IThreadPool);
 
 public:
-    ThreadPool();
+    ThreadPool(detail::IThread::Factory factory);
     virtual ~ThreadPool();
 
     virtual void createThreads(unsigned numThreads);
@@ -41,7 +41,7 @@ private:
     void arrangeCache();
     void returnToCache(WorkItemPtr item);
 
-    std::vector<std::shared_ptr<detail::Thread>> threads_;
+    std::vector<std::shared_ptr<detail::IThread>> threads_;
     std::list<WorkItemPtr> poolItems_;
     std::list<WorkItemPtr> workItems_;
     std::list<WorkItemPtr> queue_;
@@ -51,6 +51,7 @@ private:
     volatile bool pausing_;
     bool paused_;
     int tolerance_;
+    detail::IThread::Factory threadFactory_;
 };
 }
 }
