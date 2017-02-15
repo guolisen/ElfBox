@@ -10,6 +10,8 @@ namespace elfbox
 {
 namespace graphics
 {
+namespace detail
+{
 
 class GraphicsImpl : public common::IObject
 {
@@ -19,12 +21,13 @@ public:
 
     virtual ~GraphicsImpl() = default;
 
-    virtual bool Initialize();
+    virtual bool initialize();
 
 private:
     common::ContextPtr context_;
     LoggerPtr log_;
 };
+}
 }
 }
 #endif

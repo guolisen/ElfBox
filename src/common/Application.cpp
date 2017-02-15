@@ -5,12 +5,13 @@
 #include <common/IElfBoxEngine.h>
 #include <common/ElfBoxEngine.h>
 #include <common/Context.h>
+#include <common/MessageBroadcaster.h>
 #include <graphics/IGraphics.h>
 #include <graphics/Graphics.h>
-#include <graphics/GraphicsSDLImpl.h>
+#include <graphics/detail/GraphicsSDLImpl.h>
 #include <system/IWindow.h>
 #include <system/Window.h>
-#include <system/WindowSDLImpl.h>
+#include <system/detail/WindowSDLImpl.h>
 #include <system/ThreadPool.h>
 #include <Windows.h>
 
@@ -51,7 +52,7 @@ bool Application::setup()
 
     system::ThreadPoolPtr threadPool = context_->getComponent<system::IThreadPool>(nullptr);
     threadPool->createThreads(4);
-    elfBoxEngine_->Initialize();
+    elfBoxEngine_->initialize();
 
     if (applicationCore_)
         applicationCore_->setup();
@@ -161,11 +162,11 @@ void appMain()
     context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
     elfbox::graphics::GraphicsPtr graphics = std::make_shared<elfbox::graphics::Graphics>(
-            std::make_shared<elfbox::graphics::GraphicsImpl>(context));
+            std::make_shared<elfbox::graphics::detail::GraphicsImpl>(context));
     context->addComponent(graphics);
 
     elfbox::system::WindowPtr window = std::make_shared<elfbox::system::Window>(
-            std::make_shared<elfbox::system::WindowImpl>(context));
+            std::make_shared<elfbox::system::detail::WindowImpl>(context));
     context->addComponent(window);
 
     elfbox::system::ThreadPoolPtr threadPool = std::make_shared<elfbox::system::ThreadPool>(
@@ -176,10 +177,9 @@ void appMain()
     app.run();
 
     /////////////////////////////////////////////////////////
-#if 1
-    elfbox::system::ThreadPoolPtr pool = std::make_shared<elfbox::system::ThreadPool>(
-        elfbox::system::detail::Thread::getFactory());
-    pool->createThreads(3);
+#if 0
+    elfbox::system::ThreadPoolPtr pool = context->getComponent<elfbox::system::IThreadPool>(nullptr);
+    //pool->createThreads(3);
 
     pool->attach(std::bind(&testkk), -1);
     pool->attach(std::bind(&test2), -1);
@@ -191,11 +191,14 @@ void appMain()
     pool->complete(-1);
 
     auto item = pool->attach(std::bind(&test6), -1);
-    pool.attach(std::bind(&test3), -1);
-    pool.attach(std::bind(&test4), -1);
-    pool.attach(std::bind(&test5), -1);
+    pool->attach(std::bind(&test3), -1);
+    pool->attach(std::bind(&test4), -1);
+    pool->attach(std::bind(&test5), -1);
 
-    pool.waitForJob(item);
+    pool->waitForJob(item);
 #endif
+
+    elfbox::common::MessageBroadcaster mb(context);
+    mb.Test();
     printf("sddddd\n");
 }

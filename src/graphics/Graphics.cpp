@@ -1,19 +1,19 @@
 #include <graphics/Graphics.h>
-#include <graphics/GraphicsSDLImpl.h>
+#include <graphics/detail/GraphicsSDLImpl.h>
 #include <util/BaseLogger.h>
 
 namespace elfbox
 {
 namespace graphics
 {
-Graphics::Graphics(std::shared_ptr<GraphicsImpl> impl) :
+Graphics::Graphics(std::shared_ptr<detail::GraphicsImpl> impl) :
         impl_(impl)
 {
 }
 
-bool Graphics::Initialize()
+bool Graphics::initialize()
 {
-    impl_->Initialize();
+    impl_->initialize();
     return true;
 }
 }

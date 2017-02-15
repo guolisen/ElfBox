@@ -13,12 +13,10 @@ class IWindow : public common::IObject
 ELF_OBJECT(IWindow, common::IObject);
 public:
     IWindow() = default;
-
     virtual ~IWindow() = default;
 
-    virtual bool Initialize() = 0;
-
-    virtual bool CreateWindow(const std::string &winName,
+    virtual bool initialize() = 0;
+    virtual bool createWindow(const std::string &winName,
                               int width, int height, unsigned int winflag) = 0;
 };
 

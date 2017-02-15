@@ -17,7 +17,7 @@ public:
     virtual ~IElfBoxEngine()
     {};
 
-    virtual bool Initialize() = 0;
+    virtual bool initialize() = 0;
     virtual void run() = 0;
 };
 }

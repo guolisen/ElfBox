@@ -10,7 +10,6 @@ namespace system
 
 ThreadPool::ThreadPool(detail::IThread::Factory factory) :
         shutDown_(false),
-        pausing_(false),
         paused_(false),
         tolerance_(2),
         threadFactory_(factory)
@@ -23,7 +22,7 @@ ThreadPool::~ThreadPool()
     resume();
 
     for (unsigned i = 0; i < threads_.size(); ++i)
-        threads_[i]->Stop();
+        threads_[i]->stop();
 }
 
 void ThreadPool::createThreads(unsigned numThreads)
@@ -38,7 +37,7 @@ void ThreadPool::createThreads(unsigned numThreads)
     {
         std::shared_ptr<detail::IThread> thread = threadFactory_(
                 std::bind(&ThreadPool::processItems, this, i + 1));
-        thread->Run();
+        thread->run();
         threads_.push_back(thread);
     }
 }

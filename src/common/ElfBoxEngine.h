@@ -16,7 +16,7 @@ public:
 
     virtual ~ElfBoxEngine();
 
-    virtual bool Initialize();
+    virtual bool initialize();
 
     virtual void run();
 

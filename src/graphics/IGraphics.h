@@ -16,7 +16,7 @@ public:
 
     virtual ~IGraphics() = default;
 
-    virtual bool Initialize() = 0;
+    virtual bool initialize() = 0;
 };
 
 typedef std::shared_ptr<IGraphics> GraphicsPtr;

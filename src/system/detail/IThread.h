@@ -25,14 +25,14 @@ public:
 
     virtual ~IThread() = default;
 
-    virtual bool Run() = 0;
-    virtual void Stop() = 0;
-    virtual void SetPriority(int priority) = 0;
+    virtual bool run() = 0;
+    virtual void stop() = 0;
+    virtual void setPriority(int priority) = 0;
 
-    virtual bool IsStarted() const = 0;
+    virtual bool isStarted() const = 0;
 
-    virtual ThreadID GetCurrentThreadID() = 0;
-    virtual bool IsMainThread() = 0;
+    virtual ThreadID getCurrentThreadID() = 0;
+    virtual bool isMainThread() = 0;
 };
 
 }

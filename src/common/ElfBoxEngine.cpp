@@ -21,17 +21,17 @@ ElfBoxEngine::~ElfBoxEngine()
     ELFBOX_LOGERROR(log, "D!!!!");
 }
 
-bool ElfBoxEngine::Initialize()
+bool ElfBoxEngine::initialize()
 {
     graphics::GraphicsPtr graphics = context_->getComponent<graphics::IGraphics>(nullptr);
     ELFBOX_ASSERT(graphics);
-    graphics->Initialize();
+    graphics->initialize();
 
     system::WindowPtr window = context_->getComponent<system::IWindow>(nullptr);
     ELFBOX_ASSERT(window);
-    window->Initialize();
+    window->initialize();
 
-    window->CreateWindow("Test1", 800, 600, 0);
+    window->createWindow("Test1", 800, 600, 0);
     return true;
 }
 
@@ -39,7 +39,7 @@ void ElfBoxEngine::run()
 {
     LoggerPtr log = context_->getComponent<ILogger>(nullptr);
 
-    ELFBOX_LOGERROR(log, "Run!!!!");
+    ELFBOX_LOGERROR(log, "run!!!!");
 }
 }
 }

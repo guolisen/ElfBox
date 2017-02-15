@@ -1,10 +1,12 @@
 #include <system/Window.h>
-#include <system/WindowSDLImpl.h>
+#include <system/detail/WindowSDLImpl.h>
 #include <util/BaseLogger.h>
 
 namespace elfbox
 {
 namespace system
+{
+namespace detail
 {
 WindowImpl::WindowImpl(common::ContextPtr context) : context_(context),
                                                      log_(context_->getComponent<ILogger>(nullptr))
@@ -12,12 +14,12 @@ WindowImpl::WindowImpl(common::ContextPtr context) : context_(context),
     ELFBOX_LOGERROR(log_, "Test!!!!");
 }
 
-bool WindowImpl::Initialize()
+bool WindowImpl::initialize()
 {
     return true;
 }
 
-bool WindowImpl::CreateWindow(const std::string &winName,
+bool WindowImpl::createWindow(const std::string &winName,
                               int width, int height, unsigned int winflag)
 {
     window_ = SDL_CreateWindow(winName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -29,6 +31,7 @@ bool WindowImpl::CreateWindow(const std::string &winName,
     }
 
     return true;
+}
 }
 }
 }

@@ -3,20 +3,21 @@
 
 #include <util/BaseLogger.h>
 #include <graphics/Graphics.h>
-#include <graphics/GraphicsSDLImpl.h>
+#include <graphics/detail/GraphicsSDLImpl.h>
 
 namespace elfbox
 {
 namespace graphics
 {
-
+namespace detail
+{
 GraphicsImpl::GraphicsImpl(common::ContextPtr context) :
         context_(context), log_(context_->getComponent<ILogger>(nullptr))
 {
     ELFBOX_LOGERROR(log_, "Test!!!!");
 }
 
-bool GraphicsImpl::Initialize()
+bool GraphicsImpl::initialize()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
@@ -37,6 +38,7 @@ bool GraphicsImpl::Initialize()
     }
 
     return true;
+}
 }
 }
 }

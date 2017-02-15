@@ -7,6 +7,8 @@
 #include <memory>
 #include <functional>
 #include <mutex>
+#include <atomic>
+
 #include <common/IObject.h>
 #include <system/IThreadPool.h>
 #include <system/detail/Thread.h>
@@ -47,9 +49,8 @@ private:
     std::list<WorkItemPtr> queue_;
     std::mutex queueMutex_;
     std::mutex pauseMutex_;
-    volatile bool shutDown_;
-    volatile bool pausing_;
-    bool paused_;
+    std::atomic_bool shutDown_;
+    std::atomic_bool paused_;
     int tolerance_;
     detail::IThread::Factory threadFactory_;
 };

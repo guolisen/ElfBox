@@ -7,6 +7,7 @@
 #include <memory>
 #include <functional>
 #include <mutex>
+#include <atomic>
 #include <common/IObject.h>
 #include <system/detail/Thread.h>
 
@@ -19,7 +20,7 @@ struct WorkItem
 {
     std::function<void(unsigned)> workFunction_;
     unsigned priority_;
-    volatile bool completed_;
+    std::atomic_bool completed_;
 
     WorkItem() : priority_(0),
                  completed_(false)

@@ -21,15 +21,15 @@ public:
 
     void ThreadFunction();
 
-    virtual bool Run();
-    virtual void Stop();
-    virtual void SetPriority(int priority);
+    virtual bool run();
+    virtual void stop();
+    virtual void setPriority(int priority);
 
-    virtual bool IsStarted() const
+    virtual bool isStarted() const
     { return handle_ != 0; }
 
-    virtual ThreadID GetCurrentThreadID();
-    virtual bool IsMainThread();
+    virtual ThreadID getCurrentThreadID();
+    virtual bool isMainThread();
 
     static Factory getFactory()
     {

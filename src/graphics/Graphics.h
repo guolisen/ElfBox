@@ -10,20 +10,23 @@ namespace elfbox
 {
 namespace graphics
 {
+namespace detail
+{
 class GraphicsImpl;
+}
 
 class Graphics : public IGraphics
 {
 ELF_OBJECT(Graphics, IGraphics);
 public:
-    Graphics(std::shared_ptr<GraphicsImpl> impl);
+    Graphics(std::shared_ptr<detail::GraphicsImpl> impl);
 
     virtual ~Graphics() = default;
 
-    virtual bool Initialize();
+    virtual bool initialize();
 
 private:
-    std::shared_ptr<GraphicsImpl> impl_;
+    std::shared_ptr<detail::GraphicsImpl> impl_;
 };
 }
 }

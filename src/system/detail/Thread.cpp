@@ -39,12 +39,12 @@ Thread::Thread(const std::function<void()> &workFunc) :
         workFunc_(workFunc)
 {
     //only create this class in main thread
-    mainThreadID_ = GetCurrentThreadID();
+    mainThreadID_ = getCurrentThreadID();
 }
 
 Thread::~Thread()
 {
-    Stop();
+    stop();
 }
 
 void Thread::ThreadFunction()
@@ -52,7 +52,7 @@ void Thread::ThreadFunction()
     workFunc_();
 }
 
-bool Thread::Run()
+bool Thread::run()
 {
     if (handle_)
         return false;
@@ -70,7 +70,7 @@ bool Thread::Run()
     return handle_ != 0;
 }
 
-void Thread::Stop()
+void Thread::stop()
 {
     if (!handle_)
         return;
@@ -88,7 +88,7 @@ void Thread::Stop()
     handle_ = 0;
 }
 
-void Thread::SetPriority(int priority)
+void Thread::setPriority(int priority)
 {
 #ifdef _WIN32
     if (handle_)
@@ -101,7 +101,7 @@ void Thread::SetPriority(int priority)
 #endif
 }
 
-ThreadID Thread::GetCurrentThreadID()
+ThreadID Thread::getCurrentThreadID()
 {
 #ifdef _WIN32
     return GetCurrentThreadId();
@@ -110,9 +110,9 @@ ThreadID Thread::GetCurrentThreadID()
 #endif
 }
 
-bool Thread::IsMainThread()
+bool Thread::isMainThread()
 {
-    return GetCurrentThreadID() == mainThreadID_;
+    return getCurrentThreadID() == mainThreadID_;
 }
 
 }
