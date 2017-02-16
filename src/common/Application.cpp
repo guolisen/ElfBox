@@ -43,6 +43,9 @@ void Application::run()
 
     elfBoxEngine_->run();
 
+    //system::ThreadPoolPtr threadPool = context_->getComponent<system::IThreadPool>(nullptr);
+    //threadPool->complete(-1);
+
     terminat();
 }
 
@@ -52,6 +55,11 @@ bool Application::setup()
 
     system::ThreadPoolPtr threadPool = context_->getComponent<system::IThreadPool>(nullptr);
     threadPool->createThreads(4);
+
+    elfbox::common::MessageBroadcasterPtr messageBroadcaster =
+            context_->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
+    messageBroadcaster->initialize();
+
     elfBoxEngine_->initialize();
 
     if (applicationCore_)
@@ -154,10 +162,31 @@ void test6()
     }
 
 }
+
+elfbox::common::ContextPtr gContext = nullptr;
+void messageHandler(elfbox::common::detail::MessageData data)
+{
+    printf("!!!Message: %d \n", (int)data["test"]);
+}
+
+void testSend(unsigned id)
+{
+    elfbox::common::MessageBroadcasterPtr mbp =
+            gContext->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
+
+    for (int i = 0; i<10; i++)
+    {
+        elfbox::common::detail::MessageData data;
+        data["test"] = 12345123;
+        mbp->sendMessage(elfbox::common::TEST_MESSAGE, data);
+        ::Sleep(700);
+    }
+}
+
 void appMain()
 {
     elfbox::common::ContextPtr context = std::make_shared<elfbox::common::Context>();
-
+    gContext = context;
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
     context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
@@ -172,6 +201,10 @@ void appMain()
     elfbox::system::ThreadPoolPtr threadPool = std::make_shared<elfbox::system::ThreadPool>(
             elfbox::system::detail::Thread::getFactory());
     context->addComponent(threadPool);
+
+    elfbox::common::MessageBroadcasterPtr messageBroadcaster =
+            std::make_shared<elfbox::common::MessageBroadcaster>(context);
+    context->addComponent(messageBroadcaster);
 
     elfbox::common::Application app(0, context);
     app.run();
@@ -198,7 +231,19 @@ void appMain()
     pool->waitForJob(item);
 #endif
 
-    elfbox::common::MessageBroadcaster mb(context);
-    mb.Test();
+
+    elfbox::common::MessageBroadcasterPtr mbp =
+            context->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
+    mbp->subscribe(elfbox::common::TEST_MESSAGE,
+                   std::bind(&messageHandler, std::placeholders::_1));
+    mbp->subscribe(elfbox::common::TEST_MESSAGE,
+                   std::bind(&messageHandler, std::placeholders::_1));
+
+
+    elfbox::system::ThreadPoolPtr pool =
+            context->getComponent<elfbox::system::IThreadPool>(nullptr);
+
+    pool->attach(std::bind(&testSend, std::placeholders::_1), -1);
+    pool->complete(-1);
     printf("sddddd\n");
 }

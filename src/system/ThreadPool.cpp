@@ -67,7 +67,8 @@ void ThreadPool::addWorkItem(WorkItemPtr item)
         if (queue_.empty())
         {
             queue_.push_back(item);
-        } else
+        }
+        else
         {
             for (std::list<WorkItemPtr>::iterator i = queue_.begin(); i != queue_.end(); ++i)
             {

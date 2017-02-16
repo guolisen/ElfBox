@@ -10,4 +10,4 @@ include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
-add_library(libelfbox ${SOURCES} ${HEADERS} common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/detail/MessageVariant.h)
+add_library(libelfbox ${SOURCES} ${HEADERS} common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/MessageBroadcaster.cpp common/MessageBroadcaster.h common/detail/MessageVariant.h common/MessageId.h)

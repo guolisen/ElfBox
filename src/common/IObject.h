@@ -75,8 +75,7 @@ public:
     virtual const std::string &GetTypeName() const = 0;
     virtual const TypeInfo *GetTypeInfo() const = 0;
 
-    static const TypeInfo *GetTypeInfoStatic()
-    { return 0; }
+    static const TypeInfo *GetTypeInfoStatic() { return 0; }
 
     static bool IsTypeOf(const TypeInfo *typeInfo)
     {
@@ -91,6 +90,7 @@ public:
 };
 
 typedef std::shared_ptr<IObject> IObjectPtr;
+
 }
 }
 #endif

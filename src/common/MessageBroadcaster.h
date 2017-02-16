@@ -6,28 +6,42 @@
 #define ELFBOX_MESSAGEBROADCASTER_H
 
 #include <unordered_map>
+#include <list>
+#include <mutex>
 #include <common/IObject.h>
 #include <common/Context.h>
+#include <common/MessageId.h>
 #include <common/detail/MessageVariant.h>
+#include <common/IMessageBroadcaster.h>
 
 namespace elfbox
 {
 namespace common
 {
 
-class MessageBroadcaster : public common::IObject
+class MessageBroadcaster : public IMessageBroadcaster
 {
-    typedef std::function<void(detail::MessageData)> MessageHandler;
-ELF_OBJECT(MessageBroadcaster, common::IObject);
+ELF_OBJECT(MessageBroadcaster, IMessageBroadcaster);
 public:
     MessageBroadcaster(common::ContextPtr context);
     virtual ~MessageBroadcaster() = default;
 
-    //subscribe();
+    virtual bool initialize();
+    virtual Subscription subscribe(MessageId id, MessageHandler handler);
+    virtual void unsubscribe(Subscription subHandler);
+
+    virtual void sendMessage(MessageId id, detail::MessageData data);
+    virtual void notifyMessage(unsigned threadId);
 
 private:
+    bool isAlreadySubscribed(const Subscription& subscription);
+    void notifyByMessageId(MessageId id, detail::MessageData data);
+
     common::ContextPtr context_;
-    std::unordered_map<std::string, MessageHandler> subscribers_;
+    std::recursive_mutex subscribersMutex_;
+    SubscriptionMap subscribers_;
+    std::mutex eventQueueMutex_;
+    std::list<EventPtr> eventQueue_;
 };
 
 }
