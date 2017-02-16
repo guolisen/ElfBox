@@ -18,7 +18,8 @@ namespace elfbox
 namespace common
 {
 
-typedef std::function<void(detail::MessageData)> MessageHandler;
+typedef std::unordered_map<std::string, detail::MessageVariant> MessageData;
+typedef std::function<void(MessageData)> MessageHandler;
 typedef std::unordered_map<int, MessageHandler> SubscriptionMap;
 
 struct Subscription
@@ -31,16 +32,6 @@ struct Subscription
 };
 typedef std::shared_ptr<Subscription> SubscriptionPtr;
 
-struct Event
-{
-    MessageId messageId;
-    detail::MessageData data;
-
-    Event(MessageId id, detail::MessageData data):
-            messageId(id), data(std::move(data)) {}
-};
-typedef std::shared_ptr<Event> EventPtr;
-
 class IMessageBroadcaster : public common::IObject
 {
 ELF_OBJECT(IMessageBroadcaster, common::IObject);
@@ -51,7 +42,7 @@ public:
     virtual Subscription subscribe(MessageId id, MessageHandler handler) = 0;
     virtual void unsubscribe(Subscription subHandler) = 0;
 
-    virtual void sendMessage(MessageId id, detail::MessageData data) = 0;
+    virtual void sendMessage(MessageId id, MessageData data) = 0;
     virtual void notifyMessage(unsigned threadId) = 0;
 };
 

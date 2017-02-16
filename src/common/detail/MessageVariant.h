@@ -96,8 +96,6 @@ inline std::string MessageVariant::getValue<std::string>()
     return value_;
 }
 
-typedef std::unordered_map<std::string, MessageVariant> MessageData;
-
 }
 }
 }

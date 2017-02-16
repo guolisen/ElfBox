@@ -18,8 +18,8 @@ struct IsSubscribedExist
 
     bool operator()(const SubscriptionMap::value_type& arg) const
     {
-        return arg.second.target<void(detail::MessageData)>() ==
-                handler_.target<void(detail::MessageData)>();
+        return arg.second.target<void(MessageData)>() ==
+                handler_.target<void(MessageData)>();
     }
 
 private:
@@ -29,7 +29,7 @@ private:
 struct CallHandler :
         std::unary_function<SubscriptionMap::value_type&, void>
 {
-    explicit CallHandler(detail::MessageData data)
+    explicit CallHandler(MessageData data)
             : data_(data) {}
 
     void operator()(SubscriptionMap::value_type& arg) const
@@ -38,7 +38,7 @@ struct CallHandler :
     }
 
 private:
-    detail::MessageData data_;
+    MessageData data_;
 };
 
 MessageBroadcaster::MessageBroadcaster(common::ContextPtr context):
@@ -52,15 +52,13 @@ bool MessageBroadcaster::isAlreadySubscribed(const Subscription& subscription)
     auto range = subscribers_.equal_range(subscription.messageId);
     auto it = std::find_if(range.first, range.second,
         IsSubscribedExist(subscription.handler));
-    if (it != range.second)
-        return true;
-
-    return false;
+    return it != range.second ? true : false;
 }
 
 bool MessageBroadcaster::initialize()
 {
-    system::ThreadPoolPtr threadPool = context_->getComponent<system::IThreadPool>(nullptr);
+    system::ThreadPoolPtr threadPool =
+            context_->getComponent<system::IThreadPool>(nullptr);
 
     threadPool->attach(std::bind(&MessageBroadcaster::notifyMessage,
         this, std::placeholders::_1), -1);
@@ -83,10 +81,10 @@ Subscription MessageBroadcaster::subscribe(MessageId id, MessageHandler handler)
 
 void MessageBroadcaster::unsubscribe(Subscription subHandler)
 {
-//TODO: will impl when need it...
+//TODO: will impl when use it...
 }
 
-void MessageBroadcaster::sendMessage(MessageId id, detail::MessageData data)
+void MessageBroadcaster::sendMessage(MessageId id, MessageData data)
 {
     {
         std::lock_guard<std::mutex> guard(eventQueueMutex_);
@@ -94,7 +92,7 @@ void MessageBroadcaster::sendMessage(MessageId id, detail::MessageData data)
     }
 }
 
-void MessageBroadcaster::notifyByMessageId(MessageId id, detail::MessageData data)
+void MessageBroadcaster::notifyByMessageId(MessageId id, MessageData data)
 {
     printf("notifyByMessageId %d\n", id);
     std::lock_guard<std::recursive_mutex> hold(subscribersMutex_);
@@ -102,7 +100,6 @@ void MessageBroadcaster::notifyByMessageId(MessageId id, detail::MessageData dat
     std::for_each(range.first, range.second, CallHandler(data));
 }
 
-//#include <windows.h>
 void MessageBroadcaster::notifyMessage(unsigned threadId)
 {
     while (true)
@@ -119,7 +116,7 @@ void MessageBroadcaster::notifyMessage(unsigned threadId)
             event = eventQueue_.front();
             eventQueue_.pop_front();
         }
-        notifyByMessageId(event->messageId, std::move(event->data));
+        notifyByMessageId(event->messageId, event->data);
         ::Sleep(1);
     }
 }

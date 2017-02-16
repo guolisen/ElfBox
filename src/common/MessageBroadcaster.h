@@ -19,6 +19,16 @@ namespace elfbox
 namespace common
 {
 
+struct Event
+{
+    MessageId messageId;
+    MessageData data;
+
+    Event(MessageId id, MessageData data):
+            messageId(id), data(std::move(data)) {}
+};
+typedef std::shared_ptr<Event> EventPtr;
+
 class MessageBroadcaster : public IMessageBroadcaster
 {
 ELF_OBJECT(MessageBroadcaster, IMessageBroadcaster);
@@ -30,12 +40,12 @@ public:
     virtual Subscription subscribe(MessageId id, MessageHandler handler);
     virtual void unsubscribe(Subscription subHandler);
 
-    virtual void sendMessage(MessageId id, detail::MessageData data);
+    virtual void sendMessage(MessageId id, MessageData data);
     virtual void notifyMessage(unsigned threadId);
 
 private:
     bool isAlreadySubscribed(const Subscription& subscription);
-    void notifyByMessageId(MessageId id, detail::MessageData data);
+    void notifyByMessageId(MessageId id, MessageData data);
 
     common::ContextPtr context_;
     std::recursive_mutex subscribersMutex_;
