@@ -179,6 +179,10 @@ uint32_ TimeServiceWinImpl::GetMicrosecondsCPU()
     return (uint32_)((float)(newClock - mZeroClock) / ((float)CLOCKS_PER_SEC / 1000000.0));
 }
 
+void TimeServiceWinImpl::sleep(unsigned int tick)
+{
+    ::Sleep(tick);
+}
 
 }
 }

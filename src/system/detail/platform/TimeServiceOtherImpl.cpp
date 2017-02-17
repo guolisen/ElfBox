@@ -1,7 +1,7 @@
 //
 // Created by Lewis on 2017/2/17.
 //
-
+#include <unistd.h>
 #include "TimeServiceOtherImpl.h"
 
 namespace elfbox
@@ -54,6 +54,10 @@ uint32_ TimeServiceOtherImpl::GetMicrosecondsCPU()
     return (unsigned long)((float)(newClock-zeroClock) / ((float)CLOCKS_PER_SEC/1000000.0)) ;
 }
 
+void TimeServiceOtherImpl::sleep(unsigned int tick)
+{
+    ::sleep(tick/1000);
+}
 }
 }
 }

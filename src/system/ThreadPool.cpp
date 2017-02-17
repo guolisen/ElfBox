@@ -1,5 +1,4 @@
 #include <windows.h>
-
 #include <system/detail/Thread.h>
 #include <system/ThreadPool.h>
 
@@ -8,11 +7,11 @@ namespace elfbox
 namespace system
 {
 
-ThreadPool::ThreadPool(detail::IThread::Factory factory) :
-        shutDown_(false),
-        paused_(false),
-        tolerance_(2),
-        threadFactory_(factory)
+ThreadPool::ThreadPool(common::ContextPtr context,
+                       detail::IThread::Factory factory) : context_(context),
+    timeService_(context_->getComponent<elfbox::system::ITimeService>(nullptr)),
+    shutDown_(false), paused_(false),
+    tolerance_(2), threadFactory_(factory)
 {
 }
 

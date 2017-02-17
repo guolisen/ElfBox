@@ -203,13 +203,12 @@ void appMain()
     context->addComponent(window);
 
     elfbox::system::ThreadPoolPtr threadPool = std::make_shared<elfbox::system::ThreadPool>(
-            elfbox::system::detail::Thread::getFactory());
+        context, elfbox::system::detail::Thread::getFactory());
     context->addComponent(threadPool);
 
     elfbox::common::MessageBroadcasterPtr messageBroadcaster =
             std::make_shared<elfbox::common::MessageBroadcaster>(context);
     context->addComponent(messageBroadcaster);
-
 
     elfbox::system::TimeServicePtr timeService =
         std::make_shared<elfbox::system::TimeService>(
@@ -261,17 +260,17 @@ void appMain()
         context->getComponent<elfbox::system::ITimeService>(nullptr);
     time->Reset();
     uint32_ start = time->GetMilliseconds();
-    ::Sleep(1000);
+    time->sleep(1000);
     uint32_ end = time->GetMilliseconds();
     printf("GetMilliseconds: %d\n", end - start);
 
     start = time->GetMilliseconds();
-    ::Sleep(1000);
+    time->sleep(1000);
     end = time->GetMilliseconds();
     printf("GetMilliseconds: %d\n", end - start);
 
     start = time->GetMicroseconds();
-    ::Sleep(1000);
+    time->sleep(1000);
     end = time->GetMicroseconds();
     printf("GetMicroseconds: %d\n", end - start);
 

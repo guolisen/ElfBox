@@ -24,6 +24,8 @@ public:
     virtual uint32_ GetMicroseconds() = 0;
     virtual uint32_ GetMillisecondsCPU() = 0;
     virtual uint32_ GetMicrosecondsCPU() = 0;
+
+    virtual void sleep(unsigned int tick) = 0;
 };
 
 typedef std::shared_ptr<ITimeService> TimeServicePtr;

@@ -32,6 +32,7 @@ public:
     virtual uint32_ GetMillisecondsCPU();
     virtual uint32_ GetMicrosecondsCPU();
 
+    virtual void sleep(unsigned int tick);
 private:
     common::ContextPtr context_;
     struct timeval start;

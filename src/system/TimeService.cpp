@@ -42,5 +42,11 @@ uint32_ TimeService::GetMicrosecondsCPU()
 {
     return impl_->GetMicrosecondsCPU();
 }
+
+void TimeService::sleep(unsigned int tick)
+{
+    return impl_->sleep(tick);
+}
+
 }
 }

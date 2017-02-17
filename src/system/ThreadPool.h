@@ -10,7 +10,9 @@
 #include <atomic>
 
 #include <common/IObject.h>
+#include <common/Context.h>
 #include <system/IThreadPool.h>
+#include <system/ITimeService.h>
 #include <system/detail/Thread.h>
 
 namespace elfbox
@@ -23,7 +25,8 @@ class ThreadPool : public IThreadPool
 ELF_OBJECT(ThreadPool, IThreadPool);
 
 public:
-    ThreadPool(detail::IThread::Factory factory);
+    ThreadPool(common::ContextPtr context,
+               detail::IThread::Factory factory);
     virtual ~ThreadPool();
 
     virtual void createThreads(unsigned numThreads);
@@ -43,6 +46,8 @@ private:
     void arrangeCache();
     void returnToCache(WorkItemPtr item);
 
+    common::ContextPtr context_;
+    elfbox::system::TimeServicePtr timeService_;
     std::vector<std::shared_ptr<detail::IThread>> threads_;
     std::list<WorkItemPtr> poolItems_;
     std::list<WorkItemPtr> workItems_;
