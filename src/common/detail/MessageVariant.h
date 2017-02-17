@@ -49,6 +49,7 @@ public:
 
     MessageVariant(MessageVariant&& other)
     {
+        printf("MessageVariant rvalues\n");
         value_ = std::move(other.value_);
     }
 
@@ -68,11 +69,13 @@ public:
     MessageVariant& operator =(T rhs)
     {
         setValue(rhs);
+        return *this;
     }
 
     MessageVariant& operator =(const MessageVariant& other)
     {
         value_ = other.value_;
+        return *this;
     }
 
     template <class T>
@@ -88,7 +91,7 @@ private:
 template <>
 inline void MessageVariant::setValue<std::string>(std::string value)
 {
-    value_ = value;
+    value_ = std::move(value);
 }
 template <>
 inline std::string MessageVariant::getValue<std::string>()

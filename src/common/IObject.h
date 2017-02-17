@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include "TypeDefine.h"
 
 #define ELFBOX_API 
 

@@ -49,8 +49,8 @@ private:
     std::list<WorkItemPtr> queue_;
     std::mutex queueMutex_;
     std::mutex pauseMutex_;
-    std::atomic_bool shutDown_;
-    std::atomic_bool paused_;
+    std::atomic<bool> shutDown_;
+    std::atomic<bool> paused_;
     int tolerance_;
     detail::IThread::Factory threadFactory_;
 };

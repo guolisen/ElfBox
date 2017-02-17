@@ -30,7 +30,7 @@ find_package(SDL2)
 #set(SDL2_IMAGE_LIBRARY "E:/code/lib/SDL2_image-2.0.1/lib/x86/SDL2_image.lib")
 
 #添加C++11支持及其他选项
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
 
 add_executable(run_tests test/testmain.cpp)
 

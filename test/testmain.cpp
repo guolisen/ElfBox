@@ -7,6 +7,7 @@
 int main()
 {
     appMain();
-    test();
+    //test();
+    system("pause");
 	return 1;
 }

@@ -6,13 +6,13 @@
 #include <common/ElfBoxEngine.h>
 #include <common/Context.h>
 #include <common/MessageBroadcaster.h>
-#include <graphics/IGraphics.h>
 #include <graphics/Graphics.h>
 #include <graphics/detail/GraphicsSDLImpl.h>
-#include <system/IWindow.h>
 #include <system/Window.h>
 #include <system/detail/WindowSDLImpl.h>
 #include <system/ThreadPool.h>
+#include <system/TimeService.h>
+#include <system/detail/TimeServiceImpl.h>
 #include <Windows.h>
 
 namespace elfbox
@@ -59,6 +59,10 @@ bool Application::setup()
     elfbox::common::MessageBroadcasterPtr messageBroadcaster =
             context_->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
     messageBroadcaster->initialize();
+
+    elfbox::system::TimeServicePtr timeService =
+        context_->getComponent<elfbox::system::ITimeService>(nullptr);
+    timeService->Reset();
 
     elfBoxEngine_->initialize();
 
@@ -164,7 +168,7 @@ void test6()
 }
 
 elfbox::common::ContextPtr gContext = nullptr;
-void messageHandler(elfbox::common::detail::MessageData data)
+void messageHandler(elfbox::common::MessageData data)
 {
     printf("!!!Message: %d \n", (int)data["test"]);
 }
@@ -176,7 +180,7 @@ void testSend(unsigned id)
 
     for (int i = 0; i<10; i++)
     {
-        elfbox::common::detail::MessageData data;
+        elfbox::common::MessageData data;
         data["test"] = 12345123;
         mbp->sendMessage(elfbox::common::TEST_MESSAGE, data);
         ::Sleep(700);
@@ -206,6 +210,12 @@ void appMain()
             std::make_shared<elfbox::common::MessageBroadcaster>(context);
     context->addComponent(messageBroadcaster);
 
+
+    elfbox::system::TimeServicePtr timeService =
+        std::make_shared<elfbox::system::TimeService>(
+            std::make_shared<elfbox::system::detail::TimeServiceImpl>(context));
+    context->addComponent(timeService);
+
     elfbox::common::Application app(0, context);
     app.run();
 
@@ -231,7 +241,7 @@ void appMain()
     pool->waitForJob(item);
 #endif
 
-
+#if 0
     elfbox::common::MessageBroadcasterPtr mbp =
             context->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
     mbp->subscribe(elfbox::common::TEST_MESSAGE,
@@ -245,5 +255,25 @@ void appMain()
 
     pool->attach(std::bind(&testSend, std::placeholders::_1), -1);
     pool->complete(-1);
+#endif
+
+    elfbox::system::TimeServicePtr time =
+        context->getComponent<elfbox::system::ITimeService>(nullptr);
+    time->Reset();
+    uint32_ start = time->GetMilliseconds();
+    ::Sleep(1000);
+    uint32_ end = time->GetMilliseconds();
+    printf("GetMilliseconds: %d\n", end - start);
+
+    start = time->GetMilliseconds();
+    ::Sleep(1000);
+    end = time->GetMilliseconds();
+    printf("GetMilliseconds: %d\n", end - start);
+
+    start = time->GetMicroseconds();
+    ::Sleep(1000);
+    end = time->GetMicroseconds();
+    printf("GetMicroseconds: %d\n", end - start);
+
     printf("sddddd\n");
 }

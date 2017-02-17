@@ -76,7 +76,7 @@ Subscription MessageBroadcaster::subscribe(MessageId id, MessageHandler handler)
             return subscription;
         subscribers_.insert(std::make_pair(id, handler));
     }
-    return Subscription(id, handler);
+    return subscription;
 }
 
 void MessageBroadcaster::unsubscribe(Subscription subHandler)

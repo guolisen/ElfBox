@@ -20,11 +20,10 @@ struct WorkItem
 {
     std::function<void(unsigned)> workFunction_;
     unsigned priority_;
-    std::atomic_bool completed_;
+    std::atomic<bool> completed_;
 
     WorkItem() : priority_(0),
-                 completed_(false)
-    {}
+                 completed_(false) {}
 };
 
 typedef std::shared_ptr<WorkItem> WorkItemPtr;
