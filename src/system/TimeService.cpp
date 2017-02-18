@@ -66,6 +66,8 @@ bool TimeService::initialize()
                                           this, std::placeholders::_1));
     threadPool_->attach(std::bind(&TimeService::timerLooper, this, std::placeholders::_1), -1);
     impl_->initialize();
+
+    return true;
 }
 
 TimerId TimeService::createTimer(

@@ -293,7 +293,7 @@ void appMain()
     pool->complete(-1);
 #endif
 
-#if 1
+#if 0
     elfbox::system::TimeServicePtr time =
         context->getComponent<elfbox::system::ITimeService>(nullptr);
     time->reset();
@@ -316,14 +316,14 @@ void appMain()
     gStart = time->getMicroseconds();
     time->createTimer(std::bind(&TimerHandler, std::placeholders::_1), 5000, true);
 
-    printf("!!!!Start TimeOut2\n");
-    gStart2 = time->getMicroseconds();
-    time->createTimer(std::bind(&TimerHandler2, std::placeholders::_1), 3000, true);
+    //printf("!!!!Start TimeOut2\n");
+    //gStart2 = time->getMicroseconds();
+    //time->createTimer(std::bind(&TimerHandler2, std::placeholders::_1), 3000, true);
 
     //gStart2 = time->getMicroseconds();
-    time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 7000, false);
-    time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 2000, true);
-    time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 9000, true);
+    //time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 7000, false);
+    //time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 2000, true);
+    //time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 9000, true);
 
     elfbox::system::ThreadPoolPtr pool =
         context->getComponent<elfbox::system::IThreadPool>(nullptr);

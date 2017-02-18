@@ -23,7 +23,7 @@ bool TimeServiceWinImpl::initialize()
     return true;
 }
 
-bool TimeServiceWinImpl::SetOption(const std::string& strKey, const void* pValue)
+bool TimeServiceWinImpl::setOption(const std::string& strKey, const void* pValue)
 {
     if ( strKey == "QueryAffinityMask" )
     {
@@ -50,7 +50,7 @@ bool TimeServiceWinImpl::SetOption(const std::string& strKey, const void* pValue
     return false;
 }
 /** Resets timer */
-void TimeServiceWinImpl::Reset()
+void TimeServiceWinImpl::reset()
 {
     // Get the current process core mask
     DWORD_PTR procMask;
@@ -91,7 +91,7 @@ void TimeServiceWinImpl::Reset()
     mZeroClock = clock();
 }
 /** Returns milliseconds since initialisation or last reset */
-uint32_ TimeServiceWinImpl::GetMilliseconds()
+uint32_ TimeServiceWinImpl::getMilliseconds()
 {
     LARGE_INTEGER curTime;
 
@@ -132,7 +132,7 @@ uint32_ TimeServiceWinImpl::GetMilliseconds()
     return (uint32_)newTicks;
 }
 /** Returns microseconds since initialisation or last reset */
-uint32_ TimeServiceWinImpl::GetMicroseconds()
+uint32_ TimeServiceWinImpl::getMicroseconds()
 {
     LARGE_INTEGER curTime;
 
@@ -173,13 +173,13 @@ uint32_ TimeServiceWinImpl::GetMicroseconds()
     return (uint32_)newMicro;
 }
 /** Returns milliseconds since initialisation or last reset, only CPU time measured */
-uint32_ TimeServiceWinImpl::GetMillisecondsCPU()
+uint32_ TimeServiceWinImpl::getMillisecondsCPU()
 {
     clock_t newClock = clock();
     return (uint32_)((float)(newClock - mZeroClock) / ((float)CLOCKS_PER_SEC / 1000.0));
 }
 /** Returns microseconds since initialisation or last reset, only CPU time measured */
-uint32_ TimeServiceWinImpl::GetMicrosecondsCPU()
+uint32_ TimeServiceWinImpl::getMicrosecondsCPU()
 {
     clock_t newClock = clock();
     return (uint32_)((float)(newClock - mZeroClock) / ((float)CLOCKS_PER_SEC / 1000000.0));

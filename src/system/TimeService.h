@@ -22,7 +22,7 @@ namespace system
 struct TimerEntry
 {
     TimerHandler handler;
-    int interval;
+    uint32_ interval;
     bool isRepeat;
     uint32_ startTick;
     std::atomic<bool> isEnable;
