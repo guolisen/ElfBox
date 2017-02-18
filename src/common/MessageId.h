@@ -12,7 +12,8 @@ namespace common
 //TODO: using XML to define the message ID
 enum MessageId
 {
-    TEST_MESSAGE = 0
+    TEST_MESSAGE = 0,
+    TIMER_TIME_OUT
 };
 
 

@@ -53,16 +53,18 @@ bool Application::setup()
 {
     ELFBOX_LOGDEBUG(log_, "Application::setup() %d %s", 111, "OK");
 
-    system::ThreadPoolPtr threadPool = context_->getComponent<system::IThreadPool>(nullptr);
+    system::ThreadPoolPtr threadPool =
+        context_->getComponent<system::IThreadPool>(nullptr);
     threadPool->createThreads(4);
 
     elfbox::common::MessageBroadcasterPtr messageBroadcaster =
-            context_->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
+        context_->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
     messageBroadcaster->initialize();
 
     elfbox::system::TimeServicePtr timeService =
         context_->getComponent<elfbox::system::ITimeService>(nullptr);
-    timeService->Reset();
+    timeService->initialize();
+    timeService->reset();
 
     elfBoxEngine_->initialize();
 
@@ -187,6 +189,41 @@ void testSend(unsigned id)
     }
 }
 
+uint32_ gStart = 0;
+void TimerHandler(elfbox::system::TimerId id)
+{
+    elfbox::system::TimeServicePtr time =
+        gContext->getComponent<elfbox::system::ITimeService>(nullptr);
+    uint32_ end = time->getMicroseconds();
+
+    uint32_ diff = end - gStart;
+
+    printf("!!!!TimeOut: %d\n", diff);
+}
+
+uint32_ gStart2 = 0;
+void TimerHandler2(elfbox::system::TimerId id)
+{
+    elfbox::system::TimeServicePtr time =
+        gContext->getComponent<elfbox::system::ITimeService>(nullptr);
+    uint32_ end = time->getMicroseconds();
+
+    uint32_ diff = end - gStart2;
+
+    printf("!!!!TimeOut2: %d\n", diff);
+}
+
+void TimerHandler3(elfbox::system::TimerId id)
+{
+    elfbox::system::TimeServicePtr time =
+        gContext->getComponent<elfbox::system::ITimeService>(nullptr);
+    uint32_ end = time->getMicroseconds();
+
+    uint32_ diff = end - gStart2;
+
+    printf("!!!!TimeOut3: %d\n", id);
+}
+
 void appMain()
 {
     elfbox::common::ContextPtr context = std::make_shared<elfbox::common::Context>();
@@ -211,7 +248,7 @@ void appMain()
     context->addComponent(messageBroadcaster);
 
     elfbox::system::TimeServicePtr timeService =
-        std::make_shared<elfbox::system::TimeService>(
+        std::make_shared<elfbox::system::TimeService>(threadPool, messageBroadcaster,
             std::make_shared<elfbox::system::detail::TimeServiceImpl>(context));
     context->addComponent(timeService);
 
@@ -256,23 +293,43 @@ void appMain()
     pool->complete(-1);
 #endif
 
+#if 1
     elfbox::system::TimeServicePtr time =
         context->getComponent<elfbox::system::ITimeService>(nullptr);
-    time->Reset();
-    uint32_ start = time->GetMilliseconds();
+    time->reset();
+    uint32_ start = time->getMilliseconds();
     time->sleep(1000);
-    uint32_ end = time->GetMilliseconds();
+    uint32_ end = time->getMilliseconds();
     printf("GetMilliseconds: %d\n", end - start);
 
-    start = time->GetMilliseconds();
+    start = time->getMilliseconds();
     time->sleep(1000);
-    end = time->GetMilliseconds();
+    end = time->getMilliseconds();
     printf("GetMilliseconds: %d\n", end - start);
 
-    start = time->GetMicroseconds();
+    start = time->getMicroseconds();
     time->sleep(1000);
-    end = time->GetMicroseconds();
+    end = time->getMicroseconds();
     printf("GetMicroseconds: %d\n", end - start);
+
+    printf("!!!!Start TimeOut1\n");
+    gStart = time->getMicroseconds();
+    time->createTimer(std::bind(&TimerHandler, std::placeholders::_1), 5000, true);
+
+    printf("!!!!Start TimeOut2\n");
+    gStart2 = time->getMicroseconds();
+    time->createTimer(std::bind(&TimerHandler2, std::placeholders::_1), 3000, true);
+
+    //gStart2 = time->getMicroseconds();
+    time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 7000, false);
+    time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 2000, true);
+    time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 9000, true);
+
+    elfbox::system::ThreadPoolPtr pool =
+        context->getComponent<elfbox::system::IThreadPool>(nullptr);
+
+    pool->complete(-1);
+#endif
 
     printf("sddddd\n");
 }

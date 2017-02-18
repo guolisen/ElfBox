@@ -113,6 +113,10 @@ void MessageBroadcaster::notifyMessage(unsigned threadId)
                 continue;
             }
             printf("have message %d\n", eventQueue_.size());
+            for (auto e : eventQueue_)
+            {
+                printf("!!!! message %d\n", e->messageId);
+            }
             event = eventQueue_.front();
             eventQueue_.pop_front();
         }

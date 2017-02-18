@@ -13,28 +13,33 @@ namespace detail
 
 TimeServiceOtherImpl::TimeServiceOtherImpl(common::ContextPtr context) : context_(context)
 {
-    Reset();
+    reset();
 }
 
-bool TimeServiceOtherImpl::SetOption(const std::string& strKey, const void* pValue)
+bool TimeServiceOtherImpl::initialize()
 {
     return true;
 }
 
-void TimeServiceOtherImpl::Reset()
+bool TimeServiceOtherImpl::setOption(const std::string &strKey, const void *pValue)
+{
+    return true;
+}
+
+void TimeServiceOtherImpl::reset()
 {
     zeroClock = clock();
     gettimeofday(&start, NULL);
 }
 
-uint32_ TimeServiceOtherImpl::GetMilliseconds()
+uint32_ TimeServiceOtherImpl::getMilliseconds()
 {
     struct timeval now;
     gettimeofday(&now, NULL);
     return (now.tv_sec-start.tv_sec)*1000+(now.tv_usec-start.tv_usec)/1000;
 }
 
-uint32_ TimeServiceOtherImpl::GetMicroseconds()
+uint32_ TimeServiceOtherImpl::getMicroseconds()
 {
     struct timeval now;
     gettimeofday(&now, NULL);
@@ -42,13 +47,13 @@ uint32_ TimeServiceOtherImpl::GetMicroseconds()
 
 }
 
-uint32_ TimeServiceOtherImpl::GetMillisecondsCPU()
+uint32_ TimeServiceOtherImpl::getMillisecondsCPU()
 {
     clock_t newClock = clock();
     return (unsigned long)((float)(newClock-zeroClock) / ((float)CLOCKS_PER_SEC/1000.0)) ;
 }
 
-uint32_ TimeServiceOtherImpl::GetMicrosecondsCPU()
+uint32_ TimeServiceOtherImpl::getMicrosecondsCPU()
 {
     clock_t newClock = clock();
     return (unsigned long)((float)(newClock-zeroClock) / ((float)CLOCKS_PER_SEC/1000000.0)) ;

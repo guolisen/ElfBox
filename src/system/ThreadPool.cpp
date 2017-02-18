@@ -152,7 +152,7 @@ void ThreadPool::complete(unsigned priority)
 
         while (!isCompleted(priority))
         {
-            ::Sleep(1);
+            ::Sleep(200);
         }
 
         {

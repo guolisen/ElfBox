@@ -17,6 +17,12 @@ TimeServiceWinImpl::TimeServiceWinImpl(common::ContextPtr context) :
 {
 }
 
+bool TimeServiceWinImpl::initialize()
+{
+
+    return true;
+}
+
 bool TimeServiceWinImpl::SetOption(const std::string& strKey, const void* pValue)
 {
     if ( strKey == "QueryAffinityMask" )

@@ -25,12 +25,13 @@ public:
     TimeServiceOtherImpl(common::ContextPtr context);
     virtual ~TimeServiceOtherImpl() = default;
 
-    virtual bool SetOption(const std::string& strKey, const void* pValue);
-    virtual void Reset();
-    virtual uint32_ GetMilliseconds();
-    virtual uint32_ GetMicroseconds();
-    virtual uint32_ GetMillisecondsCPU();
-    virtual uint32_ GetMicrosecondsCPU();
+    virtual bool initialize();
+    virtual bool setOption(const std::string &strKey, const void *pValue);
+    virtual void reset();
+    virtual uint32_ getMilliseconds();
+    virtual uint32_ getMicroseconds();
+    virtual uint32_ getMillisecondsCPU();
+    virtual uint32_ getMicrosecondsCPU();
 
     virtual void sleep(unsigned int tick);
 private:
