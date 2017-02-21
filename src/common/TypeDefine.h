@@ -7,6 +7,9 @@
 
 #include <string>
 
+namespace elfbox
+{
+
 #ifdef ELFBOX_UINT32_IS_ULONG
 typedef long int32_;
 typedef unsigned long uint32_;
@@ -78,4 +81,23 @@ typedef std::string tstring;
 typedef char_ tchar_;
 #endif
 
+template <class T>
+struct Rect
+{
+    T x, y;
+    T w, h;
+
+    Rect(T rx, T ry, T rw, T rh):x(rx), y(ry),
+           w(rw), h(rh) {}
+    Rect(const Rect& other)
+    {
+        x = other.x;
+        y = other.y;
+        w = other.w;
+        h = other.h;
+    }
+};
+typedef Rect<int> RectInt;
+
+}
 #endif //ELFBOX_TYPEDEFINE_H

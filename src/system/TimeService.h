@@ -27,7 +27,7 @@ struct TimerEntry
     uint32_ startTick;
     std::atomic<bool> isEnable;
 
-    TimerEntry(TimerHandler timerHandler, int timerInterval, bool timerIsRepeat):
+    TimerEntry(TimerHandler timerHandler, uint32_ timerInterval, bool timerIsRepeat):
         handler(timerHandler), interval(timerInterval), isRepeat(timerIsRepeat),
         startTick(0), isEnable(false)
     {}
@@ -44,7 +44,7 @@ ELF_OBJECT(TimeService, ITimeService);
 public:
     TimeService(ThreadPoolPtr threadPool,
         common::MessageBroadcasterPtr messageBroadcaster,
-                system::TimeServicePtr impl);
+                TimeServicePtr impl);
     virtual ~TimeService() = default;
 
     virtual bool initialize();
@@ -68,10 +68,10 @@ private:
     std::mutex tickMutex_;
     ThreadPoolPtr threadPool_;
     common::MessageBroadcasterPtr messageBroadcaster_;
-    system::TimeServicePtr impl_;
+    TimeServicePtr impl_;
     std::mutex timerMapMutex_;
     TimerMap timerMap_;
-    int timerCounter;
+    TimerId timerCounter;
 };
 
 }

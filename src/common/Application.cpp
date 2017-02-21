@@ -52,7 +52,7 @@ void Application::run()
 bool Application::setup()
 {
     ELFBOX_LOGDEBUG(log_, "Application::setup() %d %s", 111, "OK");
-
+    //TODO: configure by xml
     system::ThreadPoolPtr threadPool =
         context_->getComponent<system::IThreadPool>(nullptr);
     threadPool->createThreads(4);
@@ -92,142 +92,9 @@ bool Application::terminat()
 }
 }
 
-
-struct TestNum
-{
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
-    int e = 0;
-
-} gVar;
-
-void testkk()
-{
-    for (int a = 1; a < 10; a++)
-    {
-        printf("ddddddddddddd\n");
-        gVar.a++;
-        ::Sleep(1);
-    }
-
-}
-
-void test2()
-{
-    for (int a = 1; a < 10; a++)
-    {
-        printf("dsdfsfd\n");
-        gVar.b++;
-        ::Sleep(1);
-    }
-
-}
-
-void test3()
-{
-    for (int a = 1; a < 5; a++)
-    {
-        printf("3333333333333\n");
-        gVar.c++;
-        ::Sleep(1);
-    }
-
-}
-
-void test4()
-{
-    for (int a = 1; a < 2; a++)
-    {
-        printf("444444444444\n");
-        gVar.d++;
-        ::Sleep(1);
-    }
-
-}
-
-void test5()
-{
-    for (int a = 1; a < 3; a++)
-    {
-        printf("55555555555\n");
-        gVar.e++;
-        ::Sleep(1);
-    }
-
-}
-
-void test6()
-{
-    for (int a = 1; a < 20; a++)
-    {
-        printf("55555555555\n");
-        gVar.e++;
-        ::Sleep(1000);
-    }
-
-}
-
-elfbox::common::ContextPtr gContext = nullptr;
-void messageHandler(elfbox::common::MessageData data)
-{
-    printf("!!!Message: %d \n", (int)data["test"]);
-}
-
-void testSend(unsigned id)
-{
-    elfbox::common::MessageBroadcasterPtr mbp =
-            gContext->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
-
-    for (int i = 0; i<10; i++)
-    {
-        elfbox::common::MessageData data;
-        data["test"] = 12345123;
-        mbp->sendMessage(elfbox::common::TEST_MESSAGE, data);
-        ::Sleep(700);
-    }
-}
-
-uint32_ gStart = 0;
-void TimerHandler(elfbox::system::TimerId id)
-{
-    elfbox::system::TimeServicePtr time =
-        gContext->getComponent<elfbox::system::ITimeService>(nullptr);
-    uint32_ end = time->getMicroseconds();
-
-    uint32_ diff = end - gStart;
-
-    printf("!!!!TimeOut: %d\n", diff);
-}
-
-uint32_ gStart2 = 0;
-void TimerHandler2(elfbox::system::TimerId id)
-{
-    elfbox::system::TimeServicePtr time =
-        gContext->getComponent<elfbox::system::ITimeService>(nullptr);
-    uint32_ end = time->getMicroseconds();
-
-    uint32_ diff = end - gStart2;
-
-    printf("!!!!TimeOut2: %d\n", diff);
-}
-
-void TimerHandler3(elfbox::system::TimerId id)
-{
-    elfbox::system::TimeServicePtr time =
-        gContext->getComponent<elfbox::system::ITimeService>(nullptr);
-    uint32_ end = time->getMicroseconds();
-
-    uint32_ diff = end - gStart2;
-
-    printf("!!!!TimeOut3: %d\n", id);
-}
-
 void appMain()
 {
     elfbox::common::ContextPtr context = std::make_shared<elfbox::common::Context>();
-    gContext = context;
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
     context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
