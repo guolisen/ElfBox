@@ -22,8 +22,11 @@ public:
     RenderMaterial(RenderMaterialPtr renderMaterialImpl);
     virtual ~RenderMaterial() = default;
 
-    virtual bool LoadMaterial();
+    virtual bool loadMaterial();
     virtual bool isLoad();
+    virtual bool setFileName(const std::string& fileName);
+    virtual MaterialTextureHandle getMaterial();
+    virtual RectInt getRect();
 
     static IRenderMaterial::Factory getFactory();
 private:

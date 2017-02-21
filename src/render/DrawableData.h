@@ -5,6 +5,7 @@
 #ifndef ELFBOX_DRAWABLEDATA_H
 #define ELFBOX_DRAWABLEDATA_H
 
+#include <string>
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <render/detail/RenderMaterialImpl.h>
@@ -48,7 +49,7 @@ struct WorldRectPosition
     WorldRectPosition(T rx, T ry, T rw, T rh):
         worldRect(rx, ry, rw, rh) {}
 };
-typedef WorldRectPosition<unsigned int> WorldRectPositionUint;
+typedef WorldRectPosition<int> WorldRectPositionInt;
 
 template <class T>
 struct SourceRectPosition
@@ -60,7 +61,7 @@ struct SourceRectPosition
     SourceRectPosition(T rx, T ry, T rw, T rh):
         sourceRect(rx, ry, rw, rh) {}
 };
-typedef SourceRectPosition<unsigned int> SourceRectPositionUint;
+typedef SourceRectPosition<int> SourceRectPositionInt;
 
 struct MaterialFactoryType
 {
@@ -70,9 +71,9 @@ struct MaterialFactoryType
 struct SingleMaterialType
 {
     RenderMaterialPtr material;
-    SingleMaterialType():
+    SingleMaterialType(common::ContextPtr context):
         material(std::make_shared<RenderMaterial>(
-            std::make_shared<detail::RenderMaterialImpl>("")
+            std::make_shared<detail::RenderMaterialImpl>(context, std::string(""))
         )) {}
 };
 
@@ -81,7 +82,11 @@ template <class MaterialStorgeType,
     class SourceType>
 struct DrawableData: public MaterialStorgeType,
                      public WorldType, public SourceType
-{};
+{
+    DrawableData(common::ContextPtr context):
+        MaterialStorgeType(context) {}
+    int zorder;
+};
 
 }
 }

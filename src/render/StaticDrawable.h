@@ -17,13 +17,15 @@ namespace render
 {
 
 typedef DrawableData<SingleMaterialType,
-    WorldRectPositionUint, SourceRectPositionUint> StaticDrawableData;
+    WorldRectPositionInt, SourceRectPositionInt> StaticDrawableData;
 
-class StaticDrawable : public IDrawable, StaticDrawableData
+class StaticDrawable : public IDrawable,
+                       public StaticDrawableData
 {
 ELF_OBJECT(StaticDrawable, IDrawable);
 public:
     StaticDrawable(common::ContextPtr context):
+        StaticDrawableData(context),
         context_(context) {}
     virtual ~StaticDrawable() = default;
 
@@ -33,6 +35,8 @@ public:
 private:
     common::ContextPtr context_;
 };
+
+typedef std::shared_ptr<StaticDrawable> StaticDrawablePtr;
 
 }
 }

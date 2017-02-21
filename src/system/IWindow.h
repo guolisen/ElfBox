@@ -8,6 +8,9 @@ namespace elfbox
 {
 namespace system
 {
+
+typedef void* windowHandle;
+
 class IWindow : public common::IObject
 {
 ELF_OBJECT(IWindow, common::IObject);
@@ -18,6 +21,7 @@ public:
     virtual bool initialize() = 0;
     virtual bool createWindow(const std::string &winName,
                               int width, int height, unsigned int winflag) = 0;
+    virtual windowHandle getWindowHandle() const = 0;
 };
 
 typedef std::shared_ptr<IWindow> WindowPtr;

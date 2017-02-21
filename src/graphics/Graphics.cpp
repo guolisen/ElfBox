@@ -16,5 +16,16 @@ bool Graphics::initialize()
     impl_->initialize();
     return true;
 }
+
+RendererHandle Graphics::getRendererHandle() const
+{
+    return impl_->getRendererHandle();
+}
+
+void Graphics::setRendererHandle(RendererHandle handle)
+{
+    impl_->setRendererHandle(handle);
+}
+
 }
 }

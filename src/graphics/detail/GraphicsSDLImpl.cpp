@@ -4,6 +4,7 @@
 #include <util/BaseLogger.h>
 #include <graphics/Graphics.h>
 #include <graphics/detail/GraphicsSDLImpl.h>
+#include <system/Window.h>
 
 namespace elfbox
 {

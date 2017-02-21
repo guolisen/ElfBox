@@ -1,7 +1,7 @@
 //
 // Created by Lewis on 2017/2/20.
 //
-
+#include <memory>
 #include "RenderMaterial.h"
 #include "detail/RenderMaterialImpl.h"
 
@@ -17,16 +17,16 @@ RenderMaterial::RenderMaterial(RenderMaterialPtr renderMaterialImpl):
 
 IRenderMaterial::Factory RenderMaterial::getFactory()
 {
-    return [](const std::string fileName)
+    return [](common::ContextPtr context, const std::string& fileName)
     {
         return std::make_shared<RenderMaterial>(
-            std::make_shared<detail::RenderMaterialImpl>(fileName));
+            std::make_shared<detail::RenderMaterialImpl>(context, fileName));
     };
 }
 
-bool RenderMaterial::LoadMaterial()
+bool RenderMaterial::loadMaterial()
 {
-    return impl_->LoadMaterial();
+    return impl_->loadMaterial();
 }
 
 bool RenderMaterial::isLoad()
@@ -34,5 +34,18 @@ bool RenderMaterial::isLoad()
     return impl_->isLoad();
 }
 
+bool RenderMaterial::setFileName(const std::string& fileName)
+{
+    return impl_->setFileName(fileName);
+}
+
+MaterialTextureHandle RenderMaterial::getMaterial()
+{
+    return impl_->getMaterial();
+}
+RectInt RenderMaterial::getRect()
+{
+    return impl_->getRect();
+}
 }
 }

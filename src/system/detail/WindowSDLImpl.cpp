@@ -1,3 +1,5 @@
+
+#include <graphics/IGraphics.h>
 #include <system/Window.h>
 #include <system/detail/WindowSDLImpl.h>
 #include <util/BaseLogger.h>
@@ -29,6 +31,19 @@ bool WindowImpl::createWindow(const std::string &winName,
         ELFBOX_LOGERROR(log_, "Window could not be created! SDL Error: %s\n", SDL_GetError());
         return false;
     }
+
+
+    SDL_Renderer* rendererHandle = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
+    if (rendererHandle == nullptr)
+    {
+        ELFBOX_LOGERROR(log_, "Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+        return false;
+    }
+
+    graphics::GraphicsPtr graphics =
+        context_->getComponent<graphics::IGraphics>(nullptr);
+    ELFBOX_ASSERT(graphics);
+    graphics->setRendererHandle(rendererHandle);
 
     return true;
 }

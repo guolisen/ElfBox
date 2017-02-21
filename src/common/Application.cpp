@@ -1,3 +1,4 @@
+#include <SDL.h>
 #include <memory>
 
 #include "IApplicationCore.h"
@@ -13,7 +14,8 @@
 #include <system/ThreadPool.h>
 #include <system/TimeService.h>
 #include <system/detail/TimeServiceImpl.h>
-#include <Windows.h>
+#include <render/RenderDevice.h>
+#include <render/detail/RenderDeviceImpl.h>
 
 namespace elfbox
 {
@@ -41,10 +43,15 @@ void Application::run()
     setup();
     start();
 
-    elfBoxEngine_->run();
+    //elfBoxEngine_->run();
+    SDL_Event Event;
+    while(true) {
+        while(SDL_PollEvent(&Event)) {
+            //OnEvent(&Event);
+        }
 
-    //system::ThreadPoolPtr threadPool = context_->getComponent<system::IThreadPool>(nullptr);
-    //threadPool->complete(-1);
+        elfBoxEngine_->run();
+    }
 
     terminat();
 }
@@ -57,12 +64,12 @@ bool Application::setup()
         context_->getComponent<system::IThreadPool>(nullptr);
     threadPool->createThreads(4);
 
-    elfbox::common::MessageBroadcasterPtr messageBroadcaster =
-        context_->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
+    common::MessageBroadcasterPtr messageBroadcaster =
+        context_->getComponent<common::IMessageBroadcaster>(nullptr);
     messageBroadcaster->initialize();
 
-    elfbox::system::TimeServicePtr timeService =
-        context_->getComponent<elfbox::system::ITimeService>(nullptr);
+    system::TimeServicePtr timeService =
+        context_->getComponent<system::ITimeService>(nullptr);
     timeService->initialize();
     timeService->reset();
 
@@ -96,7 +103,6 @@ void appMain()
 {
     elfbox::common::ContextPtr context = std::make_shared<elfbox::common::Context>();
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
-    context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
     elfbox::graphics::GraphicsPtr graphics = std::make_shared<elfbox::graphics::Graphics>(
             std::make_shared<elfbox::graphics::detail::GraphicsImpl>(context));
@@ -118,6 +124,13 @@ void appMain()
         std::make_shared<elfbox::system::TimeService>(threadPool, messageBroadcaster,
             std::make_shared<elfbox::system::detail::TimeServiceImpl>(context));
     context->addComponent(timeService);
+
+    elfbox::render::RenderDevicePtr renderDevice =
+        std::make_shared<elfbox::render::RenderDevice>(
+            std::make_shared<elfbox::render::detail::RenderDeviceImpl>(context));
+    context->addComponent(renderDevice);
+
+    context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
     elfbox::common::Application app(0, context);
     app.run();

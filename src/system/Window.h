@@ -24,9 +24,9 @@ public:
 
     virtual bool initialize();
 
-    bool createWindow(const std::string &winName,
+    virtual bool createWindow(const std::string &winName,
                       int width, int height, unsigned int winflag);
-
+    virtual windowHandle getWindowHandle() const;
 private:
     std::shared_ptr<detail::WindowImpl> impl_;
 };

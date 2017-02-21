@@ -22,5 +22,11 @@ bool Window::createWindow(const std::string &winName,
 {
     return impl_->createWindow(winName, width, height, winflag);
 }
+
+windowHandle Window::getWindowHandle() const
+{
+    return impl_->getWindowHandle();
+}
+
 }
 }

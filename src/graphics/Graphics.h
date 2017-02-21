@@ -24,7 +24,8 @@ public:
     virtual ~Graphics() = default;
 
     virtual bool initialize();
-
+    virtual RendererHandle getRendererHandle() const;
+    virtual void setRendererHandle(RendererHandle handle);
 private:
     std::shared_ptr<detail::GraphicsImpl> impl_;
 };
