@@ -87,6 +87,7 @@ struct Rect
     T x, y;
     T w, h;
 
+    Rect() = default;
     Rect(T rx, T ry, T rw, T rh):x(rx), y(ry),
            w(rw), h(rh) {}
     Rect(const Rect& other)

@@ -7,6 +7,8 @@
 #include <render/RenderDevice.h>
 #include <render/detail/RenderDeviceImpl.h>
 
+#include <render/ImageDrawable.h>
+
 namespace elfbox
 {
 namespace common
@@ -23,6 +25,8 @@ public:
     virtual void applyTimeStep();
     virtual void render();
     virtual void update();
+
+    void threadTest(unsigned id);
 private:
     ContextPtr context_;
     render::RenderDevicePtr renderDevice_;
@@ -30,6 +34,9 @@ private:
     float timeStep_;
     std::vector<float> lastTimeSteps_;
     unsigned int timeStepSmoothing_;
+
+    render::StaticDrawablePtr drawable1_;
+    render::StaticDrawablePtr drawable2_;
 };
 }
 }

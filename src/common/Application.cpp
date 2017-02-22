@@ -43,15 +43,7 @@ void Application::run()
     setup();
     start();
 
-    //elfBoxEngine_->run();
-    SDL_Event Event;
-    while(true) {
-        while(SDL_PollEvent(&Event)) {
-            //OnEvent(&Event);
-        }
-
-        elfBoxEngine_->run();
-    }
+    elfBoxEngine_->run();
 
     terminat();
 }

@@ -66,26 +66,42 @@ typedef SourceRectPosition<int> SourceRectPositionInt;
 struct MaterialFactoryType
 {
     IRenderMaterial::Factory materialFactory;
+
+    MaterialFactoryType(common::ContextPtr context,
+                        const std::string& fileName) {}
 };
 
 struct SingleMaterialType
 {
     RenderMaterialPtr material;
-    SingleMaterialType(common::ContextPtr context):
+    SingleMaterialType(common::ContextPtr context, const std::string& fileName):
         material(std::make_shared<RenderMaterial>(
-            std::make_shared<detail::RenderMaterialImpl>(context, std::string(""))
+            std::make_shared<detail::RenderMaterialImpl>(context, fileName)
         )) {}
 };
 
-template <class MaterialStorgeType,
-    class WorldType,
-    class SourceType>
-struct DrawableData: public MaterialStorgeType,
-                     public WorldType, public SourceType
+template <class RectType = int>
+struct DrawableData
 {
-    DrawableData(common::ContextPtr context):
-        MaterialStorgeType(context) {}
+    RenderMaterialPtr material;
+    Rect<RectType> worldRect;
+    Rect<RectType> sourceRect;
     int zorder;
+    int drawableState;
+
+    DrawableData(common::ContextPtr context, const std::string& fileName,
+                 Rect<RectType> worldRectParam, Rect<RectType> sourceRectParam):
+        material(std::make_shared<RenderMaterial>(
+            std::make_shared<detail::RenderMaterialImpl>(context, fileName)
+        )), worldRect(worldRectParam),
+        sourceRect(sourceRectParam), zorder(0), drawableState(0) {}
+
+    DrawableData(common::ContextPtr context, const std::string& fileName):
+        material(std::make_shared<RenderMaterial>(
+            std::make_shared<detail::RenderMaterialImpl>(context, fileName)
+        )), zorder(0), drawableState(0) {}
+
+    typedef Rect<RectType> DataRectType;
 };
 
 }

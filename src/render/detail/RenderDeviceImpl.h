@@ -39,6 +39,18 @@ private:
 
         printf("!!!fps: %f frames: %f time: %f dt: %f\n",
                fps_, _total_frames, _total_time, dt);
+
+        if (_total_frames > 50)
+        {
+            _total_frames = _total_time = 0.0;
+        }
+    }
+
+    template <class T>
+    SDL_Rect toSDLRect(Rect<T> rect)
+    {
+        SDL_Rect sdlRect = {(int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h};
+        return sdlRect;
     }
 
     common::ContextPtr context_;

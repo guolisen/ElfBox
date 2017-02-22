@@ -60,8 +60,8 @@ bool MessageBroadcaster::initialize()
     system::ThreadPoolPtr threadPool =
             context_->getComponent<system::IThreadPool>(nullptr);
 
-    threadPool->attach(std::bind(&MessageBroadcaster::notifyMessage,
-        this, std::placeholders::_1), -1);
+    //threadPool->attach(std::bind(&MessageBroadcaster::notifyMessage,
+    //    this, std::placeholders::_1), -1);
 
     return true;
 }
@@ -102,7 +102,7 @@ void MessageBroadcaster::notifyByMessageId(MessageId id, MessageData data)
 
 void MessageBroadcaster::notifyMessage(unsigned threadId)
 {
-    while (true)
+    //while (true)
     {
         EventPtr event = nullptr;
         {
@@ -110,7 +110,8 @@ void MessageBroadcaster::notifyMessage(unsigned threadId)
             if (eventQueue_.empty())
             {
                 ::Sleep(1);
-                continue;
+                //continue;
+                return;
             }
             printf("have message %d\n", eventQueue_.size());
             for (auto e : eventQueue_)

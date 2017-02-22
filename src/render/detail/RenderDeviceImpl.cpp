@@ -30,7 +30,11 @@ void RenderDeviceImpl::render(float timeStep)
     SDL_RenderClear((SDL_Renderer*)handle_);
     for (auto &drawable : drawableList_)
     {
-        drawable->render();
+        SDL_Rect srcRect = toSDLRect(drawable->getData().sourceRect);
+        SDL_Rect destRect = toSDLRect(drawable->getData().worldRect);
+        SDL_RenderCopy((SDL_Renderer*)handle_,
+                       (SDL_Texture*)drawable->getData().material->getMaterial(),
+                       &srcRect, &destRect);
     }
 
     SDL_RenderPresent((SDL_Renderer*)handle_);

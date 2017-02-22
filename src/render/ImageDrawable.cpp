@@ -3,19 +3,19 @@
 //
 #include <SDL.h>
 #include <graphics/IGraphics.h>
-#include "StaticDrawable.h"
+#include "ImageDrawable.h"
 
 namespace elfbox
 {
 namespace render
 {
-
-void StaticDrawable::update()
+#if 0
+void ImageDrawable::update()
 {
 
 }
 
-void StaticDrawable::render()
+void ImageDrawable::render()
 {
     graphics::GraphicsPtr graphics =
         context_->getComponent<graphics::IGraphics>(nullptr);
@@ -26,6 +26,14 @@ void StaticDrawable::render()
     SDL_RenderCopy((SDL_Renderer*)handle, (SDL_Texture*)material->getMaterial(),
                    &srcRect, &destRect);
 }
-
+#endif
+void ImageDrawable::loadMaterial()
+{
+    data_.material->loadMaterial();
+    data_.sourceRect = data_.material->getRect();
+    data_.worldRect = data_.material->getRect();
+    data_.worldRect.x = 0;
+    data_.worldRect.y = 0;
+}
 }
 }

@@ -8,6 +8,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include "IRenderMaterial.h"
+#include "DrawableData.h"
 
 namespace elfbox
 {
@@ -20,8 +21,7 @@ ELF_OBJECT(IDrawable, common::IObject);
 public:
     virtual ~IDrawable() = default;
 
-    virtual void update() = 0;
-    virtual void render() = 0;
+    virtual DrawableData<>& getData() = 0;
 };
 
 typedef std::shared_ptr<IDrawable> DrawablePtr;

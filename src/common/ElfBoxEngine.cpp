@@ -1,9 +1,11 @@
+#include <SDL.h>
 #include <common/ElfBoxEngine.h>
 #include <graphics/IGraphics.h>
 #include <system/IWindow.h>
 #include <system/ITimeService.h>
 #include <util/BaseLogger.h>
-#include <render/StaticDrawable.h>
+#include <common/IMessageBroadcaster.h>
+#include <render/ImageDrawable.h>
 
 namespace elfbox
 {
@@ -24,6 +26,17 @@ ElfBoxEngine::~ElfBoxEngine()
     ELFBOX_LOGERROR(log, "D!!!!");
 }
 
+void ElfBoxEngine::threadTest(unsigned id)
+{
+    drawable2_->getData().worldRect.x += 10;
+    if (drawable2_->getData().worldRect.x > 400)
+        drawable2_->getData().worldRect.x = 0;
+
+    drawable2_->getData().worldRect.y += 1;
+    if (drawable2_->getData().worldRect.y > 400)
+        drawable2_->getData().worldRect.y = 0;
+}
+
 bool ElfBoxEngine::initialize()
 {
     graphics::GraphicsPtr graphics =
@@ -38,26 +51,22 @@ bool ElfBoxEngine::initialize()
 
     window->createWindow("Test1", 1024, 768, 0);
 
-    render::StaticDrawablePtr drawable1 = std::make_shared<render::StaticDrawable>(context_);
-    drawable1->material->setFileName("E:/code/ElfClion/ElfBox/cmake-build-debug/res/1.jpg");
-    drawable1->material->loadMaterial();
-    drawable1->sourceRect = drawable1->material->getRect();
-    drawable1->worldRect.x = 0;
-    drawable1->worldRect.y = 0;
-    drawable1->worldRect.w = drawable1->sourceRect.w;
-    drawable1->worldRect.h = drawable1->sourceRect.h;
-    renderDevice_->addDrawable(drawable1);
+    drawable1_ = std::make_shared<render::ImageDrawable>(
+        context_, "E:/code/ElfClion/ElfBox/cmake-build-debug/res/1.jpg");
+    drawable1_->loadMaterial();
+    renderDevice_->addDrawable(drawable1_);
 
-    render::StaticDrawablePtr drawable2 = std::make_shared<render::StaticDrawable>(context_);
-    drawable2->material->setFileName("E:/code/ElfClion/ElfBox/cmake-build-debug/res/2.jpg");
-    drawable2->material->loadMaterial();
-    drawable2->sourceRect = drawable2->material->getRect();
-    drawable2->worldRect.x = 200;
-    drawable2->worldRect.y = 0;
-    drawable2->worldRect.w = drawable2->sourceRect.w;
-    drawable2->worldRect.h = drawable2->sourceRect.h;
-    renderDevice_->addDrawable(drawable2);
+    drawable2_ = std::make_shared<render::ImageDrawable>(
+        context_, "E:/code/ElfClion/ElfBox/cmake-build-debug/res/2.jpg");
+    drawable2_->loadMaterial();
+    drawable2_->getData().worldRect.x = 200;
+    drawable2_->getData().worldRect.y = 0;
+    renderDevice_->addDrawable(drawable2_);
 
+    system::TimeServicePtr timeService =
+        context_->getComponent<system::ITimeService>(nullptr);
+    timeService->createTimer(std::bind(&ElfBoxEngine::threadTest,
+                                       this, std::placeholders::_1), 1000, true);
     return true;
 }
 
@@ -85,17 +94,8 @@ void ElfBoxEngine::applyTimeStep()
         }
     }
 
-    elapsed = timeService->getMicroseconds()- lastTime;
+    elapsed = timeService->getMicroseconds() - lastTime;
     lastTime = timeService->getMicroseconds();
-
-#if 0
-    if (minFps_)
-    {
-        long long targetMin = 1000000LL / minFps_;
-        if (elapsed > targetMin)
-            elapsed = targetMin;
-    }
-#endif
 
     // Perform timestep smoothing
     timeStep_ = 0.0f;
@@ -115,8 +115,19 @@ void ElfBoxEngine::applyTimeStep()
 
 void ElfBoxEngine::run()
 {
-    renderDevice_->render(timeStep_);
-    applyTimeStep();
+    common::MessageBroadcasterPtr messageBroadcaster =
+        context_->getComponent<common::IMessageBroadcaster>(nullptr);
+
+    SDL_Event Event;
+    while(true) {
+        while(SDL_PollEvent(&Event)) {
+            //OnEvent(&Event);
+        }
+
+        messageBroadcaster->notifyMessage(-1);
+        renderDevice_->render(timeStep_);
+        applyTimeStep();
+    }
 }
 
 void ElfBoxEngine::render()
