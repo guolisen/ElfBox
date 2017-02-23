@@ -22,7 +22,7 @@ public:
     RenderMaterial(RenderMaterialPtr renderMaterialImpl);
     virtual ~RenderMaterial() = default;
 
-    virtual bool loadMaterial();
+    virtual bool loadResource();
     virtual bool isLoad();
     virtual bool setFileName(const std::string& fileName);
     virtual MaterialTextureHandle getMaterial();

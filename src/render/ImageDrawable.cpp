@@ -29,7 +29,7 @@ void ImageDrawable::render()
 #endif
 void ImageDrawable::loadMaterial()
 {
-    data_.material->loadMaterial();
+    data_.material->loadResource();
     data_.sourceRect = data_.material->getRect();
     data_.worldRect = data_.material->getRect();
     data_.worldRect.x = 0;

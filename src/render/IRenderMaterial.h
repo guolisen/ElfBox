@@ -26,7 +26,7 @@ ELF_OBJECT(IRenderMaterial, common::IObject);
 public:
     virtual ~IRenderMaterial() = default;
 
-    virtual bool loadMaterial() = 0;
+    virtual bool loadResource() = 0;
     virtual bool isLoad() = 0;
     virtual bool setFileName(const std::string& fileName) = 0;
     virtual MaterialTextureHandle getMaterial() = 0;

@@ -24,9 +24,9 @@ IRenderMaterial::Factory RenderMaterial::getFactory()
     };
 }
 
-bool RenderMaterial::loadMaterial()
+bool RenderMaterial::loadResource()
 {
-    return impl_->loadMaterial();
+    return impl_->loadResource();
 }
 
 bool RenderMaterial::isLoad()

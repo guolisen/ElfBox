@@ -24,7 +24,7 @@ public:
                        const std::string& fileName);
     virtual ~RenderMaterialImpl() = default;
 
-    virtual bool loadMaterial();
+    virtual bool loadResource();
 
     virtual bool isLoad()
     {

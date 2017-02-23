@@ -16,6 +16,8 @@
 #include <system/detail/TimeServiceImpl.h>
 #include <render/RenderDevice.h>
 #include <render/detail/RenderDeviceImpl.h>
+#include <system/ResourceCache.h>
+#include <system/detail/ResourceWrapper.h>
 
 namespace elfbox
 {
@@ -66,6 +68,11 @@ bool Application::setup()
     timeService->reset();
 
     elfBoxEngine_->initialize();
+
+
+    system::ResourceCachePtr cache =
+        context_->getComponent<elfbox::system::IResourceCache>(nullptr);
+
 
     if (applicationCore_)
         applicationCore_->setup();
@@ -122,7 +129,15 @@ void appMain()
             std::make_shared<elfbox::render::detail::RenderDeviceImpl>(context));
     context->addComponent(renderDevice);
 
+    elfbox::system::ResourceCachePtr resourceCache =
+        std::make_shared<elfbox::system::ResourceCache>(
+            context, elfbox::system::detail::ResourceWrapper::getFactory());
+    context->addComponent(resourceCache);
+
     context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
+
+
+
 
     elfbox::common::Application app(0, context);
     app.run();

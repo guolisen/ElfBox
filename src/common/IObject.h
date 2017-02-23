@@ -12,16 +12,6 @@ namespace elfbox
 namespace common
 {
 
-#define ELF_OBJECT(typeName, baseTypeName) \
-    public: \
-        typedef typeName ClassName; \
-        typedef baseTypeName BaseClassName; \
-        virtual const std::string& GetTypeName() const { return GetTypeInfoStatic()->GetTypeName(); } \
-        virtual const common::TypeInfo* GetTypeInfo() const { return GetTypeInfoStatic(); } \
-        static const std::string& GetTypeNameStatic() { return GetTypeInfoStatic()->GetTypeName(); } \
-        static const common::TypeInfo* GetTypeInfoStatic() { static const common::TypeInfo typeInfoStatic(#typeName, BaseClassName::GetTypeInfoStatic()); return &typeInfoStatic; } \
-
-
 class ELFBOX_API TypeInfo
 {
 public:
@@ -66,6 +56,15 @@ private:
     std::string typeName_;
     const TypeInfo *baseTypeInfo_;
 };
+
+#define ELF_OBJECT(typeName, baseTypeName) \
+    public: \
+        typedef typeName ClassName; \
+        typedef baseTypeName BaseClassName; \
+        virtual const std::string& GetTypeName() const { return GetTypeInfoStatic()->GetTypeName(); } \
+        virtual const common::TypeInfo* GetTypeInfo() const { return GetTypeInfoStatic(); } \
+        static const std::string& GetTypeNameStatic() { return GetTypeInfoStatic()->GetTypeName(); } \
+        static const common::TypeInfo* GetTypeInfoStatic() { static const common::TypeInfo typeInfoStatic(#typeName, BaseClassName::GetTypeInfoStatic()); return &typeInfoStatic; } \
 
 class ELFBOX_API IObject
 {

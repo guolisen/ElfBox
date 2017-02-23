@@ -31,7 +31,7 @@ public:
     virtual ThreadID getCurrentThreadID();
     virtual bool isMainThread();
 
-    static Factory getFactory()
+    static IThread::Factory getFactory()
     {
         return [](const std::function<void()>& workFunc)
         {

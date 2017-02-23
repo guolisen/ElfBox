@@ -18,7 +18,7 @@ RenderMaterialImpl::RenderMaterialImpl(common::ContextPtr context,
     materialHeight_(0), isLoad_(false), materialTextureHandle_(nullptr),
     materialSurfaceHandle_(nullptr) {}
 
-bool RenderMaterialImpl::loadMaterial()
+bool RenderMaterialImpl::loadResource()
 {
     if (isLoad_)
         return true;

@@ -5,37 +5,46 @@
 #ifndef ELFBOX_RESOURCECACHE_H
 #define ELFBOX_RESOURCECACHE_H
 
+#include <map>
+#include <list>
+#include <functional>
 #include <common/IObject.h>
 #include <common/Context.h>
+#include "detail/IResourceWrapper.h"
+#include "IResourceCache.h"
 
 namespace elfbox
 {
-namespace
+namespace system
 {
 
-class IResourceCache : public common::IObject
-{
-ELF_OBJECT(IResourceCache, common::IObject);
-public:
-    virtual ~IResourceCache() = default;
+typedef std::map<std::string, ResourceFactory> ResourceFactoryMap;
+typedef std::map<std::string, detail::ResourceWrapperPtr> ResourceDbMap;
 
-    template <class T>
-    virtual T getResource() = 0;
-private:
-    common::ContextPtr context_;
-};
+namespace detail
+{
+class ResourceWrapper;
+}
 
 class ResourceCache : public IResourceCache
 {
 ELF_OBJECT(ResourceCache, IResourceCache);
 public:
-    ResourceCache(common::ContextPtr context);
+    ResourceCache(common::ContextPtr context,
+                  detail::IResourceWrapper::Factory factory);
     virtual ~ResourceCache() = default;
 
-    template <class T>
-    T getResource();
+    virtual common::IObjectPtr getResource(const std::string& type,
+                                   const std::string& fileName);
+    virtual void registerResourceFactory(const std::string& type,
+                                 ResourceFactory factory);
+
+    //TODO: Using timer to check memory and release resource
 private:
     common::ContextPtr context_;
+    ResourceFactoryMap resourceFactoryMap_;
+    ResourceDbMap resourceDbList_;
+    detail::IResourceWrapper::Factory factory_;
 };
 }
 }
