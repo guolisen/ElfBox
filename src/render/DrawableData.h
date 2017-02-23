@@ -80,6 +80,18 @@ struct SingleMaterialType
         )) {}
 };
 
+enum DrawableState
+{
+    DrawableStateDrawing,
+    DrawableStateDelete,
+    DrawableStatePending
+};
+
+enum DrawableType
+{
+    DrawableTypeImage
+};
+
 template <class RectType = int>
 struct DrawableData
 {
@@ -87,19 +99,22 @@ struct DrawableData
     Rect<RectType> worldRect;
     Rect<RectType> sourceRect;
     int zorder;
-    int drawableState;
+    DrawableState drawableState;
+    DrawableType drawableType;
 
     DrawableData(common::ContextPtr context, const std::string& fileName,
                  Rect<RectType> worldRectParam, Rect<RectType> sourceRectParam):
         material(std::make_shared<RenderMaterial>(
             std::make_shared<detail::RenderMaterialImpl>(context, fileName)
         )), worldRect(worldRectParam),
-        sourceRect(sourceRectParam), zorder(0), drawableState(0) {}
+        sourceRect(sourceRectParam), zorder(0), drawableState(DrawableStateDrawing),
+    drawableType(DrawableTypeImage) {}
 
     DrawableData(common::ContextPtr context, const std::string& fileName):
         material(std::make_shared<RenderMaterial>(
             std::make_shared<detail::RenderMaterialImpl>(context, fileName)
-        )), zorder(0), drawableState(0) {}
+        )), zorder(0),  drawableState(DrawableStateDrawing),
+        drawableType(DrawableTypeImage) {}
 
     typedef Rect<RectType> DataRectType;
 };
