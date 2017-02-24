@@ -26,18 +26,21 @@ common::IObjectPtr ResourceCache::getResource(
     if (it == resourceFactoryMap_.end())
         return common::IObjectPtr();
 
-    common::IObjectPtr resourceObject = it->second(context_, fileName);
-    resourceDbList_.insert(std::make_pair(
-        fileName, factory_(context_, resourceObject)));
+    ResourcePtr resource = it->second(context_, fileName);
+    if (!resource->loadResource())
+        return common::IObjectPtr();
 
-    return resourceObject;
+    resourceDbList_.insert(std::make_pair(
+        fileName, factory_(context_, resource)));
+
+    return resource;
 }
 
 void ResourceCache::registerResourceFactory(
     const std::string &type, ResourceFactory factory)
 {
     auto it = resourceFactoryMap_.find(type);
-    if (it == resourceFactoryMap_.end())
+    if (it != resourceFactoryMap_.end())
         return;
 
     resourceFactoryMap_.insert(std::make_pair(type, factory));

@@ -23,12 +23,18 @@ public:
     virtual ~RenderMaterial() = default;
 
     virtual bool loadResource();
+    virtual int getMemorySize();
     virtual bool isLoad();
     virtual bool setFileName(const std::string& fileName);
+    virtual std::string& getFileName()
+    {
+        return impl_->getFileName();
+    }
+
     virtual MaterialTextureHandle getMaterial();
     virtual RectInt getRect();
 
-    static IRenderMaterial::Factory getFactory();
+    static system::ResourceFactory getFactory();
 private:
 
     RenderMaterialPtr impl_;

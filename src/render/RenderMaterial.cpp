@@ -15,7 +15,7 @@ RenderMaterial::RenderMaterial(RenderMaterialPtr renderMaterialImpl):
 {
 }
 
-IRenderMaterial::Factory RenderMaterial::getFactory()
+system::ResourceFactory RenderMaterial::getFactory()
 {
     return [](common::ContextPtr context, const std::string& fileName)
     {
@@ -46,6 +46,11 @@ MaterialTextureHandle RenderMaterial::getMaterial()
 RectInt RenderMaterial::getRect()
 {
     return impl_->getRect();
+}
+
+int RenderMaterial::getMemorySize()
+{
+    return 0;
 }
 }
 }

@@ -6,7 +6,7 @@
 #include <common/Context.h>
 #include <render/RenderDevice.h>
 #include <render/detail/RenderDeviceImpl.h>
-
+#include <util/BaseLogger.h>
 #include <render/ImageDrawable.h>
 
 namespace elfbox
@@ -29,6 +29,7 @@ public:
     void threadTest(unsigned id);
 private:
     ContextPtr context_;
+    LoggerPtr log_;
     render::RenderDevicePtr renderDevice_;
 
     float timeStep_;
@@ -37,6 +38,7 @@ private:
 
     render::StaticDrawablePtr drawable1_;
     render::StaticDrawablePtr drawable2_;
+    render::StaticDrawablePtr drawable3_;
 };
 }
 }

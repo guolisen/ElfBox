@@ -9,6 +9,7 @@
 #include <string>
 #include <common/IObject.h>
 #include <common/Context.h>
+#include <system/IResource.h>
 
 namespace elfbox
 {
@@ -18,17 +19,12 @@ namespace render
 typedef void* MaterialTextureHandle;
 typedef void* MaterialSurfaceHandle;
 
-class IRenderMaterial : public common::IObject
+class IRenderMaterial : public system::IResource
 {
 ELF_OBJECT(IRenderMaterial, common::IObject);
-    typedef std::function<std::shared_ptr<IRenderMaterial>(common::ContextPtr,
-        const std::string&)> Factory;
 public:
     virtual ~IRenderMaterial() = default;
 
-    virtual bool loadResource() = 0;
-    virtual bool isLoad() = 0;
-    virtual bool setFileName(const std::string& fileName) = 0;
     virtual MaterialTextureHandle getMaterial() = 0;
     virtual RectInt getRect() = 0;
 };

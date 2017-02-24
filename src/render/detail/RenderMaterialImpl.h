@@ -24,6 +24,11 @@ public:
                        const std::string& fileName);
     virtual ~RenderMaterialImpl() = default;
 
+    virtual int getMemorySize()
+    {
+        return 0;
+    };
+
     virtual bool loadResource();
 
     virtual bool isLoad()
@@ -31,6 +36,11 @@ public:
         return isLoad_;
     };
     virtual bool setFileName(const std::string& fileName);
+    virtual std::string& getFileName()
+    {
+        return fileName_;
+    }
+
     virtual MaterialTextureHandle getMaterial();
 
     virtual RectInt getRect()

@@ -65,7 +65,7 @@ typedef SourceRectPosition<int> SourceRectPositionInt;
 
 struct MaterialFactoryType
 {
-    IRenderMaterial::Factory materialFactory;
+    system::ResourceFactory materialFactory;
 
     MaterialFactoryType(common::ContextPtr context,
                         const std::string& fileName) {}
@@ -102,18 +102,14 @@ struct DrawableData
     DrawableState drawableState;
     DrawableType drawableType;
 
-    DrawableData(common::ContextPtr context, const std::string& fileName,
+    DrawableData(common::ContextPtr context,
                  Rect<RectType> worldRectParam, Rect<RectType> sourceRectParam):
-        material(std::make_shared<RenderMaterial>(
-            std::make_shared<detail::RenderMaterialImpl>(context, fileName)
-        )), worldRect(worldRectParam),
+        worldRect(worldRectParam),
         sourceRect(sourceRectParam), zorder(0), drawableState(DrawableStateDrawing),
     drawableType(DrawableTypeImage) {}
 
-    DrawableData(common::ContextPtr context, const std::string& fileName):
-        material(std::make_shared<RenderMaterial>(
-            std::make_shared<detail::RenderMaterialImpl>(context, fileName)
-        )), zorder(0),  drawableState(DrawableStateDrawing),
+    DrawableData(common::ContextPtr context):
+        zorder(0),  drawableState(DrawableStateDrawing),
         drawableType(DrawableTypeImage) {}
 
     typedef Rect<RectType> DataRectType;

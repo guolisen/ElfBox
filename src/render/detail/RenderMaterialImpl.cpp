@@ -22,7 +22,6 @@ bool RenderMaterialImpl::loadResource()
 {
     if (isLoad_)
         return true;
-    isLoad_ = true;
 
     graphics::GraphicsPtr graphics =
         context_->getComponent<graphics::IGraphics>(nullptr);
@@ -39,6 +38,8 @@ bool RenderMaterialImpl::loadResource()
 
     materialWidth_ = ((SDL_Surface*)materialSurfaceHandle_)->w;
     materialHeight_ = ((SDL_Surface*)materialSurfaceHandle_)->h;
+
+    isLoad_ = true;
     return true;
 }
 

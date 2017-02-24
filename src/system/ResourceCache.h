@@ -40,6 +40,7 @@ public:
                                  ResourceFactory factory);
 
     //TODO: Using timer to check memory and release resource
+    //TODO: Resource Clone
 private:
     common::ContextPtr context_;
     ResourceFactoryMap resourceFactoryMap_;

@@ -20,8 +20,8 @@ class ImageDrawable : public IDrawable
 {
 ELF_OBJECT(ImageDrawable, IDrawable);
 public:
-    ImageDrawable(common::ContextPtr context, const std::string& fileName):
-        data_(context, fileName),
+    ImageDrawable(common::ContextPtr context):
+        data_(context),
         context_(context) {}
     virtual ~ImageDrawable() = default;
 
@@ -29,7 +29,7 @@ public:
     {
         return data_;
     }
-    void loadMaterial();
+    void setMaterial(RenderMaterialPtr material);
 private:
     common::ContextPtr context_;
     DrawableData<> data_;

@@ -18,6 +18,7 @@
 #include <render/detail/RenderDeviceImpl.h>
 #include <system/ResourceCache.h>
 #include <system/detail/ResourceWrapper.h>
+#include <render/RenderMaterial.h>
 
 namespace elfbox
 {
@@ -70,8 +71,6 @@ bool Application::setup()
     elfBoxEngine_->initialize();
 
 
-    system::ResourceCachePtr cache =
-        context_->getComponent<elfbox::system::IResourceCache>(nullptr);
 
 
     if (applicationCore_)
@@ -137,6 +136,10 @@ void appMain()
     context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
 
 
+    elfbox::system::ResourceCachePtr cache =
+        context->getComponent<elfbox::system::IResourceCache>(nullptr);
+    cache->registerResourceFactory<elfbox::render::IRenderMaterial>(
+        elfbox::render::RenderMaterial::getFactory());
 
 
     elfbox::common::Application app(0, context);
