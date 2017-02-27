@@ -3,8 +3,8 @@
 
 #include "IApplicationCore.h"
 #include <common/Application.h>
-#include <common/IElfBoxEngine.h>
-#include <common/ElfBoxEngine.h>
+#include <common/IEngine.h>
+#include <common/Engine.h>
 #include <common/Context.h>
 #include <common/MessageBroadcaster.h>
 #include <graphics/Graphics.h>
@@ -28,7 +28,7 @@ Application::Application(
         std::shared_ptr<common::IApplicationCore> applicationCore,
         std::shared_ptr<Context> context) :
         context_(context),
-        elfBoxEngine_(context_->getComponent<IElfBoxEngine>(nullptr)),
+        elfBoxEngine_(context_->getComponent<IEngine>(nullptr)),
         applicationCore_(applicationCore),
         log_(context_->getComponent<ILogger>(nullptr))
 {
@@ -133,7 +133,7 @@ void appMain()
             context, elfbox::system::detail::ResourceWrapper::getFactory());
     context->addComponent(resourceCache);
 
-    context->addComponent(std::make_shared<elfbox::common::ElfBoxEngine>(context));
+    context->addComponent(std::make_shared<elfbox::common::Engine>(context));
 
 
     elfbox::system::ResourceCachePtr cache =

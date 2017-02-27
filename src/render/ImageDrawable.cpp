@@ -13,6 +13,8 @@ namespace render
 void ImageDrawable::setMaterial(RenderMaterialPtr material)
 {
     data_.material = material;
+    data_.sourceRect = material->getRect();
+    data_.worldRect = data_.sourceRect;
 }
 }
 }

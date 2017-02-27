@@ -1,5 +1,5 @@
 #include <SDL.h>
-#include <common/ElfBoxEngine.h>
+#include <common/Engine.h>
 #include <graphics/IGraphics.h>
 #include <system/IWindow.h>
 #include <system/ITimeService.h>
@@ -13,7 +13,7 @@ namespace elfbox
 {
 namespace common
 {
-ElfBoxEngine::ElfBoxEngine(ContextPtr context) :
+Engine::Engine(ContextPtr context) :
     context_(context), log_(context_->getComponent<ILogger>(nullptr)),
     timeStep_(0.0), timeStepSmoothing_(2),
     renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr))
@@ -21,12 +21,12 @@ ElfBoxEngine::ElfBoxEngine(ContextPtr context) :
     ELFBOX_LOGERROR(log_, "Test!!!!");
 }
 
-ElfBoxEngine::~ElfBoxEngine()
+Engine::~Engine()
 {
     ELFBOX_LOGERROR(log_, "D!!!!");
 }
 
-void ElfBoxEngine::threadTest(unsigned id)
+void Engine::threadTest(unsigned id)
 {
     drawable2_->getData().worldRect.x += 10;
     if (drawable2_->getData().worldRect.x > 400)
@@ -37,7 +37,7 @@ void ElfBoxEngine::threadTest(unsigned id)
         drawable2_->getData().worldRect.y = 0;
 }
 
-bool ElfBoxEngine::initialize()
+bool Engine::initialize()
 {
     graphics::GraphicsPtr graphics =
         context_->getComponent<graphics::IGraphics>(nullptr);
@@ -64,10 +64,6 @@ bool ElfBoxEngine::initialize()
         ELFBOX_LOGERROR(log_, "1.jpg read error!");
         return false;
     }
-
-    drawable1_->getData().sourceRect = material->getRect();
-    drawable1_->getData().worldRect = drawable1_->getData().sourceRect;
-
     drawable1_->setMaterial(material);
     renderDevice_->addDrawable(drawable1_);
 
@@ -81,12 +77,8 @@ bool ElfBoxEngine::initialize()
         ELFBOX_LOGERROR(log_, "2.jpg read error!");
         return false;
     }
-
-    drawable2_->getData().sourceRect = material2->getRect();
-    drawable2_->getData().worldRect = drawable2_->getData().sourceRect;
-    drawable2_->getData().worldRect.x = 200;
-
     drawable2_->setMaterial(material2);
+    drawable2_->getData().worldRect.x = 200;
     renderDevice_->addDrawable(drawable2_);
 
     //////3
@@ -100,23 +92,20 @@ bool ElfBoxEngine::initialize()
         ELFBOX_LOGERROR(log_, "1.jpg 2 read error!");
         return false;
     }
-
-    drawable3_->getData().sourceRect = material3->getRect();
-    drawable3_->getData().worldRect = drawable3_->getData().sourceRect;
+    drawable3_->setMaterial(material3);
     drawable3_->getData().worldRect.x = 100;
     drawable3_->getData().worldRect.y = 200;
 
-    drawable3_->setMaterial(material3);
     renderDevice_->addDrawable(drawable3_);
 
     system::TimeServicePtr timeService =
         context_->getComponent<system::ITimeService>(nullptr);
-    timeService->createTimer(std::bind(&ElfBoxEngine::threadTest,
+    timeService->createTimer(std::bind(&Engine::threadTest,
                                        this, std::placeholders::_1), 1000, true);
     return true;
 }
 
-void ElfBoxEngine::applyTimeStep()
+void Engine::applyTimeStep()
 {
     system::TimeServicePtr timeService =
         context_->getComponent<system::ITimeService>(nullptr);
@@ -159,7 +148,7 @@ void ElfBoxEngine::applyTimeStep()
         timeStep_ = lastTimeSteps_.back();
 }
 
-void ElfBoxEngine::run()
+void Engine::run()
 {
     common::MessageBroadcasterPtr messageBroadcaster =
         context_->getComponent<common::IMessageBroadcaster>(nullptr);
@@ -176,12 +165,12 @@ void ElfBoxEngine::run()
     }
 }
 
-void ElfBoxEngine::render()
+void Engine::render()
 {
 
 }
 
-void ElfBoxEngine::update()
+void Engine::update()
 {
 
 }

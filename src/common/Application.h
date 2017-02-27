@@ -9,7 +9,7 @@ namespace elfbox
 {
 namespace common
 {
-class IElfBoxEngine;
+class IEngine;
 
 class IApplicationCore;
 
@@ -32,7 +32,7 @@ private:
     virtual bool terminat();
 
     std::shared_ptr<Context> context_;
-    std::shared_ptr<IElfBoxEngine> elfBoxEngine_;
+    std::shared_ptr<IEngine> elfBoxEngine_;
     std::shared_ptr<IApplicationCore> applicationCore_;
 
     LoggerPtr log_;

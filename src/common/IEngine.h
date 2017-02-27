@@ -7,14 +7,14 @@ namespace elfbox
 {
 namespace common
 {
-class IElfBoxEngine : public IObject
+class IEngine : public IObject
 {
-ELF_OBJECT(IElfBoxEngine, IObject);
+ELF_OBJECT(IEngine, IObject);
 public:
-    IElfBoxEngine()
+    IEngine()
     {};
 
-    virtual ~IElfBoxEngine()
+    virtual ~IEngine()
     {};
 
     virtual bool initialize() = 0;

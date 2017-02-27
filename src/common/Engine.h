@@ -2,7 +2,7 @@
 #define common_ElfBoxEngine
 
 #include <vector>
-#include <common/IElfBoxEngine.h>
+#include <common/IEngine.h>
 #include <common/Context.h>
 #include <render/RenderDevice.h>
 #include <render/detail/RenderDeviceImpl.h>
@@ -13,12 +13,12 @@ namespace elfbox
 {
 namespace common
 {
-class ElfBoxEngine : public IElfBoxEngine
+class Engine : public IEngine
 {
-ELF_OBJECT(ElfBoxEngine, IElfBoxEngine);
+ELF_OBJECT(Engine, IEngine);
 public:
-    ElfBoxEngine(ContextPtr context);
-    virtual ~ElfBoxEngine();
+    Engine(ContextPtr context);
+    virtual ~Engine();
 
     virtual bool initialize();
     virtual void run();

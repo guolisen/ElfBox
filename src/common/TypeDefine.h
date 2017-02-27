@@ -82,10 +82,33 @@ typedef char_ tchar_;
 #endif
 
 template <class T>
+struct Point2D
+{
+    T x, y;
+
+    Point2D(): x(0), y(0) {}
+    Point2D(T rx, T ry): x(rx), y(ry) {}
+    Point2D(const Point2D& other)
+    {
+        x = other.x;
+        y = other.y;
+    }
+};
+
+typedef Point2D<int> Point2DInt;
+typedef Point2D<float> Point2DFloat;
+typedef Point2DFloat Vector2DFloat;
+
+template <class T>
 struct Rect
 {
     T x, y;
     T w, h;
+
+    Point2D<T> getPosition()
+    {
+        return Point2D<T>(x, y);
+    }
 
     Rect(): x(0), y(0),
         w(0), h(0) {}

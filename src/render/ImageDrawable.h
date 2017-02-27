@@ -30,6 +30,14 @@ public:
         return data_;
     }
     void setMaterial(RenderMaterialPtr material);
+
+    static IDrawable::Factory getFactory()
+    {
+        return [](common::ContextPtr context)
+        {
+            return std::make_shared<ImageDrawable>(context);
+        }; // NOLINT
+    }
 private:
     common::ContextPtr context_;
     DrawableData<> data_;
