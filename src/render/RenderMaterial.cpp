@@ -43,7 +43,7 @@ MaterialTextureHandle RenderMaterial::getMaterial()
 {
     return impl_->getMaterial();
 }
-RectInt RenderMaterial::getRect()
+RectFloat RenderMaterial::getRect()
 {
     return impl_->getRect();
 }

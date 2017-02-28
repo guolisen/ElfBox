@@ -43,9 +43,9 @@ public:
 
     virtual MaterialTextureHandle getMaterial();
 
-    virtual RectInt getRect()
+    virtual RectFloat getRect()
     {
-        return RectInt(0, 0, materialWidth_, materialHeight_);
+        return RectFloat(0.0, 0.0, (float)materialWidth_, (float)materialHeight_);
     }
 
 private:

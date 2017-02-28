@@ -7,6 +7,7 @@
 
 #include <common/IObject.h>
 #include <common/Context.h>
+#include "ISceneNode.h"
 
 namespace elfbox
 {
@@ -23,6 +24,7 @@ public:
     virtual bool load(const std::string& fileName);
 private:
     common::ContextPtr context_;
+    SceneNodePtr rootNode_;
 };
 }
 }

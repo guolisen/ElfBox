@@ -5,11 +5,13 @@
 #ifndef ELFBOX_SCENETMXPARSERIMPL_H
 #define ELFBOX_SCENETMXPARSERIMPL_H
 
+#include <vector>
 #include <memory>
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <util/BaseLogger.h>
 #include <tmxparser/Tmx.h>
+#include "../ISceneTmxParser.h"
 #include "../ISceneNodeFactory.h"
 
 namespace elfbox
@@ -19,21 +21,33 @@ namespace scene
 namespace detail
 {
 
-class SceneTmxParserImpl : public common::IObject
+class SceneTmxParserImpl : public ISceneTmxParser
 {
-ELF_OBJECT(SceneTmxParserImpl, common::IObject);
+ELF_OBJECT(SceneTmxParserImpl, ISceneTmxParser);
 public:
-    SceneTmxParserImpl(common::ContextPtr context);
+    SceneTmxParserImpl(common::ContextPtr context,
+                       SceneNodeFactoryPtr nodeFactory);
     virtual ~SceneTmxParserImpl() = default;
 
     bool loadTmxFile(const std::string &fileName);
+    const SceneInfo& getSceneInfo() const
+    {
+        return sceneInfo_;
+    }
+
+    SceneNodePtr Parser();
 
 private:
-    //bool buildScene();
+    Point2DFloat tilePositionToWorld(int tileX, int tileY);
+    const Tmx::Tileset* getTileSet(int tileGId);
+    const Tmx::Image* getTileImage(int tileGId, const Tmx::Tileset* tileSet);
 
     common::ContextPtr context_;
+    SceneNodeFactoryPtr nodeFactory_;
     LoggerPtr log_;
     std::shared_ptr<Tmx::Map> tmxMap_;
+    SceneInfo sceneInfo_;
+    std::vector<const Tmx::Tileset*> tilesetList_;
 };
 }
 }

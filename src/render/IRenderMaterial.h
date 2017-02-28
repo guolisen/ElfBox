@@ -26,7 +26,7 @@ public:
     virtual ~IRenderMaterial() = default;
 
     virtual MaterialTextureHandle getMaterial() = 0;
-    virtual RectInt getRect() = 0;
+    virtual RectFloat getRect() = 0;
 };
 
 typedef std::shared_ptr<IRenderMaterial> RenderMaterialPtr;

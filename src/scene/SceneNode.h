@@ -27,6 +27,7 @@ public:
 
     virtual bool initialize();
     virtual void update(float timeStep);
+    virtual void startToDraw();
 
     virtual void translate();
     virtual void rotate();
@@ -47,6 +48,7 @@ public:
     virtual bool addChild(std::shared_ptr<ISceneNode> childNode)
     {
         childList_.push_back(childNode);
+        return true;
     }
 
 private:

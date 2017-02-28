@@ -13,15 +13,34 @@ namespace elfbox
 {
 namespace scene
 {
+
 class SceneTmxParser : public ISceneTmxParser
 {
 ELF_OBJECT(SceneTmxParser, ISceneTmxParser);
 public:
-    SceneTmxParser(common::ContextPtr context);
+     SceneTmxParser(common::ContextPtr context,
+                    SceneTmxParserPtr sceneTmxParser):
+        context_(context), impl_(sceneTmxParser) {}
     virtual ~SceneTmxParser() = default;
+
+    virtual bool loadTmxFile(const std::string& fileName)
+    {
+        return impl_->loadTmxFile(fileName);
+    }
+
+    virtual const SceneInfo& getSceneInfo() const
+    {
+        return impl_->getSceneInfo();
+    }
+
+    virtual SceneNodePtr Parser()
+    {
+        return impl_->Parser();
+    }
 
 private:
     common::ContextPtr context_;
+    SceneTmxParserPtr impl_;
 };
 }
 }

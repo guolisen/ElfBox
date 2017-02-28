@@ -16,7 +16,8 @@ namespace common
 Engine::Engine(ContextPtr context) :
     context_(context), log_(context_->getComponent<ILogger>(nullptr)),
     timeStep_(0.0), timeStepSmoothing_(2),
-    renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr))
+    renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr)),
+    scene_(context_)
 {
     ELFBOX_LOGERROR(log_, "Test!!!!");
 }
@@ -51,6 +52,10 @@ bool Engine::initialize()
 
     window->createWindow("Test1", 1024, 768, 0);
 
+    scene_.load("E:/code/s/map/T22.tmx");
+    scene_.update(0.0);
+
+#if 0
     //////1
     drawable1_ = std::make_shared<render::ImageDrawable>(context_);
 
@@ -102,6 +107,9 @@ bool Engine::initialize()
         context_->getComponent<system::ITimeService>(nullptr);
     timeService->createTimer(std::bind(&Engine::threadTest,
                                        this, std::placeholders::_1), 1000, true);
+#endif
+
+
     return true;
 }
 

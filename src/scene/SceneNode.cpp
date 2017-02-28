@@ -3,6 +3,7 @@
 //
 
 #include "SceneNode.h"
+#include <render/IRenderDevice.h>
 
 namespace elfbox
 {
@@ -57,5 +58,18 @@ void SceneNode::setVisiable(bool flag)
 {
 }
 
+void SceneNode::startToDraw()
+{
+    render::RenderDevicePtr renderDevice =
+        context_->getComponent<render::IRenderDevice>(nullptr);
+
+    if (drawable_)
+        renderDevice->addDrawable(drawable_);
+
+    for (auto& childNode : childList_)
+    {
+        childNode->startToDraw();
+    }
+}
 }
 }

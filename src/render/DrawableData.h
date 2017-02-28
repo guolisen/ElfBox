@@ -92,7 +92,7 @@ enum DrawableType
     DrawableTypeImage
 };
 
-template <class RectType = int>
+template <class RectType = float>
 struct DrawableData
 {
     RenderMaterialPtr material;

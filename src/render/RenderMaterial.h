@@ -32,7 +32,7 @@ public:
     }
 
     virtual MaterialTextureHandle getMaterial();
-    virtual RectInt getRect();
+    virtual RectFloat getRect();
 
     static system::ResourceFactory getFactory();
 private:

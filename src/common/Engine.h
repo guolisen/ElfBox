@@ -9,6 +9,8 @@
 #include <util/BaseLogger.h>
 #include <render/ImageDrawable.h>
 
+#include <scene/Scene.h>
+
 namespace elfbox
 {
 namespace common
@@ -39,6 +41,8 @@ private:
     render::StaticDrawablePtr drawable1_;
     render::StaticDrawablePtr drawable2_;
     render::StaticDrawablePtr drawable3_;
+
+    scene::Scene scene_;
 };
 }
 }

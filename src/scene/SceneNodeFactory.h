@@ -7,26 +7,28 @@
 
 #include <common/IObject.h>
 #include <common/Context.h>
-#include "SceneNode.h"
 #include <render/ImageDrawable.h>
 #include <system/IResourceCache.h>
+#include "SceneNode.h"
+#include "ISceneNodeFactory.h"
 
 namespace elfbox
 {
 namespace scene
 {
-class SceneNodeFactory : public common::IObject
+class SceneNodeFactory : public ISceneNodeFactory
 {
-ELF_OBJECT(SceneNodeFactory, common::IObject);
+ELF_OBJECT(SceneNodeFactory, ISceneNodeFactory);
 public:
-    SceneNodeFactory(common::ContextPtr context):
+    SceneNodeFactory(common::ContextPtr context) : context_(context),
         cache_(context_->getComponent<elfbox::system::IResourceCache>(nullptr)) {}
     virtual ~SceneNodeFactory() = default;
 
-    virtual std::shared_ptr<ISceneNode> createNode(render::IDrawable::Factory drawableFactory,
+    virtual SceneNodePtr createNode(render::IDrawable::Factory drawableFactory,
                                                    const std::string& nodeName,
                                                    const std::string& resFileName,
-                                                   const Point2DFloat& worldPostion,
+                                                   const RectFloat& worldRect,
+                                                   const RectFloat& sourceRect,
                                                    int zorder);
 private:
     common::ContextPtr context_;

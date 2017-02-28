@@ -124,6 +124,6 @@ struct Rect
     }
 };
 typedef Rect<int> RectInt;
-
+typedef Rect<float> RectFloat;
 }
 #endif //ELFBOX_TYPEDEFINE_H

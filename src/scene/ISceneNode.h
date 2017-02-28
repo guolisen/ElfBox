@@ -21,7 +21,7 @@ public:
 
     virtual bool initialize() = 0;
     virtual void update(float timeStep) = 0;
-
+    virtual void startToDraw() = 0;
     virtual void translate() = 0;
     virtual void rotate() = 0;
     virtual void scale(float scale) = 0;
@@ -36,6 +36,8 @@ public:
 
     virtual bool addChild(std::shared_ptr<ISceneNode> childNode) = 0;
 };
+
+typedef std::shared_ptr<ISceneNode> SceneNodePtr;
 }
 }
 
