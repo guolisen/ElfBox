@@ -13,7 +13,8 @@ namespace common
 enum MessageId
 {
     TEST_MESSAGE = 0,
-    TIMER_TIME_OUT
+    TIMER_TIME_OUT,
+    SYSTEM_EVENT_KEYDOWN
 };
 
 

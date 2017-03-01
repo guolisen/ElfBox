@@ -21,12 +21,18 @@ public:
 
     virtual Point2DFloat worldToCamera(Point2DFloat worldPosition) = 0;
     virtual RectFloat worldToCamera(RectFloat worldPosition) = 0;
+
     virtual RectFloat getCameraViewRect() = 0;
     virtual Point2DFloat getCameraCenter() = 0;
     virtual bool isInView(Point2DFloat point) = 0;
     virtual bool isInView(RectFloat rect) = 0;
+
     virtual void setPosition(const Point2DFloat& cameraPosition) = 0;
     virtual void setAspectRatio(float aspectRatio) = 0;
+
+    virtual void moveCamera(float xStep, float yStep) = 0;
+    virtual void setCameraZoom(float zoom) = 0;
+    virtual float getCameraZoom() = 0;
 };
 
 typedef std::shared_ptr<ICamera> CameraPtr;

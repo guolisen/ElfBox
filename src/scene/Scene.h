@@ -9,6 +9,7 @@
 #include <common/Context.h>
 #include "ISceneNode.h"
 #include "ICamera.h"
+#include <common/IMessageBroadcaster.h>
 
 namespace elfbox
 {
@@ -24,8 +25,11 @@ public:
     virtual bool initialize();
     virtual void update(float timeStep);
     virtual bool load(const std::string& fileName);
+
+    void keyHandler(common::MessageData data);
 private:
     common::ContextPtr context_;
+    common::MessageBroadcasterPtr messageBroadcaster_;
     SceneNodePtr rootNode_;
     CameraPtr camera_;
 };

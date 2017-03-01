@@ -1,4 +1,4 @@
-#include <SDL.h>
+
 #include <common/Engine.h>
 #include <graphics/IGraphics.h>
 #include <system/IWindow.h>
@@ -8,6 +8,7 @@
 #include <render/ImageDrawable.h>
 #include <system/IResource.h>
 #include <system/IResourceCache.h>
+#include <system/ISystemEventProcess.h>
 
 namespace elfbox
 {
@@ -162,11 +163,11 @@ void Engine::run()
     common::MessageBroadcasterPtr messageBroadcaster =
         context_->getComponent<common::IMessageBroadcaster>(nullptr);
 
-    SDL_Event Event;
+    system::SystemEventProcessPtr systemEventProcess =
+        context_->getComponent<system::ISystemEventProcess>(nullptr);
+
     while(true) {
-        while(SDL_PollEvent(&Event)) {
-            //OnEvent(&Event);
-        }
+        systemEventProcess->run();
 
         messageBroadcaster->notifyMessage(-1);
         renderDevice_->render(timeStep_);

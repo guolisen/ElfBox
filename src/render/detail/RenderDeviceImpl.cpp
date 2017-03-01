@@ -33,6 +33,8 @@ void RenderDeviceImpl::render(float timeStep)
     SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
     //SDL_RenderSetViewport((SDL_Renderer*)handle_, &viewRect);
 
+    //float zoom = camera_->getCameraZoom();
+    //SDL_RenderSetScale((SDL_Renderer*)handle_, zoom, zoom);
     for (auto &drawable : drawableList_)
     {
         RectFloat worldToCameraRect =

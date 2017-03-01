@@ -19,6 +19,8 @@
 #include <system/ResourceCache.h>
 #include <system/detail/ResourceWrapper.h>
 #include <render/RenderMaterial.h>
+#include <system/SystemEventProcess.h>
+#include <system/detail/SystemEventProcessImpl.h>
 
 namespace elfbox
 {
@@ -69,9 +71,6 @@ bool Application::setup()
     timeService->reset();
 
     elfBoxEngine_->initialize();
-
-
-
 
     if (applicationCore_)
         applicationCore_->setup();
@@ -133,13 +132,17 @@ void appMain()
             context, elfbox::system::detail::ResourceWrapper::getFactory());
     context->addComponent(resourceCache);
 
-    context->addComponent(std::make_shared<elfbox::common::Engine>(context));
-
-
     elfbox::system::ResourceCachePtr cache =
         context->getComponent<elfbox::system::IResourceCache>(nullptr);
     cache->registerResourceFactory<elfbox::render::IRenderMaterial>(
         elfbox::render::RenderMaterial::getFactory());
+
+    elfbox::system::SystemEventProcessPtr systemEventProcess =
+        std::make_shared<elfbox::system::SystemEventProcess>(
+            std::make_shared<elfbox::system::detail::SystemEventProcessImpl>(context));
+    context->addComponent(systemEventProcess);
+
+    context->addComponent(std::make_shared<elfbox::common::Engine>(context));
 
 
     elfbox::common::Application app(0, context);

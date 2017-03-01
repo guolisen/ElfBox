@@ -38,6 +38,13 @@ public:
         aspectRatio_ = aspectRatio;
     }
 
+    virtual void moveCamera(float xStep, float yStep);
+    virtual void setCameraZoom(float zoom);
+    virtual float getCameraZoom()
+    {
+        return cameraZoom_;
+    }
+
 private:
     common::ContextPtr context_;
     Point2DFloat cameraPosition_;

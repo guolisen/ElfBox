@@ -58,12 +58,26 @@ Point2DFloat Camera::getCameraCenter()
 
 bool Camera::isInView(Point2DFloat point)
 {
+    //TODO:
     return true;
 }
 
 bool Camera::isInView(RectFloat rect)
 {
+    //TODO:
     return true;
 }
+
+void Camera::moveCamera(float xStep, float yStep)
+{
+    cameraPosition_.x += xStep;
+    cameraPosition_.y += yStep;
+}
+
+void Camera::setCameraZoom(float zoom)
+{
+    cameraZoom_ = zoom;
+}
+
 }
 }

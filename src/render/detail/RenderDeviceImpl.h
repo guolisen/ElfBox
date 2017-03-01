@@ -5,6 +5,7 @@
 #ifndef ELFBOX_RENDERDEVICEIMPL_H
 #define ELFBOX_RENDERDEVICEIMPL_H
 
+#include <SDL.h>
 #include <list>
 #include <common/IObject.h>
 #include <common/Context.h>

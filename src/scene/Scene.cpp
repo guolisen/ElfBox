@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include <render/IRenderDevice.h>
+#include <common/IMessageBroadcaster.h>
 
 namespace elfbox
 {
@@ -14,8 +15,10 @@ namespace scene
 {
 
 Scene::Scene(common::ContextPtr context) :
-    context_(context), camera_(std::make_shared<Camera>(
-    context, Point2DFloat(0.0f, 0.0f), 1.0f, 400.0f, 16.0f / 9.0f))
+    context_(context),
+    messageBroadcaster_(context_->getComponent<common::IMessageBroadcaster>(nullptr)),
+    camera_(std::make_shared<Camera>(
+    context, Point2DFloat(0.0f, 0.0f), 1.0f, 576.0f, 16.0f / 9.0f))
 {
 }
 
@@ -44,7 +47,47 @@ bool Scene::initialize()
 
     renderDevice->setCamera(camera_);
 
+    messageBroadcaster_->subscribe(
+        common::SYSTEM_EVENT_KEYDOWN,
+        std::bind(&Scene::keyHandler, this, std::placeholders::_1));
+
     return true;
 }
+
+void Scene::keyHandler(common::MessageData data)
+{
+    printf("KEY!!!!!!!!\n");
+    int key = data["KEY"];
+    if (key == 'w')
+    {
+        camera_->moveCamera(0, -10);
+    }
+    if (key == 's')
+    {
+        camera_->moveCamera(0, 10);
+    }
+    if (key == 'a')
+    {
+        camera_->moveCamera(-10, 0);
+    }
+    if (key == 'd')
+    {
+        camera_->moveCamera(10, 0);
+    }
+
+    static float zoom = 1.0;
+    if (key == 't')
+    {
+        zoom += 0.5;
+        camera_->setCameraZoom(zoom);
+    }
+
+    if (key == 'g')
+    {
+        zoom -= 0.5;
+        camera_->setCameraZoom(zoom);
+    }
+}
+
 }
 }
