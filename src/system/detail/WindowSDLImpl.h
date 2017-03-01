@@ -28,10 +28,14 @@ public:
     {
         return (windowHandle)window_;
     }
+    virtual int getWindowWidth() const;
+    virtual int getWindowHeight() const;
 private:
     common::ContextPtr context_;
     SDL_Window* window_;
     LoggerPtr log_;
+    int windowWidth_;
+    int windowHeight_;
 };
 }
 }

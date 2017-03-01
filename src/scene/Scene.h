@@ -8,6 +8,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include "ISceneNode.h"
+#include "ICamera.h"
 
 namespace elfbox
 {
@@ -20,11 +21,13 @@ public:
     Scene(common::ContextPtr context);
     virtual ~Scene() = default;
 
+    virtual bool initialize();
     virtual void update(float timeStep);
     virtual bool load(const std::string& fileName);
 private:
     common::ContextPtr context_;
     SceneNodePtr rootNode_;
+    CameraPtr camera_;
 };
 }
 }

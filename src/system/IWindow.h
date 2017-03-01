@@ -22,6 +22,8 @@ public:
     virtual bool createWindow(const std::string &winName,
                               int width, int height, unsigned int winflag) = 0;
     virtual windowHandle getWindowHandle() const = 0;
+    virtual int getWindowWidth() const = 0;
+    virtual int getWindowHeight() const = 0;
 };
 
 typedef std::shared_ptr<IWindow> WindowPtr;

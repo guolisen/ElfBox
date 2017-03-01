@@ -9,7 +9,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <graphics/IGraphics.h>
-
+#include <scene/ICamera.h>
 #include "../IDrawable.h"
 #include "../IRenderDevice.h"
 
@@ -26,8 +26,13 @@ public:
     RenderDeviceImpl(common::ContextPtr context);
     virtual ~RenderDeviceImpl() = default;
 
-    void render(float timeStep);
-    void addDrawable(DrawablePtr drawable);
+    virtual void render(float timeStep);
+    virtual void addDrawable(DrawablePtr drawable);
+    virtual void setCamera(scene::CameraPtr camera)
+    {
+        camera_ = camera;
+    }
+
 private:
     void update(float dt)
     {
@@ -57,6 +62,7 @@ private:
     std::list<DrawablePtr> drawableList_;
     graphics::RendererHandle handle_;
     float fps_;
+    scene::CameraPtr camera_;
 };
 }
 }

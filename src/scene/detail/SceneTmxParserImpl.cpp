@@ -132,7 +132,7 @@ SceneNodePtr SceneTmxParserImpl::Parser()
                 float tileSrcY = ((tileGId - 1) / TilesetWidthCount) * tilePixelHeight;
 
                 RectFloat srcRect = { tileSrcX, tileSrcY, tilePixelWidth, tilePixelHeight };
-                RectFloat worldtRect = { worldPosition.x - 9000.0f, worldPosition.y - 8000.0f,
+                RectFloat worldtRect = { worldPosition.x, worldPosition.y,
                     tilePixelWidth, tilePixelHeight };
 
                 //tileSet
@@ -174,7 +174,7 @@ SceneNodePtr SceneTmxParserImpl::Parser()
             float objectPixelHeight = object->GetHeight();
 
             RectFloat srcRect = { 0, 0, objectPixelWidth, objectPixelHeight };
-            RectFloat worldtRect = { objectWorldX - 9000.0f, objectWorldY - 8000.0f,
+            RectFloat worldtRect = { objectWorldX, objectWorldY,
                 objectPixelWidth, objectPixelHeight };
 
             SceneNodePtr tileNode = nodeFactory_->createNode<render::ImageDrawable>(

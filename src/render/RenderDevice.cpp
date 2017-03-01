@@ -25,5 +25,9 @@ void RenderDevice::addDrawable(DrawablePtr drawable)
     impl_->addDrawable(drawable);
 }
 
+void RenderDevice::setCamera(scene::CameraPtr camera)
+{
+    impl_->setCamera(camera);
+}
 }
 }

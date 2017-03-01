@@ -28,5 +28,14 @@ windowHandle Window::getWindowHandle() const
     return impl_->getWindowHandle();
 }
 
+int Window::getWindowWidth() const
+{
+    return impl_->getWindowWidth();
+}
+
+int Window::getWindowHeight() const
+{
+    return impl_->getWindowHeight();
+}
 }
 }

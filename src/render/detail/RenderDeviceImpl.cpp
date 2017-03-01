@@ -28,10 +28,17 @@ void RenderDeviceImpl::render(float timeStep)
 
     SDL_SetRenderDrawColor((SDL_Renderer*)handle_, 0x0, 0x0, 0x0, 0x0);
     SDL_RenderClear((SDL_Renderer*)handle_);
+
+    SDL_Rect viewRect = toSDLRect(camera_->getCameraViewRect());
+    SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
+    //SDL_RenderSetViewport((SDL_Renderer*)handle_, &viewRect);
+
     for (auto &drawable : drawableList_)
     {
+        RectFloat worldToCameraRect =
+            camera_->worldToCamera(drawable->getData().worldRect);
         SDL_Rect srcRect = toSDLRect(drawable->getData().sourceRect);
-        SDL_Rect destRect = toSDLRect(drawable->getData().worldRect);
+        SDL_Rect destRect = toSDLRect(worldToCameraRect);
         SDL_RenderCopy((SDL_Renderer*)handle_,
                        (SDL_Texture*)drawable->getData().material->getMaterial(),
                        &srcRect, &destRect);
@@ -46,6 +53,7 @@ void RenderDeviceImpl::addDrawable(DrawablePtr drawable)
 {
     drawableList_.push_back(drawable);
 }
+
 }
 }
 }

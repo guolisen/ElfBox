@@ -10,10 +10,11 @@ namespace system
 {
 namespace detail
 {
-WindowImpl::WindowImpl(common::ContextPtr context) : context_(context),
-                                                     log_(context_->getComponent<ILogger>(nullptr))
+WindowImpl::WindowImpl(common::ContextPtr context) :
+    context_(context),
+    log_(context_->getComponent<ILogger>(nullptr)),
+    windowWidth_(0), windowHeight_(0)
 {
-    ELFBOX_LOGERROR(log_, "Test!!!!");
 }
 
 bool WindowImpl::initialize()
@@ -45,7 +46,20 @@ bool WindowImpl::createWindow(const std::string &winName,
     ELFBOX_ASSERT(graphics);
     graphics->setRendererHandle(rendererHandle);
 
+    windowWidth_ = width;
+    windowHeight_ = height;
+
     return true;
+}
+
+int WindowImpl::getWindowWidth() const
+{
+    return windowWidth_;
+}
+
+int WindowImpl::getWindowHeight() const
+{
+    return windowHeight_;
 }
 }
 }

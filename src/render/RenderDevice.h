@@ -27,9 +27,9 @@ public:
     RenderDevice(RenderDevicePtr impl);
     virtual ~RenderDevice() = default;
 
-    void render(float timeStep);
-    void addDrawable(DrawablePtr drawable);
-
+    virtual void render(float timeStep);
+    virtual void addDrawable(DrawablePtr drawable);
+    virtual void setCamera(scene::CameraPtr camera);
 private:
     std::list<DrawablePtr> drawableList_;
     RenderDevicePtr impl_;

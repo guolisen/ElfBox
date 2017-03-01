@@ -52,6 +52,7 @@ bool Engine::initialize()
 
     window->createWindow("Test1", 1024, 768, 0);
 
+    scene_.initialize();
     scene_.load("E:/code/s/map/T22.tmx");
     scene_.update(0.0);
 
