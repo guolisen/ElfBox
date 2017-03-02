@@ -64,6 +64,7 @@ private:
     graphics::RendererHandle handle_;
     float fps_;
     scene::CameraPtr camera_;
+    SDL_Texture* backgroundTexture_;
 };
 }
 }

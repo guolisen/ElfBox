@@ -39,15 +39,27 @@ RectFloat Camera::getCameraViewRect()
     system::WindowPtr window =
         context_->getComponent<system::IWindow>(nullptr);
 
-    int winWidth = window->getWindowWidth();
-    int winHeight = window->getWindowHeight();
+    winWidth_ = window->getWindowWidth();
+    winHeight_ = window->getWindowHeight();
 
     Point2DFloat localCenterPoint(cameraWidth_ / 2.0f, cameraHeight_ / 2.0f);
-    Point2DFloat windowsCenterPoint(winWidth / 2.0f, winHeight / 2.0f);
+    Point2DFloat windowsCenterPoint(winWidth_ / 2.0f, winHeight_ / 2.0f);
 
     return RectFloat(windowsCenterPoint.x - localCenterPoint.x,
                      windowsCenterPoint.y - localCenterPoint.y,
                      cameraWidth_, cameraHeight_);
+}
+
+RectFloat Camera::getCameraViewZoomRect()
+{
+    Point2DFloat localCenterPoint(cameraWidth_ / 2.0f, cameraHeight_ / 2.0f);
+    float zoomWidth = cameraWidth_ * cameraZoom_;
+    float zoomHeight = cameraHeight_ * cameraZoom_ * aspectRatio_;
+    RectFloat zoomRect = {(localCenterPoint.x - zoomWidth * 0.5f),
+                          (localCenterPoint.y - zoomHeight * 0.5f),
+                          zoomWidth, zoomHeight};
+
+    return zoomRect;
 }
 
 Point2DFloat Camera::getCameraCenter()

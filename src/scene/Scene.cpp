@@ -78,13 +78,13 @@ void Scene::keyHandler(common::MessageData data)
     static float zoom = 1.0;
     if (key == 't')
     {
-        zoom += 0.5;
+        zoom += 0.1;
         camera_->setCameraZoom(zoom);
     }
 
     if (key == 'g')
     {
-        zoom -= 0.5;
+        zoom -= 0.1;
         camera_->setCameraZoom(zoom);
     }
 }
