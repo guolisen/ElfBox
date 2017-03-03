@@ -8,6 +8,7 @@
 #include <memory>
 #include <list>
 #include <common/IObject.h>
+#include "INodeComponent.h"
 
 namespace elfbox
 {
@@ -34,7 +35,7 @@ public:
     virtual bool isVisiable() = 0;
     virtual std::string getNodeName() = 0;
 
-    virtual bool addChild(std::shared_ptr<ISceneNode> childNode) = 0;
+    virtual void addChild(std::shared_ptr<ISceneNode> childNode) = 0;
 };
 
 typedef std::shared_ptr<ISceneNode> SceneNodePtr;

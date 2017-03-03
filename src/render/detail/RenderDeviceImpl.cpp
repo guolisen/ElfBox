@@ -26,12 +26,13 @@ void RenderDeviceImpl::render(float timeStep)
 
         backgroundTexture_ = SDL_CreateTexture(
             (SDL_Renderer*)handle_, SDL_PIXELFORMAT_RGBA8888,
-            SDL_TEXTUREACCESS_TARGET, 4000, 3000);
+            SDL_TEXTUREACCESS_TARGET, 1024, 768);
     }
 
     SDL_Rect viewRect = toSDLRect(camera_->getCameraViewRect());
     SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
 
+    //set Texture
     SDL_SetRenderTarget((SDL_Renderer*)handle_, backgroundTexture_);
     SDL_SetRenderDrawColor((SDL_Renderer*)handle_, 0x0, 0x0, 0x0, 0x0);
     SDL_RenderClear((SDL_Renderer*)handle_);
@@ -55,7 +56,7 @@ void RenderDeviceImpl::render(float timeStep)
     SDL_SetRenderDrawColor((SDL_Renderer*)handle_, 0x0, 0x0, 0x0, 0x0);
     SDL_RenderClear((SDL_Renderer*)handle_);
 
-    SDL_RenderCopy((SDL_Renderer*)handle_, backgroundTexture_, &zoomCameraRect, NULL);
+    SDL_RenderCopy((SDL_Renderer*)handle_, backgroundTexture_, &zoomCameraRect, &viewRect);
     SDL_RenderPresent((SDL_Renderer*)handle_);
 
     update(timeStep);

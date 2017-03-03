@@ -21,6 +21,9 @@
 #include <render/RenderMaterial.h>
 #include <system/SystemEventProcess.h>
 #include <system/detail/SystemEventProcessImpl.h>
+#include <common/ObjectFactory.h>
+#include <scene/Scene.h>
+#include <scene/SceneNodeFactory.h>
 
 namespace elfbox
 {
@@ -101,6 +104,15 @@ void appMain()
     elfbox::common::ContextPtr context = std::make_shared<elfbox::common::Context>();
     context->addComponent(std::make_shared<elfbox::BaseLogger>());
 
+    elfbox::common::ObjectFactoryPtr objectFactory =
+        std::make_shared<elfbox::common::ObjectFactory>();
+    context->addComponent(objectFactory);
+
+    objectFactory->registerFactory<elfbox::scene::IScene>(elfbox::scene::Scene::getFactory());
+    objectFactory->registerFactory<elfbox::scene::ISceneNode>(
+        std::make_shared<elfbox::scene::SceneNodeFactory>(context));
+
+
     elfbox::graphics::GraphicsPtr graphics = std::make_shared<elfbox::graphics::Graphics>(
             std::make_shared<elfbox::graphics::detail::GraphicsImpl>(context));
     context->addComponent(graphics);
@@ -147,82 +159,6 @@ void appMain()
 
     elfbox::common::Application app(0, context);
     app.run();
-
-    /////////////////////////////////////////////////////////
-#if 0
-    elfbox::system::ThreadPoolPtr pool = context->getComponent<elfbox::system::IThreadPool>(nullptr);
-    //pool->createThreads(3);
-
-    pool->attach(std::bind(&testkk), -1);
-    pool->attach(std::bind(&test2), -1);
-    //pool->attach(std::bind(&elfbox::common::Application::start, &app), -1);
-    pool->attach(std::bind(&test3), -1);
-    pool->attach(std::bind(&test4), -1);
-    pool->attach(std::bind(&test5), -1);
-
-    pool->complete(-1);
-
-    auto item = pool->attach(std::bind(&test6), -1);
-    pool->attach(std::bind(&test3), -1);
-    pool->attach(std::bind(&test4), -1);
-    pool->attach(std::bind(&test5), -1);
-
-    pool->waitForJob(item);
-#endif
-
-#if 0
-    elfbox::common::MessageBroadcasterPtr mbp =
-            context->getComponent<elfbox::common::IMessageBroadcaster>(nullptr);
-    mbp->subscribe(elfbox::common::TEST_MESSAGE,
-                   std::bind(&messageHandler, std::placeholders::_1));
-    mbp->subscribe(elfbox::common::TEST_MESSAGE,
-                   std::bind(&messageHandler, std::placeholders::_1));
-
-
-    elfbox::system::ThreadPoolPtr pool =
-            context->getComponent<elfbox::system::IThreadPool>(nullptr);
-
-    pool->attach(std::bind(&testSend, std::placeholders::_1), -1);
-    pool->complete(-1);
-#endif
-
-#if 0
-    elfbox::system::TimeServicePtr time =
-        context->getComponent<elfbox::system::ITimeService>(nullptr);
-    time->reset();
-    uint32_ start = time->getMilliseconds();
-    time->sleep(1000);
-    uint32_ end = time->getMilliseconds();
-    printf("GetMilliseconds: %d\n", end - start);
-
-    start = time->getMilliseconds();
-    time->sleep(1000);
-    end = time->getMilliseconds();
-    printf("GetMilliseconds: %d\n", end - start);
-
-    start = time->getMicroseconds();
-    time->sleep(1000);
-    end = time->getMicroseconds();
-    printf("GetMicroseconds: %d\n", end - start);
-
-    printf("!!!!Start TimeOut1\n");
-    gStart = time->getMicroseconds();
-    time->createTimer(std::bind(&TimerHandler, std::placeholders::_1), 5000, true);
-
-    //printf("!!!!Start TimeOut2\n");
-    //gStart2 = time->getMicroseconds();
-    //time->createTimer(std::bind(&TimerHandler2, std::placeholders::_1), 3000, true);
-
-    //gStart2 = time->getMicroseconds();
-    //time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 7000, false);
-    //time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 2000, true);
-    //time->createTimer(std::bind(&TimerHandler3, std::placeholders::_1), 9000, true);
-
-    elfbox::system::ThreadPoolPtr pool =
-        context->getComponent<elfbox::system::IThreadPool>(nullptr);
-
-    pool->complete(-1);
-#endif
 
     printf("sddddd\n");
 }

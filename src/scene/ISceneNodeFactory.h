@@ -37,7 +37,7 @@ public:
                                            const RectFloat& sourceRect,
                                            int zorder)
     {
-        return createNode(render::ImageDrawable::getFactory(),
+        return createNode(NodeType::getFactory(),
                           nodeName, resFileName, worldRect, sourceRect, zorder);
     }
 

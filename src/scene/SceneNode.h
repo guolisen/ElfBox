@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <list>
+#include <map>
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <render/IDrawable.h>
@@ -16,6 +17,9 @@ namespace elfbox
 {
 namespace scene
 {
+
+typedef std::map<std::string, NodeComponentPtr> ComponentMap;
+
 class SceneNode : public ISceneNode
 {
 ELF_OBJECT(SceneNode, ISceneNode);
@@ -45,10 +49,17 @@ public:
         return nodeName_;
     }
 
-    virtual bool addChild(std::shared_ptr<ISceneNode> childNode)
+    virtual void addChild(std::shared_ptr<ISceneNode> childNode)
     {
         childList_.push_back(childNode);
-        return true;
+    }
+
+    virtual void addComponent(const std::string& componentName,
+                              NodeComponentPtr component)
+    {
+        component->setDrawable(drawable_);
+        component->setActivate(true);
+        componentMap_.insert(std::make_pair(componentName, component));
     }
 
 private:
@@ -57,6 +68,7 @@ private:
     render::DrawablePtr drawable_;
     Vector2DFloat worldVec_;
     std::list<std::shared_ptr<ISceneNode>> childList_;
+    ComponentMap componentMap_;
 };
 }
 }

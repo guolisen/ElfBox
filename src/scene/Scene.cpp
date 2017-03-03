@@ -17,6 +17,7 @@ namespace scene
 Scene::Scene(common::ContextPtr context) :
     context_(context),
     messageBroadcaster_(context_->getComponent<common::IMessageBroadcaster>(nullptr)),
+    renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr)),
     camera_(std::make_shared<Camera>(
     context, Point2DFloat(0.0f, 0.0f), 1.0f, 576.0f, 16.0f / 9.0f))
 {
@@ -42,10 +43,7 @@ bool Scene::load(const std::string& fileName)
 bool Scene::initialize()
 {
     camera_->setPosition(Point2DFloat(8500, 800));
-    render::RenderDevicePtr renderDevice =
-        context_->getComponent<render::IRenderDevice>(nullptr);
-
-    renderDevice->setCamera(camera_);
+    renderDevice_->setCamera(camera_);
 
     messageBroadcaster_->subscribe(
         common::SYSTEM_EVENT_KEYDOWN,

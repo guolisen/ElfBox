@@ -7,17 +7,21 @@
 
 #include <common/IObject.h>
 #include <common/Context.h>
+#include <common/IMessageBroadcaster.h>
+#include <common/IObjectFactory.h>
+#include <render/IRenderDevice.h>
+
 #include "ISceneNode.h"
 #include "ICamera.h"
-#include <common/IMessageBroadcaster.h>
+#include "IScene.h"
 
 namespace elfbox
 {
 namespace scene
 {
-class Scene : public common::IObject
+class Scene : public IScene
 {
-ELF_OBJECT(Scene, common::IObject);
+ELF_OBJECT(Scene, IScene);
 public:
     Scene(common::ContextPtr context);
     virtual ~Scene() = default;
@@ -26,13 +30,21 @@ public:
     virtual void update(float timeStep);
     virtual bool load(const std::string& fileName);
 
-    void keyHandler(common::MessageData data);
+    static common::IObjectPtr getFactory()
+    {
+        return std::make_shared<common::ObjectFactoryWrapper<Scene>>();
+    }
 private:
+    void keyHandler(common::MessageData data);
+
     common::ContextPtr context_;
     common::MessageBroadcasterPtr messageBroadcaster_;
+    render::RenderDevicePtr renderDevice_;
     SceneNodePtr rootNode_;
     CameraPtr camera_;
 };
+
+
 }
 }
 

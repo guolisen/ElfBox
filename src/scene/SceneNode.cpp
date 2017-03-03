@@ -23,6 +23,13 @@ bool SceneNode::initialize()
 
 void SceneNode::update(float timeStep)
 {
+    for (auto& component : componentMap_)
+    {
+        if (component.second->isActivate())
+            component.second->update(timeStep);
+    }
+
+    //componentMap_
 }
 
 void SceneNode::translate()
