@@ -8,6 +8,7 @@ file(GLOB_RECURSE GRAPHICS_SOURCES ./graphics/*.cpp)
 file(GLOB_RECURSE UTIL_SOURCES ./util/*.cpp)
 file(GLOB_RECURSE RENDER_SOURCES ./render/*.cpp)
 file(GLOB_RECURSE SCENE_SOURCES ./scene/*.cpp)
+file(GLOB_RECURSE SM_SOURCES ./sm/*.cpp)
 file(GLOB SYSTEM_SOURCES ./system/*.cpp)
 file(GLOB SYSTEM_DETAIL_SOURCES ./system/detail/*.cpp)
 
@@ -27,4 +28,4 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 
 add_library(libelfbox ${HEADERS} ${ROOT_SOURCES} ${SYSTEM_SOURCES} ${COMMON_SOURCES}
         ${GRAPHICS_SOURCES} ${UTIL_SOURCES} ${SYSTEM_DETAIL_SOURCES} ${RENDER_SOURCES}
-        ${SCENE_SOURCES})
+        ${SCENE_SOURCES} ${SM_SOURCES})

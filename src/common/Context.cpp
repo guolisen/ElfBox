@@ -18,5 +18,14 @@ void Context::addComponent(std::shared_ptr<IObject> obj)
 
     componentMap_.insert(std::make_pair(objName, obj));
 }
+
+IObjectPtr Context::getComponent(const std::string &compoentType)
+{
+    ComponentMapType::iterator iter = componentMap_.find(compoentType);
+    if (iter == componentMap_.end())
+        return IObjectPtr();
+
+    return iter->second;
+}
 }
 }

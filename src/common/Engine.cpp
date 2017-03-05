@@ -28,17 +28,6 @@ Engine::~Engine()
     ELFBOX_LOGERROR(log_, "D!!!!");
 }
 
-void Engine::threadTest(unsigned id)
-{
-    drawable2_->getData().worldRect.x += 10;
-    if (drawable2_->getData().worldRect.x > 400)
-        drawable2_->getData().worldRect.x = 0;
-
-    drawable2_->getData().worldRect.y += 1;
-    if (drawable2_->getData().worldRect.y > 400)
-        drawable2_->getData().worldRect.y = 0;
-}
-
 bool Engine::initialize()
 {
     graphics::GraphicsPtr graphics =
@@ -53,63 +42,9 @@ bool Engine::initialize()
 
     window->createWindow("Test1", 1024, 768, 0);
 
-    scene_.initialize();
-    scene_.load("E:/code/s/map/T22.tmx");
-    scene_.update(0.0);
-
-#if 0
-    //////1
-    drawable1_ = std::make_shared<render::ImageDrawable>(context_);
-
-    elfbox::system::ResourceCachePtr cache =
-        context_->getComponent<elfbox::system::IResourceCache>(nullptr);
-    elfbox::render::RenderMaterialPtr material =
-        cache->getResource<elfbox::render::IRenderMaterial>(
-            std::string("E:/code/ElfClion/ElfBox/cmake-build-debug/res/1.jpg"));
-    if (!material)
-    {
-        ELFBOX_LOGERROR(log_, "1.jpg read error!");
-        return false;
-    }
-    drawable1_->setMaterial(material);
-    renderDevice_->addDrawable(drawable1_);
-
-    ////2
-    drawable2_ = std::make_shared<render::ImageDrawable>(context_);
-    elfbox::render::RenderMaterialPtr material2 =
-        cache->getResource<elfbox::render::IRenderMaterial>(
-            std::string("E:/code/ElfClion/ElfBox/cmake-build-debug/res/2.jpg"));
-    if (!material2)
-    {
-        ELFBOX_LOGERROR(log_, "2.jpg read error!");
-        return false;
-    }
-    drawable2_->setMaterial(material2);
-    drawable2_->getData().worldRect.x = 200;
-    renderDevice_->addDrawable(drawable2_);
-
-    //////3
-    drawable3_ = std::make_shared<render::ImageDrawable>(context_);
-
-    elfbox::render::RenderMaterialPtr material3 =
-        cache->getResource<elfbox::render::IRenderMaterial>(
-        std::string("E:/code/ElfClion/ElfBox/cmake-build-debug/res/1.jpg"));
-    if (!material3)
-    {
-        ELFBOX_LOGERROR(log_, "1.jpg 2 read error!");
-        return false;
-    }
-    drawable3_->setMaterial(material3);
-    drawable3_->getData().worldRect.x = 100;
-    drawable3_->getData().worldRect.y = 200;
-
-    renderDevice_->addDrawable(drawable3_);
-
-    system::TimeServicePtr timeService =
-        context_->getComponent<system::ITimeService>(nullptr);
-    timeService->createTimer(std::bind(&Engine::threadTest,
-                                       this, std::placeholders::_1), 1000, true);
-#endif
+    //scene_.initialize();
+    //scene_.load("E:/code/s/map/T22.tmx");
+    //scene_.update(0.0);
 
 
     return true;
@@ -168,8 +103,8 @@ void Engine::run()
 
     while(true) {
         systemEventProcess->run();
-
         messageBroadcaster->notifyMessage(-1);
+
         renderDevice_->render(timeStep_);
         applyTimeStep();
     }

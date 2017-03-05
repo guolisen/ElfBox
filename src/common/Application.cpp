@@ -24,6 +24,10 @@
 #include <common/ObjectFactory.h>
 #include <scene/Scene.h>
 #include <scene/SceneNodeFactory.h>
+#include <sm/State.h>
+#include <sm/StateEvent.h>
+#include <sm/StateMachine.h>
+#include <sm/detail/StateMachineImpl.h>
 
 namespace elfbox
 {
@@ -108,10 +112,14 @@ void appMain()
         std::make_shared<elfbox::common::ObjectFactory>();
     context->addComponent(objectFactory);
 
-    objectFactory->registerFactory<elfbox::scene::IScene>(elfbox::scene::Scene::getFactory());
+    objectFactory->registerFactory<elfbox::scene::IScene>(
+        elfbox::scene::Scene::getFactory());
     objectFactory->registerFactory<elfbox::scene::ISceneNode>(
         std::make_shared<elfbox::scene::SceneNodeFactory>(context));
-
+    objectFactory->registerFactory<elfbox::sm::IState>(
+        elfbox::sm::State::getFactory());
+    //objectFactory->registerFactory<elfbox::sm::IStateEvent>(
+    //    elfbox::sm::StateEvent::getFactory());
 
     elfbox::graphics::GraphicsPtr graphics = std::make_shared<elfbox::graphics::Graphics>(
             std::make_shared<elfbox::graphics::detail::GraphicsImpl>(context));
@@ -154,8 +162,19 @@ void appMain()
             std::make_shared<elfbox::system::detail::SystemEventProcessImpl>(context));
     context->addComponent(systemEventProcess);
 
+    elfbox::sm::StateMachinePtr stateMachine =
+        std::make_shared<elfbox::sm::StateMachine>(
+            std::make_shared<elfbox::sm::detail::StateMachineImpl>(context));
+    context->addComponent(stateMachine);
+
     context->addComponent(std::make_shared<elfbox::common::Engine>(context));
 
+
+
+    stateMachine->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
+    stateMachine->prcessEvent(elfbox::sm::StateEvent("startEvent"));
+    stateMachine->prcessEvent(elfbox::sm::StateEvent("turnOn"));
+    stateMachine->prcessEvent(elfbox::sm::StateEvent("turnOff"));
 
     elfbox::common::Application app(0, context);
     app.run();

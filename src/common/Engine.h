@@ -24,12 +24,13 @@ public:
 
     virtual bool initialize();
     virtual void run();
-    virtual void applyTimeStep();
+
     virtual void render();
     virtual void update();
 
-    void threadTest(unsigned id);
 private:
+
+    virtual void applyTimeStep();
     ContextPtr context_;
     LoggerPtr log_;
     render::RenderDevicePtr renderDevice_;

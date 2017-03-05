@@ -3,6 +3,8 @@
 //
 #include <SDL.h>
 #include <graphics/IGraphics.h>
+#include <scene/Camera.h>
+#include <system/IWindow.h>
 #include "RenderDeviceImpl.h"
 
 namespace elfbox
@@ -11,8 +13,10 @@ namespace render
 {
 namespace detail
 {
+
 RenderDeviceImpl::RenderDeviceImpl(common::ContextPtr context):
-    context_(context), handle_(nullptr), fps_(0.0), backgroundTexture_(nullptr)
+    context_(context), handle_(nullptr), fps_(0.0),
+    backgroundTexture_(nullptr)
 {
 }
 
@@ -27,6 +31,18 @@ void RenderDeviceImpl::render(float timeStep)
         backgroundTexture_ = SDL_CreateTexture(
             (SDL_Renderer*)handle_, SDL_PIXELFORMAT_RGBA8888,
             SDL_TEXTUREACCESS_TARGET, 1024, 768);
+
+        if (!camera_)
+        {
+            system::WindowPtr window =
+                context_->getComponent<system::IWindow>(nullptr);
+
+            float winWidth = window->getWindowWidth();
+            float winHeight = window->getWindowHeight();
+            camera_ = std::make_shared<scene::Camera>(
+                context_, Point2DFloat(0, 0), 1.0,
+                winHeight, winWidth / winHeight);
+        }
     }
 
     SDL_Rect viewRect = toSDLRect(camera_->getCameraViewRect());

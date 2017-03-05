@@ -21,21 +21,26 @@ public:
     virtual ~Context() = default;
 
     void addComponent(std::shared_ptr<IObject> obj);
+    IObjectPtr getComponent(const std::string& compoentType);
 
     template<class T>
     std::shared_ptr<T> getComponent(std::function<void(IObjectPtr)> func)
     {
-        ComponentMapType::iterator iter = componentMap_.find(T::GetTypeNameStatic());
-        if (iter == componentMap_.end())
-            return std::shared_ptr<T>();
-
-        std::shared_ptr<T> targetObject = std::dynamic_pointer_cast<T>(iter->second);
+        IObjectPtr object = getComponent(T::GetTypeNameStatic());
+        std::shared_ptr<T> targetObject = std::dynamic_pointer_cast<T>(object);
         if (func)
             func(targetObject);
 
         return targetObject;
     }
 
+    template<class T>
+    std::shared_ptr<T> operator[] (const std::string& component)
+    {
+        IObjectPtr object = getComponent(component);
+        std::shared_ptr<T> targetObject = std::dynamic_pointer_cast<T>(object);
+        return targetObject;
+    }
 private:
     ComponentMapType componentMap_;
 };
