@@ -11,7 +11,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <common/MessageId.h>
-#include <common/detail/MessageVariant.h>
+#include <util/DataContainer.h>
 #include <common/IMessageBroadcaster.h>
 
 namespace elfbox

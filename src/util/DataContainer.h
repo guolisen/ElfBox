@@ -30,26 +30,26 @@ T lexical_cast(const std::string& str)
     return var;
 }
 
-class MessageVariant
+class DataContainer
 {
 public:
-    MessageVariant(): value_(NoValue) {}
-    virtual ~MessageVariant() = default;
+    DataContainer(): value_(NoValue) {}
+    virtual ~DataContainer() = default;
 
     template <class T>
-    MessageVariant(T value)
+    DataContainer(T value)
     {
         setValue(value);
     }
 
-    MessageVariant(const MessageVariant& other)
+    DataContainer(const DataContainer& other)
     {
         value_ = other.value_;
     }
 
-    MessageVariant(MessageVariant&& other)
+    DataContainer(DataContainer&& other)
     {
-        printf("MessageVariant rvalues\n");
+        printf("DataContainer rvalues\n");
         value_ = std::move(other.value_);
     }
 
@@ -66,13 +66,13 @@ public:
     }
 
     template <class T>
-    MessageVariant& operator =(T rhs)
+    DataContainer& operator =(T rhs)
     {
         setValue(rhs);
         return *this;
     }
 
-    MessageVariant& operator =(const MessageVariant& other)
+    DataContainer& operator =(const DataContainer& other)
     {
         value_ = other.value_;
         return *this;
@@ -89,12 +89,12 @@ private:
 };
 
 template <>
-inline void MessageVariant::setValue<std::string>(std::string value)
+inline void DataContainer::setValue<std::string>(std::string value)
 {
     value_ = std::move(value);
 }
 template <>
-inline std::string MessageVariant::getValue<std::string>()
+inline std::string DataContainer::getValue<std::string>()
 {
     return value_;
 }

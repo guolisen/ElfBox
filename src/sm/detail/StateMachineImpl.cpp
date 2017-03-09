@@ -48,6 +48,7 @@ void StateMachineImpl::update(float timeStep)
 
 bool StateMachineImpl::load(const std::string &fileName)
 {
+    //TODO: empty pointer check
     tinyxml2::XMLDocument stateMachineXml;
     auto ret = stateMachineXml.LoadFile(fileName.c_str());
     if (ret)

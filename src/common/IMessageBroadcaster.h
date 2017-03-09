@@ -11,14 +11,14 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <common/MessageId.h>
-#include <common/detail/MessageVariant.h>
+#include <util/DataContainer.h>
 
 namespace elfbox
 {
 namespace common
 {
 
-typedef std::unordered_map<std::string, detail::MessageVariant> MessageData;
+typedef std::unordered_map<std::string, detail::DataContainer> MessageData;
 typedef std::function<void(MessageData)> MessageHandler;
 typedef std::unordered_map<int, MessageHandler> SubscriptionMap;
 
