@@ -98,6 +98,8 @@ const Tmx::Image* SceneTmxParserImpl::getTileImage(int tileGId, const Tmx::Tiles
 
         return tile->GetImage();
     }
+
+    return nullptr;
 }
 
 SceneNodePtr SceneTmxParserImpl::Parser()

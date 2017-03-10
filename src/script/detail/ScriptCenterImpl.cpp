@@ -8,9 +8,12 @@ extern "C"
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+#include <tolua.h>
 }
 #include "ScriptFunctionImpl.h"
 #include "ScriptCenterImpl.h"
+
+extern "C" int tolua_tarray_open (lua_State* tolua_S);
 
 namespace elfbox
 {
@@ -31,6 +34,7 @@ bool ScriptCenterImpl::initialize()
     }
 
     luaL_openlibs(luaState_);
+    tolua_tarray_open(luaState_);
     return true;
 }
 

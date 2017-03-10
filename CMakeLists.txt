@@ -23,6 +23,7 @@ find_package(TinyXML2)
 find_package(ZLIB)
 find_package(SDL2)
 find_package(LUA)
+find_package(TOLUA)
 
 #set(SDL2_INCLUDE_DIR "E:/code/lib/SDL2-2.0.5/include")
 #set(SDL2_IMAGE_INCLUDE_DIR "E:/code/lib/SDL2_image-2.0.1/include")
@@ -36,6 +37,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-
 
 add_executable(run_tests test/testmain.cpp)
 
+include_directories(${TOLUA_INCLUDE_DIR})
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${TMXPARSER_INCLUDE_DIR})
 include_directories(${TINYXML2_INCLUDE_DIR})
@@ -49,7 +51,8 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 #	${SDL_LIBRARY} ${SDL_IMAGE_LIBRARY} ${SDLMAIN_LIBRARY})
 target_link_libraries(run_tests libelfbox
 		 ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY}
-		 ${TMXPARSER_LIBRARIES} ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES} ${LUA_LIBRARIES})
+		 ${TMXPARSER_LIBRARIES} ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES} ${LUA_LIBRARIES}
+		 ${TOLUA_LIBRARIES})
 
 message("@@@@ ${TMXPARSER_INCLUDE_DIR}")
 message("@@@@ ${LUA_LIBRARIES}")
