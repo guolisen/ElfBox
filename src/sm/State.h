@@ -8,6 +8,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <common/IObjectFactory.h>
+#include <script/IScriptCenter.h>
 #include "IState.h"
 
 namespace elfbox
@@ -25,6 +26,18 @@ public:
     {
         stateName_ = stateName;
     }
+    virtual void setOnEntry(const std::string& onEntryName)
+    {
+        onEntryFunc_ = onEntryName;
+    }
+    virtual void setOnUpdate(const std::string& onUpdateName)
+    {
+        onUpdateFunc_ = onUpdateName;
+    }
+    virtual void setOnExit(const std::string& onExitName)
+    {
+        onExitFunc_ = onExitName;
+    }
 
     virtual const std::string& getStateName() const
     {
@@ -37,10 +50,17 @@ public:
     }
 
     virtual void onEntry();
+    virtual void onUpdate();
     virtual void onExit();
 private:
+    void runScriptFunction(const std::string& action);
+
     common::ContextPtr context_;
+    script::ScriptCenterPtr scriptCenter_;
     std::string stateName_;
+    std::string onEntryFunc_;
+    std::string onUpdateFunc_;
+    std::string onExitFunc_;
 };
 
 }

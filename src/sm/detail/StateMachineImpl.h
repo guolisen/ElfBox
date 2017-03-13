@@ -11,6 +11,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <common/IObjectFactory.h>
+#include <script/IScriptCenter.h>
 #include "../IState.h"
 #include "../StateEvent.h"
 #include "../IStateMachine.h"
@@ -37,8 +38,11 @@ public:
     virtual void setInitialState(StatePtr state);
 
 private:
+    void runScriptFunction(const std::string& action);
+
     common::ContextPtr context_;
     common::ObjectFactoryPtr objectFactory_;
+    script::ScriptCenterPtr scriptCenter_;
     std::vector<StateRow> stateTable_;
     std::map<std::string, StatePtr> stateMap_;
     StatePtr currentState_;

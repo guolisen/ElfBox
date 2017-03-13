@@ -1,0 +1,39 @@
+
+$#include "StateMachine.h"
+$#include <script/detail/ScriptUtil.h>
+
+${
+using namespace elfbox;
+using namespace elfbox::sm;
+
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+$}
+
+class StateMachinePtr
+{
+public:
+    IStateMachine* get() const;
+}
+
+class IStateMachine
+{
+    virtual bool load(const std::string& fileName);
+    virtual void addRow(const StateRow& stateRow);
+    virtual bool prcessEvent(const StateEvent& event);
+    virtual void update(float timeStep);
+    virtual bool start();
+    virtual void setInitialState(StatePtr state);
+};
+
+tolua_readonly tolua_property__get_set IStateMachine* stateMachine;
+
+${
+
+#define TOLUA_DISABLE_tolua_get_stateMachine_ptr
+static int tolua_get_stateMachine_ptr(lua_State* tolua_S)
+{
+  return toluaGetCompoent<IStateMachine>(tolua_S);
+}
+
+$}

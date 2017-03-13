@@ -1,0 +1,18 @@
+$#include "StateEvent.h"
+
+${
+using namespace elfbox;
+using namespace elfbox::sm;
+$}
+
+class StateEvent : public common::IObject
+{
+    StateEvent();
+    StateEvent(const std::string& eventName);
+    virtual ~StateEvent();
+
+    virtual void setEventName(const std::string& eventName);
+    virtual const std::string& getEventName() const;
+};
+
+

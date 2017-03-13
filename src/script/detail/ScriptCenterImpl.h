@@ -40,13 +40,16 @@ public:
     virtual ScriptFunctionPtr getFunction(const std::string &functionName);
 
 private:
+    void setContext();
     bool findLuaFunction(const std::string &fileName);
     std::vector<std::string> stringSplit(const std::string& str, const std::string& flag);
 
     common::ContextPtr context_;
     lua_State* luaState_;
 };
+
 }
+
 }
 }
 

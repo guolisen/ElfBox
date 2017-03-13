@@ -15,7 +15,8 @@ namespace detail
 
 StateMachineImpl::StateMachineImpl(common::ContextPtr context) :
     context_(context),
-    objectFactory_(context_->getComponent<common::IObjectFactory>(nullptr))
+    objectFactory_(context_->getComponent<common::IObjectFactory>(nullptr)),
+    scriptCenter_(context_->getComponent<script::IScriptCenter>(nullptr))
 {
 }
 
@@ -32,10 +33,10 @@ bool StateMachineImpl::prcessEvent(const StateEvent& event)
             (row.transitionEvent == event.getEventName()))
         {
             row.currentState->onExit();
-            //row.action(e);
             std::cout << "State: " << currentState_->getStateName() << " " << row.action << std::endl;
-            row.nextState->onEntry();
+            runScriptFunction(row.action);
             currentState_ = row.nextState;
+            row.nextState->onEntry();
         }
     }
 
@@ -44,6 +45,10 @@ bool StateMachineImpl::prcessEvent(const StateEvent& event)
 
 void StateMachineImpl::update(float timeStep)
 {
+    if (!currentState_)
+        return;
+
+    currentState_->onUpdate();
 }
 
 bool StateMachineImpl::load(const std::string &fileName)
@@ -58,7 +63,15 @@ bool StateMachineImpl::load(const std::string &fileName)
     }
 
     tinyxml2::XMLElement* root = stateMachineXml.RootElement();
-    tinyxml2::XMLElement* state = root->FirstChildElement("state");
+
+    const tinyxml2::XMLAttribute* scriptFile = root->FirstAttribute();
+    if (scriptFile)
+    {
+        scriptCenter_->execute(scriptFile->Value());
+    }
+
+    tinyxml2::XMLElement* sm = root->FirstChildElement("stateSet");
+    tinyxml2::XMLElement* state = sm->FirstChildElement("state");
     while (state)
     {
         const tinyxml2::XMLAttribute* stateNameAttribute = state->FirstAttribute();
@@ -66,7 +79,6 @@ bool StateMachineImpl::load(const std::string &fileName)
 
         std::string stateName = stateNameAttribute->Value();
         stateObject->setStateName(stateName);
-        stateMap_.insert(std::make_pair(stateName, stateObject));
 
         const tinyxml2::XMLAttribute* initTag = stateNameAttribute->Next();
         if (initTag && std::string(initTag->Name()) == "InitialState")
@@ -74,10 +86,27 @@ bool StateMachineImpl::load(const std::string &fileName)
             currentState_ = stateObject;
         }
 
+        tinyxml2::XMLElement* onOnEntryMethod = state->FirstChildElement("onEntry");
+        if (onOnEntryMethod)
+        {
+            stateObject->setOnEntry(onOnEntryMethod->GetText());
+        }
+        tinyxml2::XMLElement* onOnUpdateMethod = onOnEntryMethod->NextSiblingElement("onUpdate");
+        if (onOnUpdateMethod)
+        {
+            stateObject->setOnUpdate(onOnUpdateMethod->GetText());
+        }
+        tinyxml2::XMLElement* onOnExitMethod = onOnUpdateMethod->NextSiblingElement("onExit");
+        if (onOnExitMethod)
+        {
+            stateObject->setOnExit(onOnExitMethod->GetText());
+        }
+
+        stateMap_.insert(std::make_pair(stateName, stateObject));
         state = state->NextSiblingElement();
     }
 
-    tinyxml2::XMLElement* stateRow = root->NextSiblingElement();
+    tinyxml2::XMLElement* stateRow = sm->NextSiblingElement();
     tinyxml2::XMLElement* row = stateRow->FirstChildElement("row");
     while (row)
     {
@@ -121,6 +150,18 @@ bool StateMachineImpl::start()
 void StateMachineImpl::setInitialState(StatePtr state)
 {
     currentState_ = state;
+}
+
+void StateMachineImpl::runScriptFunction(const std::string &action)
+{
+    elfbox::script::ScriptFunctionPtr actionFunc = scriptCenter_->getFunction(action);
+    if (actionFunc && actionFunc->beginCall())
+    {
+        actionFunc->endCall();
+        return;
+    }
+
+    printf("StateMachine get action(%s) Error!", action.c_str());
 }
 
 }

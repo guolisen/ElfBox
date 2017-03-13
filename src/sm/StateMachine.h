@@ -10,7 +10,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include "IState.h"
-#include "IStateEvent.h"
+#include "StateEvent.h"
 #include "IStateMachine.h"
 
 namespace elfbox

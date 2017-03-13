@@ -1,0 +1,11 @@
+$#include "ScriptUtil.h"
+
+
+${
+using namespace elfbox;
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+using namespace elfbox::common;
+$}
+
+Context* GetContext(lua_State* L);

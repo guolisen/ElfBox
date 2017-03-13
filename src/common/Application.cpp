@@ -79,6 +79,14 @@ bool Application::setup()
     timeService->initialize();
     timeService->reset();
 
+    script::ScriptCenterPtr scriptCenter =
+        context_->getComponent<script::IScriptCenter>(nullptr);
+    scriptCenter->initialize();
+
+    mainStateMachine_ = context_->getComponent<sm::IStateMachine>(nullptr);
+    mainStateMachine_->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
+
+    scriptCenter->initialize();
     elfBoxEngine_->initialize();
 
     if (applicationCore_)
@@ -90,6 +98,8 @@ bool Application::setup()
 bool Application::start()
 {
     ELFBOX_LOGDEBUG(log_, "Application::start() %d %s", 111, "OK");
+
+    mainStateMachine_->start();
     if (applicationCore_)
         applicationCore_->start();
     return false;
@@ -164,39 +174,17 @@ void appMain()
             std::make_shared<elfbox::system::detail::SystemEventProcessImpl>(context));
     context->addComponent(systemEventProcess);
 
-    elfbox::sm::StateMachinePtr stateMachine =
-        std::make_shared<elfbox::sm::StateMachine>(
-            std::make_shared<elfbox::sm::detail::StateMachineImpl>(context));
-    context->addComponent(stateMachine);
-
     elfbox::script::ScriptCenterPtr scriptCenter =
         std::make_shared<elfbox::script::ScriptCenter>(context,
             std::make_shared<elfbox::script::detail::ScriptCenterImpl>(context));
     context->addComponent(scriptCenter);
 
+    elfbox::sm::StateMachinePtr stateMachine =
+        std::make_shared<elfbox::sm::StateMachine>(
+        std::make_shared<elfbox::sm::detail::StateMachineImpl>(context));
+    context->addComponent(stateMachine);
+
     context->addComponent(std::make_shared<elfbox::common::Engine>(context));
-
-
-    scriptCenter->initialize();
-    scriptCenter->execute("E:/code/ElfClion/ElfBox/res/hello.lua");
-    elfbox::script::ScriptFunctionPtr func = scriptCenter->getFunction("testfunc");
-    if (func->beginCall())
-    {
-        func->pushInt(23);
-        func->pushInt(35);
-        func->endCall();
-    }
-
-    elfbox::script::ScriptFunctionPtr func1 = scriptCenter->getFunction("t.test1");
-    if (func1->beginCall())
-    {
-        func1->pushInt(23);
-        func1->endCall();
-    }
-    //stateMachine->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
-    //stateMachine->prcessEvent(elfbox::sm::StateEvent("startEvent"));
-    //stateMachine->prcessEvent(elfbox::sm::StateEvent("turnOn"));
-    //stateMachine->prcessEvent(elfbox::sm::StateEvent("turnOff"));
 
     elfbox::common::Application app(0, context);
     app.run();

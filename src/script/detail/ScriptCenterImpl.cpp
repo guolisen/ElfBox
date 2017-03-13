@@ -8,12 +8,18 @@ extern "C"
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
-#include <tolua.h>
 }
+
+#include <tolua++.h>
+
 #include "ScriptFunctionImpl.h"
 #include "ScriptCenterImpl.h"
-
-extern "C" int tolua_tarray_open (lua_State* tolua_S);
+ 
+extern int tolua_IObject_open (lua_State* tolua_S);
+extern int tolua_Context_open (lua_State* tolua_S);
+extern int tolua_ScriptCenter_open (lua_State* tolua_S);
+extern int tolua_StateMachine_open (lua_State* tolua_S);
+extern int tolua_StateEvent_open(lua_State* tolua_S);
 
 namespace elfbox
 {
@@ -34,7 +40,15 @@ bool ScriptCenterImpl::initialize()
     }
 
     luaL_openlibs(luaState_);
-    tolua_tarray_open(luaState_);
+
+    tolua_IObject_open (luaState_);
+    tolua_Context_open (luaState_);
+    tolua_StateMachine_open (luaState_);
+    tolua_ScriptCenter_open (luaState_);
+    tolua_StateEvent_open (luaState_);
+
+    setContext();
+
     return true;
 }
 
@@ -165,6 +179,13 @@ std::vector<std::string> ScriptCenterImpl::stringSplit(
 
     return result;
 }
+
+void ScriptCenterImpl::setContext()
+{
+    tolua_pushusertype(luaState_, static_cast<void*>(context_.get()), "Context");
+    lua_setglobal(luaState_, ".context");
+}
+
 }
 }
 }

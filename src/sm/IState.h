@@ -18,9 +18,13 @@ ELF_OBJECT(IState, common::IObject);
 public:
     virtual ~IState() = default;
     virtual void setStateName(const std::string& stateName) = 0;
+    virtual void setOnEntry(const std::string& onEntryName) = 0;
+    virtual void setOnUpdate(const std::string& onEntryName) = 0;
+    virtual void setOnExit(const std::string& onExitName) = 0;
     virtual const std::string& getStateName() const = 0;
 
     virtual void onEntry() = 0;
+    virtual void onUpdate() = 0;
     virtual void onExit() = 0;
 };
 

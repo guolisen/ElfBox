@@ -2,6 +2,14 @@
 // Created by Lewis on 2017/3/8.
 //
 
+extern "C"
+{
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+}
+
+#include <tolua++.h>
 #include "ScriptFunctionImpl.h"
 
 namespace elfbox
@@ -82,13 +90,13 @@ void ScriptFunctionImpl::pushDouble(double value)
 void ScriptFunctionImpl::pushString(const std::string &string)
 {
     ++numArguments_;
-    //tolua_pushurho3dstring(luaState_, string);
+    tolua_pushstring(luaState_, string.c_str());
 }
 
 void ScriptFunctionImpl::pushUserType(void* userType, const char* typeName)
 {
     ++numArguments_;
-    //tolua_pushusertype(luaState_, userType, typeName);
+    tolua_pushusertype(luaState_, userType, typeName);
 }
 
 void ScriptFunctionImpl::pushLuaTable(const std::string &tableName)

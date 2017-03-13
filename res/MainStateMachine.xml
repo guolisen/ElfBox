@@ -1,24 +1,25 @@
-<?xml version="1.0"?>  
+<?xml version="1.0"?>
+<stateMachine scriptFile = "E:/code/ElfClion/ElfBox/res/smScript.lua">
 <stateSet>  
 	<state name = "start" InitialState = "true">
-		<onEntry></onEntry>
-		<onUpdate></onUpdate>
-		<onExit></onExit>
+		<onEntry>stateStart.onEntry</onEntry>
+		<onUpdate>stateStart.onUpdate</onUpdate>
+		<onExit>stateStart.onExit</onExit>
 	</state>
 	<state name = "on">
-		<onEntry></onEntry>
-		<onUpdate></onUpdate>
-		<onExit></onExit>
+		<onEntry>stateOn.onEntry</onEntry>
+		<onUpdate>stateOn.onUpdate</onUpdate>
+		<onExit>stateOn.onExit</onExit>
 	</state>
 	<state name = "off">
-		<onEntry></onEntry>
-		<onUpdate></onUpdate>
-		<onExit></onExit>
+	    <onEntry>stateOff.onEntry</onEntry>
+		<onUpdate>stateOff.onUpdate</onUpdate>
+		<onExit>stateOff.onExit</onExit>
 	</state>
 </stateSet>  
 <StateRow>  
-	<row currentState="start" event="startEvent" nextState="off" action="123" guard="321" />
-	<row currentState="off" event="turnOn" nextState="on" action="123" guard="321" />
-	<row currentState="on" event="turnOff" nextState="off" action="123" guard="312" />
+	<row currentState="start" event="startEvent" nextState="off" action="startEvent.action" guard="321" />
+	<row currentState="off" event="turnOnEvent" nextState="on" action="turnOnEvent.action" guard="321" />
+	<row currentState="on" event="turnOffEvent" nextState="off" action="turnOffEvent.action" guard="312" />
 </StateRow>
-
+</stateMachine>

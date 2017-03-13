@@ -9,6 +9,7 @@
 #include <common/Context.h>
 #include "IState.h"
 #include "IStateEvent.h"
+#include "StateEvent.h"
 
 namespace elfbox
 {

@@ -16,6 +16,7 @@ class StateEvent :  public common::IObject
 {
 ELF_OBJECT(StateEvent, common::IObject);
 public:
+    StateEvent():eventName_("") {}
     StateEvent(const std::string& eventName);
     virtual ~StateEvent() = default;
 

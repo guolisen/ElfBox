@@ -11,10 +11,28 @@ function testfunc(param1, param2)
 print("Hello Lua function!!" .. param1 .. " " .. param2)  
 end
 
-for i=1,10 do
- print("TEST!!: " .. a[i])
-end
 
-for i=1,10 do
- print("TEST!!: " .. M.a[i])
-end
+--local contextVar = elfbox.common.Context:new()
+--contextVar.addComponent("dasd")
+--local yuu = contextVar.getComponent("dasd")
+
+
+print("!!!!!!!!stateMachine!!!!!!!")
+stateMachine:load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml")
+stateMachine:start()
+
+local e = StateEvent:new("startEvent")
+stateMachine:prcessEvent(e)
+
+stateMachine:update(1.0)
+stateMachine:update(1.0)
+--local eOn = StateEvent:new("turnOnEvent")
+--stateMachine:prcessEvent(eOn)
+
+--local eOff = StateEvent:new("turnOffEvent")
+--stateMachine:prcessEvent(eOff)
+print("!!!!!!!!stateMachine!!!!!!!")
+
+
+
+print("TEST END!!!")

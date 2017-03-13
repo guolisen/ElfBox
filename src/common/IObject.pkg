@@ -1,0 +1,35 @@
+
+$#include "IObject.h"
+
+
+namespace elfbox
+{
+namespace common
+{
+
+class TypeInfo
+{
+    bool IsTypeOf(const TypeInfo *typeInfo) const;
+    const std::string &GetTypeName() const;
+    const TypeInfo *GetBaseTypeInfo() const;
+};
+
+class IObject
+{
+public:
+    virtual ~IObject();
+
+    virtual const std::string &GetTypeName() const;
+    virtual const TypeInfo *GetTypeInfo() const;
+    static const TypeInfo *GetTypeInfoStatic();
+    static bool IsTypeOf(const TypeInfo *typeInfo);
+};
+
+class IObjectPtr
+{
+public:
+    IObject* get() const;
+}
+
+}
+}

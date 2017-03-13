@@ -1,0 +1,19 @@
+
+$#include "Context.h"
+
+${
+using namespace elfbox;
+using namespace elfbox::common;
+$}
+
+class Context : public IObject
+{
+public:
+    Context();
+    virtual ~Context();
+
+    void addComponent(IObjectPtr obj);
+    IObjectPtr getComponent(const std::string& compoentType);
+};
+
+
