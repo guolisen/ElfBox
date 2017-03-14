@@ -21,11 +21,11 @@ namespace script
 {
 namespace detail
 {
-common::Context* GetContext(lua_State* L);
+common::ContextPtr getContext(lua_State* L);
 
 template <typename T> int toluaGetCompoent(lua_State* tolua_S)
 {
-    T* component = GetContext(tolua_S)->getComponent<T>(nullptr).get();
+    T* component = getContext(tolua_S)->getComponent<T>(nullptr).get();
     std::string objName = T::GetTypeNameStatic();
     const common::TypeInfo *baseTypeInfo = T::GetTypeInfoStatic()->GetBaseTypeInfo();
     if (baseTypeInfo)

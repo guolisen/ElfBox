@@ -8,4 +8,4 @@ using namespace elfbox::script::detail;
 using namespace elfbox::common;
 $}
 
-Context* GetContext(lua_State* L);
+ContextPtr getContext(lua_State* L);

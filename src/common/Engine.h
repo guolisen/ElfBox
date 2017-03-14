@@ -8,8 +8,9 @@
 #include <render/detail/RenderDeviceImpl.h>
 #include <util/BaseLogger.h>
 #include <render/ImageDrawable.h>
-
 #include <scene/Scene.h>
+#include <sm/IStateMachine.h>
+#include <system/IWindow.h>
 
 namespace elfbox
 {
@@ -23,6 +24,7 @@ public:
     virtual ~Engine();
 
     virtual bool initialize();
+    virtual void start();
     virtual void run();
 
     virtual void render();
@@ -38,11 +40,8 @@ private:
     float timeStep_;
     std::vector<float> lastTimeSteps_;
     unsigned int timeStepSmoothing_;
-
-    render::StaticDrawablePtr drawable1_;
-    render::StaticDrawablePtr drawable2_;
-    render::StaticDrawablePtr drawable3_;
-
+    sm::StateMachinePtr mainStateMachine_;
+    system::WindowPtr window_;
     scene::Scene scene_;
 };
 }

@@ -3,12 +3,17 @@
 #include <graphics/IGraphics.h>
 #include <system/IWindow.h>
 #include <system/ITimeService.h>
-
 #include <common/IMessageBroadcaster.h>
 #include <render/ImageDrawable.h>
 #include <system/IResource.h>
 #include <system/IResourceCache.h>
 #include <system/ISystemEventProcess.h>
+#include <sm/State.h>
+#include <sm/StateEvent.h>
+#include <sm/StateMachine.h>
+#include <sm/detail/StateMachineImpl.h>
+#include <script/ScriptCenter.h>
+#include <script/detail/ScriptCenterImpl.h>
 
 namespace elfbox
 {
@@ -30,21 +35,21 @@ Engine::~Engine()
 
 bool Engine::initialize()
 {
+    script::ScriptCenterPtr scriptCenter =
+        context_->getComponent<script::IScriptCenter>(nullptr);
+    scriptCenter->initialize();
+
+    mainStateMachine_ = context_->getComponent<sm::IStateMachine>(nullptr);
+    mainStateMachine_->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
+
     graphics::GraphicsPtr graphics =
         context_->getComponent<graphics::IGraphics>(nullptr);
     ELFBOX_ASSERT(graphics);
     graphics->initialize();
 
-    system::WindowPtr window =
-        context_->getComponent<system::IWindow>(nullptr);
-    ELFBOX_ASSERT(window);
-    window->initialize();
-
-    window->createWindow("Test1", 1024, 768, 0);
-
-    //scene_.initialize();
-    //scene_.load("E:/code/s/map/T22.tmx");
-    //scene_.update(0.0);
+    window_ = context_->getComponent<system::IWindow>(nullptr);
+    ELFBOX_ASSERT(window_);
+    window_->initialize();
 
 
     return true;
@@ -105,6 +110,7 @@ void Engine::run()
         systemEventProcess->run();
         messageBroadcaster->notifyMessage(-1);
 
+        mainStateMachine_->update(timeStep_);
         renderDevice_->render(timeStep_);
         applyTimeStep();
     }
@@ -120,5 +126,10 @@ void Engine::update()
 
 }
 
+void Engine::start()
+{
+    //window_->createWindow("Test1", 1024, 768, 0);
+    mainStateMachine_->start();
+}
 }
 }

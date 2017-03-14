@@ -18,14 +18,14 @@ end
 
 
 print("!!!!!!!!stateMachine!!!!!!!")
-stateMachine:load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml")
-stateMachine:start()
+pl_stateMachine:load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml")
+pl_stateMachine:start()
 
 local e = StateEvent:new("startEvent")
-stateMachine:prcessEvent(e)
+pl_stateMachine:prcessEvent(e)
 
-stateMachine:update(1.0)
-stateMachine:update(1.0)
+pl_stateMachine:update(1.0)
+pl_stateMachine:update(1.0)
 --local eOn = StateEvent:new("turnOnEvent")
 --stateMachine:prcessEvent(eOn)
 

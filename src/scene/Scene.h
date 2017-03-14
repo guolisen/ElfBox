@@ -23,6 +23,7 @@ class Scene : public IScene
 {
 ELF_OBJECT(Scene, IScene);
 public:
+    Scene() = default;
     Scene(common::ContextPtr context);
     virtual ~Scene() = default;
 

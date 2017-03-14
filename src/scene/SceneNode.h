@@ -24,6 +24,7 @@ class SceneNode : public ISceneNode
 {
 ELF_OBJECT(SceneNode, ISceneNode);
 public:
+    SceneNode() = default;
     SceneNode(common::ContextPtr context,
               const std::string& nodeName,
               render::DrawablePtr drawable);

@@ -37,6 +37,7 @@ public:
 private:
     void update(float dt)
     {
+#if 0
         static float _total_frames = 0.0f;
         static float _total_time = 0.0f;
         ++_total_frames;
@@ -50,6 +51,7 @@ private:
         {
             _total_frames = _total_time = 0.0;
         }
+#endif
     }
 
     template <class T>

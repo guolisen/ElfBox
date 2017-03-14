@@ -11,7 +11,7 @@ namespace system
 namespace detail
 {
 WindowImpl::WindowImpl(common::ContextPtr context) :
-    context_(context),
+    context_(context), window_(nullptr),
     log_(context_->getComponent<ILogger>(nullptr)),
     windowWidth_(0), windowHeight_(0)
 {

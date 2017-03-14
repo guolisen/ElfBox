@@ -91,12 +91,14 @@ bool StateMachineImpl::load(const std::string &fileName)
         {
             stateObject->setOnEntry(onOnEntryMethod->GetText());
         }
-        tinyxml2::XMLElement* onOnUpdateMethod = onOnEntryMethod->NextSiblingElement("onUpdate");
+        tinyxml2::XMLElement* nextXml = onOnEntryMethod ? onOnEntryMethod : state;
+        tinyxml2::XMLElement* onOnUpdateMethod = nextXml->NextSiblingElement("onUpdate");
         if (onOnUpdateMethod)
         {
             stateObject->setOnUpdate(onOnUpdateMethod->GetText());
         }
-        tinyxml2::XMLElement* onOnExitMethod = onOnUpdateMethod->NextSiblingElement("onExit");
+        nextXml = onOnUpdateMethod ? onOnUpdateMethod : onOnEntryMethod;
+        tinyxml2::XMLElement* onOnExitMethod = nextXml->NextSiblingElement("onExit");
         if (onOnExitMethod)
         {
             stateObject->setOnExit(onOnExitMethod->GetText());

@@ -4,7 +4,6 @@
 #include <memory>
 #include <common/IObject.h>
 #include <util/BaseLogger.h>
-#include <sm/IStateMachine.h>
 
 namespace elfbox
 {
@@ -35,7 +34,6 @@ private:
     std::shared_ptr<Context> context_;
     std::shared_ptr<IEngine> elfBoxEngine_;
     std::shared_ptr<IApplicationCore> applicationCore_;
-    sm::StateMachinePtr mainStateMachine_;
     LoggerPtr log_;
 };
 }

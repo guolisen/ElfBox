@@ -1,0 +1,29 @@
+
+$#include <scene/SceneNode.h>
+
+
+${
+using namespace elfbox;
+using namespace elfbox::scene;
+$}
+
+class ISceneNode
+{
+    virtual bool initialize();
+    virtual void update(float timeStep);
+    virtual void startToDraw();
+    virtual void translate();
+    virtual void rotate();
+    virtual void scale(float scale);
+
+    virtual void translateTo();
+    virtual void rotateTo();
+    virtual void scaleTo(float scale);
+
+    virtual void setVisiable(bool flag);
+    virtual bool isVisiable();
+    virtual std::string getNodeName();
+
+    virtual void addChild(std::shared_ptr<ISceneNode> childNode);
+};
+

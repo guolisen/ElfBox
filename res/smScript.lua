@@ -32,7 +32,6 @@ end
 --/////////////////////////////////
 function stateOn.onEntry()
 	print("LUA stateOn onEntry! ")
-
 end
 function stateOn.onUpdate()
 	print("LUA stateOn onUpdate!11111 ")

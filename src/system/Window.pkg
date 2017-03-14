@@ -1,0 +1,37 @@
+
+$#include <system/Window.h>
+$#include <script/detail/ScriptUtil.h>
+
+${
+using namespace elfbox;
+using namespace elfbox::system;
+using namespace elfbox::system::detail;
+
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+$}
+
+
+class IWindow
+{
+    virtual bool initialize();
+
+    virtual bool createWindow(const std::string &winName,
+                      int width, int height, unsigned int winflag);
+    virtual windowHandle getWindowHandle() const;
+    virtual int getWindowWidth() const;
+    virtual int getWindowHeight() const;
+};
+
+tolua_readonly tolua_property__get_set IWindow* pl_window;
+
+${
+
+#define TOLUA_DISABLE_tolua_get_pl_window_ptr
+static int tolua_get_pl_window_ptr(lua_State* tolua_S)
+{
+  return toluaGetCompoent<IWindow>(tolua_S);
+}
+
+$}
+

@@ -78,15 +78,7 @@ bool Application::setup()
         context_->getComponent<system::ITimeService>(nullptr);
     timeService->initialize();
     timeService->reset();
-
-    script::ScriptCenterPtr scriptCenter =
-        context_->getComponent<script::IScriptCenter>(nullptr);
-    scriptCenter->initialize();
-
-    mainStateMachine_ = context_->getComponent<sm::IStateMachine>(nullptr);
-    mainStateMachine_->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
-
-    scriptCenter->initialize();
+    
     elfBoxEngine_->initialize();
 
     if (applicationCore_)
@@ -99,7 +91,7 @@ bool Application::start()
 {
     ELFBOX_LOGDEBUG(log_, "Application::start() %d %s", 111, "OK");
 
-    mainStateMachine_->start();
+    elfBoxEngine_->start();
     if (applicationCore_)
         applicationCore_->start();
     return false;

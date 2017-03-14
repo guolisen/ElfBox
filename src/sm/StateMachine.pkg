@@ -26,12 +26,12 @@ class IStateMachine
     virtual void setInitialState(StatePtr state);
 };
 
-tolua_readonly tolua_property__get_set IStateMachine* stateMachine;
+tolua_readonly tolua_property__get_set IStateMachine* pl_stateMachine;
 
 ${
 
-#define TOLUA_DISABLE_tolua_get_stateMachine_ptr
-static int tolua_get_stateMachine_ptr(lua_State* tolua_S)
+#define TOLUA_DISABLE_tolua_get_pl_stateMachine_ptr
+static int tolua_get_pl_stateMachine_ptr(lua_State* tolua_S)
 {
   return toluaGetCompoent<IStateMachine>(tolua_S);
 }

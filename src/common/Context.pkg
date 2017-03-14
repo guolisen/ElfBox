@@ -6,6 +6,7 @@ using namespace elfbox;
 using namespace elfbox::common;
 $}
 
+
 class Context : public IObject
 {
 public:
@@ -16,4 +17,8 @@ public:
     IObjectPtr getComponent(const std::string& compoentType);
 };
 
-
+class ContextPtr
+{
+public:
+    Context* get() const;
+}

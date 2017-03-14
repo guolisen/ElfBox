@@ -13,7 +13,8 @@ namespace graphics
 namespace detail
 {
 GraphicsImpl::GraphicsImpl(common::ContextPtr context) :
-        context_(context), log_(context_->getComponent<ILogger>(nullptr))
+        context_(context), rendererHandle_(nullptr),
+        log_(context_->getComponent<ILogger>(nullptr))
 {
     ELFBOX_LOGERROR(log_, "Test!!!!");
 }

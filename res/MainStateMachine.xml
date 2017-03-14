@@ -1,25 +1,31 @@
 <?xml version="1.0"?>
-<stateMachine scriptFile = "E:/code/ElfClion/ElfBox/res/smScript.lua">
+<stateMachine scriptFile = "E:/code/ElfClion/ElfBox/res/MainStateMachine.lua">
 <stateSet>  
-	<state name = "start" InitialState = "true">
-		<onEntry>stateStart.onEntry</onEntry>
-		<onUpdate>stateStart.onUpdate</onUpdate>
-		<onExit>stateStart.onExit</onExit>
+	<state name = "gameIntroState" InitialState = "true">
+		<onEntry>gameIntroState.onEntry</onEntry>
+		<onUpdate>gameIntroState.onUpdate</onUpdate>
+		<onExit>gameIntroState.onExit</onExit>
 	</state>
-	<state name = "on">
-		<onEntry>stateOn.onEntry</onEntry>
-		<onUpdate>stateOn.onUpdate</onUpdate>
-		<onExit>stateOn.onExit</onExit>
+	<state name = "menuState">
+		<onEntry>menuState.onEntry</onEntry>
+		<onUpdate>menuState.onUpdate</onUpdate>
+		<onExit>menuState.onExit</onExit>
 	</state>
-	<state name = "off">
-	    <onEntry>stateOff.onEntry</onEntry>
-		<onUpdate>stateOff.onUpdate</onUpdate>
-		<onExit>stateOff.onExit</onExit>
+	<state name = "gameLoopState">
+	    <onEntry>gameLoopState.onEntry</onEntry>
+		<onUpdate>gameLoopState.onUpdate</onUpdate>
+		<onExit>gameLoopState.onExit</onExit>
+	</state>
+	<state name = "finishGameState">
+	    <onEntry>finishGameState.onEntry</onEntry>
+		<onUpdate>finishGameState.onUpdate</onUpdate>
+		<onExit>finishGameState.onExit</onExit>
 	</state>
 </stateSet>  
 <StateRow>  
-	<row currentState="start" event="startEvent" nextState="off" action="startEvent.action" guard="321" />
-	<row currentState="off" event="turnOnEvent" nextState="on" action="turnOnEvent.action" guard="321" />
-	<row currentState="on" event="turnOffEvent" nextState="off" action="turnOffEvent.action" guard="312" />
+	<row currentState="gameIntroState" event="menuEvent" nextState="menuState" action="menuEvent.action" guard="321" />
+	<row currentState="menuState" event="gameStartEvent" nextState="gameLoopState" action="gameStartEvent.action" guard="321" />
+	<row currentState="gameLoopState" event="finishEvent" nextState="finishGameState" action="finishEvent.action" guard="321" />
+	<row currentState="finishGameState" event="restartEvent" nextState="menuState" action="restartEvent.action" guard="321" />
 </StateRow>
 </stateMachine>

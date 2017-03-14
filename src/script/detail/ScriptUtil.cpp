@@ -17,12 +17,14 @@ namespace script
 namespace detail
 {
 
-common::Context* GetContext(lua_State* L)
+common::ContextPtr getContext(lua_State* L)
 {
     lua_getglobal(L, ".context");
     tolua_Error error;      // Ensure we are indeed getting a Context object before casting
-    return tolua_isusertype(L, -1, "Context", 0, &error) ?
-           static_cast<common::Context*>(tolua_tousertype(L, -1, 0)) : 0;
+    common::ContextPtr* context = tolua_isusertype(L, -1, "ContextPtr", 0, &error) ?
+           static_cast<common::ContextPtr*>(tolua_tousertype(L, -1, 0)) : nullptr;
+
+    return context ? *context : common::ContextPtr();
 }
 
 }

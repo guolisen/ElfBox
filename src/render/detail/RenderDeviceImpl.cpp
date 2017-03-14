@@ -27,6 +27,8 @@ void RenderDeviceImpl::render(float timeStep)
         graphics::GraphicsPtr graphics =
             context_->getComponent<graphics::IGraphics>(nullptr);
         handle_ = graphics->getRendererHandle();
+        if (!handle_)
+            return;
 
         backgroundTexture_ = SDL_CreateTexture(
             (SDL_Renderer*)handle_, SDL_PIXELFORMAT_RGBA8888,

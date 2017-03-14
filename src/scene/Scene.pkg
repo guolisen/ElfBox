@@ -1,0 +1,24 @@
+
+
+$#include <scene/Scene.h>
+$#include <script/detail/ScriptUtil.h>
+${
+using namespace elfbox;
+using namespace elfbox::scene;
+
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+
+using namespace elfbox::common;
+$}
+
+class Scene
+{
+    Scene();
+    Scene(ContextPtr context);
+    virtual ~Scene();
+
+    virtual bool initialize();
+    virtual void update(float timeStep);
+    virtual bool load(const std::string& fileName);
+};
