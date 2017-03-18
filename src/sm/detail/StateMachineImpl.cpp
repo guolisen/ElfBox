@@ -32,11 +32,11 @@ bool StateMachineImpl::prcessEvent(const StateEvent& event)
         if ((row.currentState == currentState_) &&
             (row.transitionEvent == event.getEventName()))
         {
-            row.currentState->onExit();
+            row.currentState->onExit((void*)this);
             std::cout << "State: " << currentState_->getStateName() << " " << row.action << std::endl;
             runScriptFunction(row.action);
             currentState_ = row.nextState;
-            row.nextState->onEntry();
+            row.nextState->onEntry((void*)this);
         }
     }
 
@@ -48,7 +48,7 @@ void StateMachineImpl::update(float timeStep)
     if (!currentState_)
         return;
 
-    currentState_->onUpdate();
+    currentState_->onUpdate(timeStep, (void*)this);
 }
 
 bool StateMachineImpl::load(const std::string &fileName)
@@ -145,7 +145,7 @@ bool StateMachineImpl::start()
     if (!currentState_)
         return false;
 
-    currentState_->onEntry();
+    currentState_->onEntry((void*)this);
     return true;
 }
 

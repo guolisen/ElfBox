@@ -27,14 +27,23 @@ bool RenderMaterialImpl::loadResource()
         context_->getComponent<graphics::IGraphics>(nullptr);
     graphics::RendererHandle handle = graphics->getRendererHandle();
 
-    materialSurfaceHandle_ = (MaterialSurfaceHandle)IMG_Load(fileName_.c_str());
-    if(materialSurfaceHandle_ == nullptr)
+    std::string tmpStr = std::string("E:/code/ElfClion/ElfBox/res/") + fileName_;
+    materialSurfaceHandle_ = (MaterialSurfaceHandle)IMG_Load(tmpStr.c_str());
+    if (materialSurfaceHandle_ == nullptr)
+    {
+        printf("Cannot open res file: %s\n", fileName_.c_str());
         return false;
+    }
 
     materialTextureHandle_ = SDL_CreateTextureFromSurface(
         (SDL_Renderer*)handle, (SDL_Surface*)materialSurfaceHandle_);
-    if(materialTextureHandle_ == nullptr)
+    if (materialTextureHandle_ == nullptr)
+    {
+        printf("Create Surface Error!\n");
+        printf("SDL_CreateTextureFromSurface return %s\n", SDL_GetError());
+
         return false;
+    }
 
     materialWidth_ = ((SDL_Surface*)materialSurfaceHandle_)->w;
     materialHeight_ = ((SDL_Surface*)materialSurfaceHandle_)->h;

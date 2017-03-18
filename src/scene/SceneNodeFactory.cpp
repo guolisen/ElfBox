@@ -20,7 +20,7 @@ SceneNodePtr SceneNodeFactory::createNode(
         cache_->getResource<render::IRenderMaterial>(resFileName);
     if (!material)
     {
-        // ELFBOX_LOGERROR(log_, "1.jpg read error!");
+        printf("material read error(%s)!\n", resFileName.c_str());
         return false;
     }
     drawable->setMaterial(material);

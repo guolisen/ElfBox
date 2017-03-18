@@ -24,6 +24,7 @@ public:
     virtual void render(float timeStep) = 0;
     virtual void addDrawable(DrawablePtr drawable) = 0;
     virtual void setCamera(scene::CameraPtr camera) = 0;
+    virtual void clearDrawable() = 0;
 };
 
 typedef std::shared_ptr<IRenderDevice> RenderDevicePtr;

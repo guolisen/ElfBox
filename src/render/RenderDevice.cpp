@@ -29,5 +29,10 @@ void RenderDevice::setCamera(scene::CameraPtr camera)
 {
     impl_->setCamera(camera);
 }
+
+void RenderDevice::clearDrawable()
+{
+    impl_->clearDrawable();
+}
 }
 }

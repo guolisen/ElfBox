@@ -1,0 +1,37 @@
+
+$#include <system/TimeService.h>
+$#include <script/detail/ScriptUtil.h>
+
+${
+using namespace elfbox;
+using namespace elfbox::system;
+
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+$}
+
+class ITimeService
+{
+    virtual bool setOption(const std::string &strKey, const void *pValue);
+    virtual void reset();
+    virtual uint32_ getMilliseconds();
+    virtual uint32_ getMicroseconds();
+    virtual uint32_ getMillisecondsCPU();
+    virtual uint32_ getMicrosecondsCPU();
+
+    virtual void sleep(unsigned int tick);
+    virtual TimerId createTimer(TimerHandler handler, int interval, bool isRepeat);
+
+};
+
+tolua_readonly tolua_property__get_set ITimeService* pl_timeService;
+
+${
+
+#define TOLUA_DISABLE_tolua_get_pl_timeService_ptr
+static int tolua_get_pl_timeService_ptr(lua_State* tolua_S)
+{
+  return toluaGetCompoent<ITimeService>(tolua_S);
+}
+
+$}

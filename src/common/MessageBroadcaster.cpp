@@ -72,8 +72,8 @@ Subscription MessageBroadcaster::subscribe(MessageId id, MessageHandler handler)
     {
         std::lock_guard<std::recursive_mutex> guard(subscribersMutex_);
 
-        if (isAlreadySubscribed(subscription))
-            return subscription;
+        //if (isAlreadySubscribed(subscription))
+        //    return subscription;
         subscribers_.insert(std::make_pair(id, handler));
     }
     return subscription;

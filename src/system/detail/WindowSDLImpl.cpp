@@ -41,6 +41,9 @@ bool WindowImpl::createWindow(const std::string &winName,
         return false;
     }
 
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(rendererHandle, &info);
+
     graphics::GraphicsPtr graphics =
         context_->getComponent<graphics::IGraphics>(nullptr);
     ELFBOX_ASSERT(graphics);

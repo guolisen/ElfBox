@@ -128,7 +128,6 @@ void Engine::update()
 
 void Engine::start()
 {
-    //window_->createWindow("Test1", 1024, 768, 0);
     mainStateMachine_->start();
 }
 }

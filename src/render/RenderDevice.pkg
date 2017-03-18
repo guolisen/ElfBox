@@ -1,0 +1,34 @@
+
+$#include <render/RenderDevice.h>
+$#include <script/detail/ScriptUtil.h>
+
+${
+using namespace elfbox;
+using namespace elfbox::render;
+
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+
+$}
+
+class IRenderDevice
+{
+    virtual void render(float timeStep);
+    virtual void addDrawable(DrawablePtr drawable);
+    virtual void setCamera(scene::CameraPtr camera);
+    virtual void clearDrawable();
+};
+
+
+
+tolua_readonly tolua_property__get_set IRenderDevice* pl_renderDevice;
+
+${
+
+#define TOLUA_DISABLE_tolua_get_pl_renderDevice_ptr
+static int tolua_get_pl_renderDevice_ptr(lua_State* tolua_S)
+{
+  return toluaGetCompoent<IRenderDevice>(tolua_S);
+}
+
+$}

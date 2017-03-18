@@ -49,9 +49,9 @@ public:
         return std::make_shared<common::ObjectFactoryWrapper<State>>();
     }
 
-    virtual void onEntry();
-    virtual void onUpdate();
-    virtual void onExit();
+    virtual void onEntry(void* sm);
+    virtual void onUpdate(float timeStep, void* sm);
+    virtual void onExit(void* sm);
 private:
     void runScriptFunction(const std::string& action);
 

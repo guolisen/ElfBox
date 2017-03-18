@@ -21,6 +21,8 @@ struct SceneInfo
     int renderOrder;
     int width;
     int height;
+    int widthPixel;
+    int heightPixel;
     int tileWidth;
     int tileHeight;
     int numTileLayers;

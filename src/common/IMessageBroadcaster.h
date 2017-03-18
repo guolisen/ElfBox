@@ -20,7 +20,7 @@ namespace common
 
 typedef std::unordered_map<std::string, detail::DataContainer> MessageData;
 typedef std::function<void(MessageData)> MessageHandler;
-typedef std::unordered_map<int, MessageHandler> SubscriptionMap;
+typedef std::unordered_multimap<int, MessageHandler> SubscriptionMap;
 
 struct Subscription
 {

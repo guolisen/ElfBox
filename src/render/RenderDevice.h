@@ -30,6 +30,7 @@ public:
     virtual void render(float timeStep);
     virtual void addDrawable(DrawablePtr drawable);
     virtual void setCamera(scene::CameraPtr camera);
+    virtual void clearDrawable();
 private:
     std::list<DrawablePtr> drawableList_;
     RenderDevicePtr impl_;

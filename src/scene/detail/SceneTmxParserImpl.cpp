@@ -37,6 +37,8 @@ bool SceneTmxParserImpl::loadTmxFile(const std::string &fileName)
     sceneInfo_.height = tmxMap_->GetHeight();
     sceneInfo_.tileWidth = tmxMap_->GetTileWidth();
     sceneInfo_.tileHeight = tmxMap_->GetTileHeight();
+    sceneInfo_.widthPixel = sceneInfo_.width * sceneInfo_.tileWidth;
+    sceneInfo_.heightPixel = sceneInfo_.height * sceneInfo_.tileHeight;
     sceneInfo_.numTileLayers = tmxMap_->GetNumTileLayers();
     sceneInfo_.numObjectGroups = tmxMap_->GetNumObjectGroups();
     sceneInfo_.numTilesets = tmxMap_->GetNumTilesets();
@@ -171,7 +173,7 @@ SceneNodePtr SceneTmxParserImpl::Parser()
             }
 
             float objectWorldX = object->GetX();
-            float objectWorldY = object->GetY();
+            float objectWorldY = object->GetY() - tileSetImage->GetHeight();
             float objectPixelWidth = object->GetWidth();
             float objectPixelHeight = object->GetHeight();
 

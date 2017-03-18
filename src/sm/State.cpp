@@ -16,16 +16,35 @@ State::State(common::ContextPtr context) :
 {
 }
 
-void State::onEntry()
+void State::onEntry(void* sm)
 {
     //std::cout << stateName_ << " onEntry " << std::endl;
-    runScriptFunction(onEntryFunc_);
+    elfbox::script::ScriptFunctionPtr func =
+        scriptCenter_->getFunction(onEntryFunc_);
+    if (func && func->beginCall())
+    {
+        func->pushUserType(sm, "IStateMachine");
+        func->endCall();
+        return;
+    }
+
+    printf("State::runScriptFunction() get action(%s) Error!", onEntryFunc_.c_str());
+
 }
 
-void State::onExit()
+void State::onExit(void* sm)
 {
     //std::cout << stateName_ << " onExit " << std::endl;
-    runScriptFunction(onExitFunc_);
+    elfbox::script::ScriptFunctionPtr func =
+        scriptCenter_->getFunction(onExitFunc_);
+    if (func && func->beginCall())
+    {
+        func->pushUserType(sm, "IStateMachine");
+        func->endCall();
+        return;
+    }
+
+    printf("State::runScriptFunction() get action(%s) Error!", onExitFunc_.c_str());
 }
 
 void State::runScriptFunction(const std::string &scriptFunc)
@@ -41,10 +60,18 @@ void State::runScriptFunction(const std::string &scriptFunc)
     printf("State::runScriptFunction() get action(%s) Error!", scriptFunc.c_str());
 }
 
-void State::onUpdate()
+void State::onUpdate(float timeStep, void* sm)
 {
     //std::cout << stateName_ << " onUpdate " << std::endl;
-    runScriptFunction(onUpdateFunc_);
+    elfbox::script::ScriptFunctionPtr func =
+        scriptCenter_->getFunction(onUpdateFunc_);
+    if (func && func->beginCall())
+    {
+        func->pushUserType(sm, "IStateMachine");
+        func->pushFloat(timeStep);
+        func->endCall();
+        return;
+    }
 }
 
 }

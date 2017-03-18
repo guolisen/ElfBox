@@ -33,7 +33,10 @@ public:
     {
         camera_ = camera;
     }
-
+    virtual void clearDrawable()
+    {
+        drawableList_.clear();
+    }
 private:
     void update(float dt)
     {
