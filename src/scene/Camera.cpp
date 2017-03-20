@@ -70,14 +70,33 @@ Point2DFloat Camera::getCameraCenter()
 
 bool Camera::isInView(Point2DFloat point)
 {
-    //TODO:
+    Point2DFloat cameraPoint = worldToCamera(point);
+    if (cameraPoint.x < 0 || cameraPoint.y < 0)
+        return false;
+
+    if (cameraPoint.x > (cameraPosition_.x + cameraWidth_) ||
+         cameraPoint.y > (cameraPosition_.y + cameraHeight_))
+        return false;
+
     return true;
 }
 
 bool Camera::isInView(RectFloat rect)
 {
-    //TODO:
-    return true;
+    Point2DFloat upperLeft = rect.getPosition();
+    if (isInView(upperLeft))
+        return true;
+    Point2DFloat bottomLeft = rect.getBottomLeft();
+    if (isInView(bottomLeft))
+        return true;
+    Point2DFloat bottomRight = rect.getBottomRight();
+    if (isInView(bottomRight))
+        return true;
+    Point2DFloat upperRight = rect.getUpperRight();
+    if (isInView(upperRight))
+        return true;
+
+    return false;
 }
 
 void Camera::moveCamera(float xStep, float yStep)
@@ -91,5 +110,9 @@ void Camera::setCameraZoom(float zoom)
     cameraZoom_ = zoom;
 }
 
+RectFloat Camera::getCameraPositionRect()
+{
+    return elfbox::RectFloat();
+}
 }
 }

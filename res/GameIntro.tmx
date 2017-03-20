@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="8" height="6" tilewidth="128" tileheight="128" nextobjectid="2">
+ <tileset firstgid="1" name="Logo" tilewidth="1024" tileheight="768" tilecount="1" columns="0">
+  <tile id="0">
+   <image width="1024" height="768" source="logo1.png"/>
+  </tile>
+ </tileset>
+ <objectgroup name="Logo">
+  <object id="1" name="Image" gid="1" x="0" y="0" width="1024" height="768"/>
+ </objectgroup>
+</map>

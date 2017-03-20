@@ -27,6 +27,9 @@ public:
 
     virtual MaterialTextureHandle getMaterial() = 0;
     virtual RectFloat getRect() = 0;
+    virtual bool isTextureLoad() = 0;
+    virtual bool loadToTexture() = 0;
+    virtual bool releaseFromTexture() = 0;
 };
 
 typedef std::shared_ptr<IRenderMaterial> RenderMaterialPtr;

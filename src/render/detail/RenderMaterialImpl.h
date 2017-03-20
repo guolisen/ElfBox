@@ -5,6 +5,7 @@
 #ifndef ELFBOX_RENDERMATERIALIMPL_H
 #define ELFBOX_RENDERMATERIALIMPL_H
 
+#include <SDL.h>
 #include <string>
 #include <common/IObject.h>
 #include <common/Context.h>
@@ -30,11 +31,16 @@ public:
     };
 
     virtual bool loadResource();
-
+    virtual bool releaseResource();
     virtual bool isLoad()
     {
         return isLoad_;
-    };
+    }
+
+    virtual bool isTextureLoad()
+    {
+        return isTextureLoad_;
+    }
     virtual bool setFileName(const std::string& fileName);
     virtual std::string& getFileName()
     {
@@ -48,14 +54,19 @@ public:
         return RectFloat(0.0, 0.0, (float)materialWidth_, (float)materialHeight_);
     }
 
+    virtual bool loadToTexture();
+    virtual bool releaseFromTexture();
+
 private:
     common::ContextPtr context_;
     std::string fileName_;
     int materialWidth_;
     int materialHeight_;
     bool isLoad_;
+    bool isTextureLoad_;
     MaterialTextureHandle materialTextureHandle_;
     MaterialSurfaceHandle materialSurfaceHandle_;
+    SDL_Renderer* renderHandle_;
 };
 }
 }

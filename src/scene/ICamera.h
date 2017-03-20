@@ -27,6 +27,7 @@ public:
     virtual float getCameraWidth() = 0;
     virtual float getCameraHeight() = 0;
     virtual Point2DFloat getCameraCenter() = 0;
+    virtual float getAspectRatio() = 0;
     virtual bool isInView(Point2DFloat point) = 0;
     virtual bool isInView(RectFloat rect) = 0;
 

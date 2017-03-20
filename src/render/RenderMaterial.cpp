@@ -52,5 +52,25 @@ int RenderMaterial::getMemorySize()
 {
     return 0;
 }
+
+bool RenderMaterial::isTextureLoad()
+{
+    return impl_->isTextureLoad();
+}
+
+bool RenderMaterial::loadToTexture()
+{
+    return impl_->loadToTexture();
+}
+
+bool RenderMaterial::releaseFromTexture()
+{
+    return impl_->releaseFromTexture();
+}
+
+bool RenderMaterial::releaseResource()
+{
+    return impl_->releaseResource();
+}
 }
 }

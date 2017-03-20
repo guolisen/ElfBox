@@ -58,19 +58,19 @@ void Scene::keyHandler(common::MessageData data)
     int key = data["KEY"];
     if (key == 'w')
     {
-        camera_->moveCamera(0, -10);
+        camera_->moveCamera(0, -100);
     }
     if (key == 's')
     {
-        camera_->moveCamera(0, 10);
+        camera_->moveCamera(0, 100);
     }
     if (key == 'a')
     {
-        camera_->moveCamera(-10, 0);
+        camera_->moveCamera(-100, 0);
     }
     if (key == 'd')
     {
-        camera_->moveCamera(10, 0);
+        camera_->moveCamera(100, 0);
     }
 
     static float zoom = 1.0;

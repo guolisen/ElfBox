@@ -110,6 +110,56 @@ struct Rect
         return Point2D<T>(x, y);
     }
 
+    Point2D<T> getUpperLeft()
+    {
+        return getPosition();
+    }
+
+    Point2D<T> getBottomLeft()
+    {
+        Point2D<T> point = getPosition();
+        return Point2D<T>(point.x, point.y + h);
+    }
+    Point2D<T> getBottomRight()
+    {
+        Point2D<T> point = getPosition();
+        return Point2D<T>(point.x + w, point.y + h);
+    }
+    Point2D<T> getUpperRight()
+    {
+        Point2D<T> point = getPosition();
+        return Point2D<T>(point.x + w, point.y);
+    }
+
+    bool isInRect(const Point2D<T>& point)
+    {
+        if (point.x < x || point.y < y)
+            return false;
+
+        if (point.x > (x + w) || point.y > (y + h))
+            return false;
+
+        return true;
+    }
+
+    bool isInRect(Rect<T> rect)
+    {
+        Point2DFloat upperLeft = rect.getUpperLeft();
+        if (isInRect(upperLeft))
+            return true;
+        Point2DFloat bottomLeft = rect.getBottomLeft();
+        if (isInRect(bottomLeft))
+            return true;
+        Point2DFloat bottomRight = rect.getBottomRight();
+        if (isInRect(bottomRight))
+            return true;
+        Point2DFloat upperRight = rect.getUpperRight();
+        if (isInRect(upperRight))
+            return true;
+
+        return false;
+    }
+
     Rect(): x(0), y(0),
         w(0), h(0) {}
 

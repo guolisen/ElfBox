@@ -38,6 +38,9 @@ public:
         drawableList_.clear();
     }
 private:
+    void updateDrawable();
+    RectFloat getPreLoadRect();
+
     void update(float dt)
     {
 #if 0
@@ -70,6 +73,7 @@ private:
     float fps_;
     scene::CameraPtr camera_;
     SDL_Texture* backgroundTexture_;
+    float preLoadRange_;
 };
 }
 }

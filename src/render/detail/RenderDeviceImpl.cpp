@@ -16,7 +16,7 @@ namespace detail
 
 RenderDeviceImpl::RenderDeviceImpl(common::ContextPtr context):
     context_(context), handle_(nullptr), fps_(0.0),
-    backgroundTexture_(nullptr)
+    backgroundTexture_(nullptr), preLoadRange_(2048.0)
 {
 }
 
@@ -47,6 +47,8 @@ void RenderDeviceImpl::render(float timeStep)
         }
     }
 
+    updateDrawable();
+
     SDL_Rect viewRect = toSDLRect(camera_->getCameraViewRect());
     SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
 
@@ -60,6 +62,9 @@ void RenderDeviceImpl::render(float timeStep)
     //SDL_RenderSetScale((SDL_Renderer*)handle_, zoom, zoom);
     for (auto &drawable : drawableList_)
     {
+        if (DrawableStatePending == drawable->getData().drawableState)
+            continue;
+
         RectFloat worldToCameraRect =
             camera_->worldToCamera(drawable->getData().worldRect);
         SDL_Rect srcRect = toSDLRect(drawable->getData().sourceRect);
@@ -85,6 +90,39 @@ void RenderDeviceImpl::addDrawable(DrawablePtr drawable)
     drawableList_.push_back(drawable);
 }
 
+void RenderDeviceImpl::updateDrawable()
+{
+    RectFloat preLoadRect = getPreLoadRect();
+    for (auto &drawable : drawableList_)
+    {
+        if (!preLoadRect.isInRect(drawable->getData().worldRect))
+        {
+            if (drawable->getData().material->isTextureLoad())
+                drawable->getData().material->releaseFromTexture();
+            drawable->getData().drawableState = DrawableStatePending;
+            continue;
+        }
+
+        if (!drawable->getData().material->loadToTexture())
+        {
+            printf("loadToTexture error!\n");
+            return;
+        }
+        drawable->getData().drawableState = DrawableStateDrawing;
+    }
+}
+
+RectFloat RenderDeviceImpl::getPreLoadRect()
+{
+    Point2DFloat center = camera_->getCameraCenter();
+    RectFloat preLoadRect;
+    preLoadRect.x = center.x - preLoadRange_ / 2.0f;
+    preLoadRect.y = center.y - preLoadRange_ / 2.0f;
+    preLoadRect.w = preLoadRange_;
+    preLoadRect.h = preLoadRange_;
+
+    return preLoadRect;
+}
 }
 }
 }

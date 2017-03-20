@@ -53,13 +53,26 @@ bool SceneTmxParserImpl::loadTmxFile(const std::string &fileName)
 
 Point2DFloat SceneTmxParserImpl::tilePositionToWorld(int tileX, int tileY)
 {
-    int tileW = tmxMap_->GetTileWidth();
-    int tileH = tmxMap_->GetTileHeight();
-    int mapYTile = tmxMap_->GetHeight();
     Point2DFloat point;
+    int tileW = sceneInfo_.tileWidth;
+    int tileH = sceneInfo_.tileHeight;
 
-    point.x = (tileW / 2) * mapYTile + (tileX - tileY - 1) * (tileW / 2);
-    point.y = (tileX + tileY - 1) * (tileH / 2);
+    if (sceneInfo_.orientation == 1)
+    {
+        point.x = tileX * tileW;
+        point.y = tileY * tileH;
+    }
+    else if (sceneInfo_.orientation == 2)
+    {
+        int mapYTile = tmxMap_->GetHeight();
+
+        point.x = (tileW / 2) * mapYTile + (tileX - tileY - 1) * (tileW / 2);
+        point.y = (tileX + tileY - 1) * (tileH / 2);
+    }
+    else
+    {
+        printf("Unknow Map type!\n");
+    }
 
     return point;
 }
@@ -132,8 +145,10 @@ SceneNodePtr SceneTmxParserImpl::Parser()
                 float tileImagePixelWidth = tileSetImage->GetWidth();
                 int TilesetWidthCount = (int)(tileImagePixelWidth / tilePixelWidth);
 
-                float tileSrcX = ((tileGId - 1) % TilesetWidthCount) * tilePixelWidth;
-                float tileSrcY = ((tileGId - 1) / TilesetWidthCount) * tilePixelHeight;
+                //float tileSrcX = ((tileGId - 1) % TilesetWidthCount) * tilePixelWidth;
+                //float tileSrcY = ((tileGId - 1) / TilesetWidthCount) * tilePixelHeight;
+                float tileSrcX = 0.0f;
+                float tileSrcY = 0.0f;
 
                 RectFloat srcRect = { tileSrcX, tileSrcY, tilePixelWidth, tilePixelHeight };
                 RectFloat worldtRect = { worldPosition.x, worldPosition.y,

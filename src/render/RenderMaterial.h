@@ -23,6 +23,7 @@ public:
     virtual ~RenderMaterial() = default;
 
     virtual bool loadResource();
+    virtual bool releaseResource();
     virtual int getMemorySize();
     virtual bool isLoad();
     virtual bool setFileName(const std::string& fileName);
@@ -33,6 +34,10 @@ public:
 
     virtual MaterialTextureHandle getMaterial();
     virtual RectFloat getRect();
+
+    virtual bool isTextureLoad();
+    virtual bool loadToTexture();
+    virtual bool releaseFromTexture();
 
     static system::ResourceFactory getFactory();
 private:

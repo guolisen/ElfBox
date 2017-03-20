@@ -27,6 +27,11 @@ public:
     virtual RectFloat getCameraViewRect();
     virtual RectFloat getCameraViewZoomRect();
     virtual Point2DFloat getCameraCenter();
+    virtual float getAspectRatio()
+    {
+        return aspectRatio_;
+    }
+
     virtual bool isInView(Point2DFloat point);
     virtual bool isInView(RectFloat rect);
 
@@ -55,6 +60,8 @@ public:
     }
 
 private:
+    virtual RectFloat getCameraPositionRect();
+
     common::ContextPtr context_;
     Point2DFloat cameraPosition_;
     float cameraZoom_;

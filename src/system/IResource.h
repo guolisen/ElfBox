@@ -20,6 +20,7 @@ public:
     virtual ~IResource() = default;
 
     virtual bool loadResource() = 0;
+    virtual bool releaseResource() = 0;
     virtual int getMemorySize() = 0;
     virtual bool isLoad() = 0;
     virtual bool setFileName(const std::string& fileName) = 0;
