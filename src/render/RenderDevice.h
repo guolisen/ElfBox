@@ -27,6 +27,7 @@ public:
     RenderDevice(RenderDevicePtr impl);
     virtual ~RenderDevice() = default;
 
+    virtual bool initialize();
     virtual void render(float timeStep);
     virtual void addDrawable(DrawablePtr drawable);
     virtual void setCamera(scene::CameraPtr camera);

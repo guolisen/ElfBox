@@ -34,5 +34,10 @@ void RenderDevice::clearDrawable()
 {
     impl_->clearDrawable();
 }
+
+bool RenderDevice::initialize()
+{
+    return false;
+}
 }
 }

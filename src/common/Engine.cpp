@@ -51,6 +51,7 @@ bool Engine::initialize()
     ELFBOX_ASSERT(window_);
     window_->initialize();
 
+    renderDevice_->initialize();
 
     return true;
 }

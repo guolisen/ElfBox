@@ -142,7 +142,7 @@ struct Rect
         return true;
     }
 
-    bool isInRect(Rect<T> rect)
+    bool isIntersectionRect(Rect<T> rect)
     {
         Point2DFloat upperLeft = rect.getUpperLeft();
         if (isInRect(upperLeft))
@@ -157,7 +157,39 @@ struct Rect
         if (isInRect(upperRight))
             return true;
 
+        //other
+        Point2DFloat upperLeftSelf = getUpperLeft();
+        if (rect.isInRect(upperLeftSelf))
+            return true;
+        Point2DFloat bottomLeftSelf = getBottomLeft();
+        if (rect.isInRect(bottomLeftSelf))
+            return true;
+        Point2DFloat bottomRightSelf = getBottomRight();
+        if (rect.isInRect(bottomRightSelf))
+            return true;
+        Point2DFloat upperRightSelf = getUpperRight();
+        if (rect.isInRect(upperRightSelf))
+            return true;
+        
         return false;
+    }
+
+    bool isIncludeRect(Rect<T> rect)
+    {
+        Point2DFloat upperLeft = rect.getUpperLeft();
+        if (!isInRect(upperLeft))
+            return false;
+        Point2DFloat bottomLeft = rect.getBottomLeft();
+        if (!isInRect(bottomLeft))
+            return false;
+        Point2DFloat bottomRight = rect.getBottomRight();
+        if (!isInRect(bottomRight))
+            return false;
+        Point2DFloat upperRight = rect.getUpperRight();
+        if (!isInRect(upperRight))
+            return false;
+
+        return true;
     }
 
     Rect(): x(0), y(0),

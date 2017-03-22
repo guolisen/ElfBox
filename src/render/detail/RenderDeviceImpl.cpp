@@ -16,7 +16,9 @@ namespace detail
 
 RenderDeviceImpl::RenderDeviceImpl(common::ContextPtr context):
     context_(context), handle_(nullptr), fps_(0.0),
-    backgroundTexture_(nullptr), preLoadRange_(2048.0)
+    backgroundTexture_(nullptr), preLoadRange_(2048.0f),
+    preLoadRect_(RectFloat(0, 0, preLoadRange_, preLoadRange_)),
+    preLoadTrigerRect_(RectFloat(0, 0, preLoadRange_ * 0.8f, preLoadRange_ * 0.8f))
 {
 }
 
@@ -47,9 +49,11 @@ void RenderDeviceImpl::render(float timeStep)
         }
     }
 
-    updateDrawable();
+    //updateDrawable();
+    updatePreLoadRect();
+    updatePreLoadDrawable();
 
-    SDL_Rect viewRect = toSDLRect(camera_->getCameraViewRect());
+    SDL_Rect viewRect = toSDLRect(camera_->getCameraScreenRect());
     SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
 
     //set Texture
@@ -60,11 +64,8 @@ void RenderDeviceImpl::render(float timeStep)
 
     //float zoom = camera_->getCameraZoom();
     //SDL_RenderSetScale((SDL_Renderer*)handle_, zoom, zoom);
-    for (auto &drawable : drawableList_)
+    for (auto &drawable : renderList_)
     {
-        if (DrawableStatePending == drawable->getData().drawableState)
-            continue;
-
         RectFloat worldToCameraRect =
             camera_->worldToCamera(drawable->getData().worldRect);
         SDL_Rect srcRect = toSDLRect(drawable->getData().sourceRect);
@@ -92,36 +93,62 @@ void RenderDeviceImpl::addDrawable(DrawablePtr drawable)
 
 void RenderDeviceImpl::updateDrawable()
 {
-    RectFloat preLoadRect = getPreLoadRect();
+
+}
+
+void RenderDeviceImpl::updatePreLoadDrawable()
+{
+    int draw = 0;
+    int rend = 0;
+    int undraw = 0;
+    renderList_.clear();
     for (auto &drawable : drawableList_)
     {
-        if (!preLoadRect.isInRect(drawable->getData().worldRect))
+        if (!preLoadRect_.isIntersectionRect(drawable->getData().worldRect))
         {
+            ++undraw;
             if (drawable->getData().material->isTextureLoad())
                 drawable->getData().material->releaseFromTexture();
             drawable->getData().drawableState = DrawableStatePending;
             continue;
         }
-
+        ++draw;
         if (!drawable->getData().material->loadToTexture())
         {
             printf("loadToTexture error!\n");
             return;
         }
-        drawable->getData().drawableState = DrawableStateDrawing;
+
+        if (camera_->isInView(drawable->getData().worldRect))
+        {
+            ++rend;
+            drawable->getData().drawableState = DrawableStateDrawing;
+            renderList_.push_back(drawable);
+        }
+    }
+
+    int a = 10;
+    a++;
+}
+
+void RenderDeviceImpl::updatePreLoadRect()
+{
+    RectFloat cameraRect = camera_->getCameraWorldRect();
+    
+    if (!preLoadTrigerRect_.isIncludeRect(cameraRect))
+    {
+        Point2DFloat center = camera_->getCameraCenter();
+        preLoadRect_.x = center.x - preLoadRange_ / 2.0f;
+        preLoadRect_.y = center.y - preLoadRange_ / 2.0f;
+
+        preLoadTrigerRect_.x = center.x - (preLoadRange_ * 0.8f) / 2.0f;
+        preLoadTrigerRect_.y = center.y - (preLoadRange_ * 0.8f) / 2.0f;
     }
 }
 
-RectFloat RenderDeviceImpl::getPreLoadRect()
+bool RenderDeviceImpl::initialize()
 {
-    Point2DFloat center = camera_->getCameraCenter();
-    RectFloat preLoadRect;
-    preLoadRect.x = center.x - preLoadRange_ / 2.0f;
-    preLoadRect.y = center.y - preLoadRange_ / 2.0f;
-    preLoadRect.w = preLoadRange_;
-    preLoadRect.h = preLoadRange_;
-
-    return preLoadRect;
+    return true;
 }
 }
 }

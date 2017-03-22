@@ -24,7 +24,9 @@ public:
 
     virtual Point2DFloat worldToCamera(Point2DFloat worldPosition);
     virtual RectFloat worldToCamera(RectFloat worldPosition);
-    virtual RectFloat getCameraViewRect();
+
+    virtual RectFloat getCameraWorldRect();
+    virtual RectFloat getCameraScreenRect();
     virtual RectFloat getCameraViewZoomRect();
     virtual Point2DFloat getCameraCenter();
     virtual float getAspectRatio()
@@ -60,8 +62,6 @@ public:
     }
 
 private:
-    virtual RectFloat getCameraPositionRect();
-
     common::ContextPtr context_;
     Point2DFloat cameraPosition_;
     float cameraZoom_;

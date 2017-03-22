@@ -22,7 +22,8 @@ public:
     virtual Point2DFloat worldToCamera(Point2DFloat worldPosition) = 0;
     virtual RectFloat worldToCamera(RectFloat worldPosition) = 0;
 
-    virtual RectFloat getCameraViewRect() = 0;
+    virtual RectFloat getCameraWorldRect() = 0;
+    virtual RectFloat getCameraScreenRect() = 0;
     virtual RectFloat getCameraViewZoomRect() = 0;
     virtual float getCameraWidth() = 0;
     virtual float getCameraHeight() = 0;

@@ -34,7 +34,7 @@ Point2DFloat Camera::worldToCamera(Point2DFloat worldPosition)
                         worldPosition.y - cameraPosition_.y);
 }
 
-RectFloat Camera::getCameraViewRect()
+RectFloat Camera::getCameraScreenRect()
 {
     system::WindowPtr window =
         context_->getComponent<system::IWindow>(nullptr);
@@ -70,33 +70,14 @@ Point2DFloat Camera::getCameraCenter()
 
 bool Camera::isInView(Point2DFloat point)
 {
-    Point2DFloat cameraPoint = worldToCamera(point);
-    if (cameraPoint.x < 0 || cameraPoint.y < 0)
-        return false;
-
-    if (cameraPoint.x > (cameraPosition_.x + cameraWidth_) ||
-         cameraPoint.y > (cameraPosition_.y + cameraHeight_))
-        return false;
-
-    return true;
+    RectFloat cameraRect = getCameraWorldRect();
+    return cameraRect.isInRect(point);
 }
 
 bool Camera::isInView(RectFloat rect)
 {
-    Point2DFloat upperLeft = rect.getPosition();
-    if (isInView(upperLeft))
-        return true;
-    Point2DFloat bottomLeft = rect.getBottomLeft();
-    if (isInView(bottomLeft))
-        return true;
-    Point2DFloat bottomRight = rect.getBottomRight();
-    if (isInView(bottomRight))
-        return true;
-    Point2DFloat upperRight = rect.getUpperRight();
-    if (isInView(upperRight))
-        return true;
-
-    return false;
+    RectFloat cameraRect = getCameraWorldRect();
+    return cameraRect.isIntersectionRect(rect);
 }
 
 void Camera::moveCamera(float xStep, float yStep)
@@ -110,9 +91,9 @@ void Camera::setCameraZoom(float zoom)
     cameraZoom_ = zoom;
 }
 
-RectFloat Camera::getCameraPositionRect()
+RectFloat Camera::getCameraWorldRect()
 {
-    return elfbox::RectFloat();
+    return RectFloat(cameraPosition_.x, cameraPosition_.y, cameraWidth_, cameraHeight_);
 }
 }
 }

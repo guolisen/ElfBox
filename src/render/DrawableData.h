@@ -105,11 +105,11 @@ struct DrawableData
     DrawableData(common::ContextPtr context,
                  Rect<RectType> worldRectParam, Rect<RectType> sourceRectParam):
         worldRect(worldRectParam),
-        sourceRect(sourceRectParam), zorder(0), drawableState(DrawableStateDrawing),
+        sourceRect(sourceRectParam), zorder(0), drawableState(DrawableStatePending),
     drawableType(DrawableTypeImage) {}
 
     DrawableData(common::ContextPtr context):
-        zorder(0),  drawableState(DrawableStateDrawing),
+        zorder(0),  drawableState(DrawableStatePending),
         drawableType(DrawableTypeImage) {}
 
     typedef Rect<RectType> DataRectType;

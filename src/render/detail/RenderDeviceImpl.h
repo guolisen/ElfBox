@@ -27,19 +27,22 @@ public:
     RenderDeviceImpl(common::ContextPtr context);
     virtual ~RenderDeviceImpl() = default;
 
+    virtual bool initialize();
     virtual void render(float timeStep);
     virtual void addDrawable(DrawablePtr drawable);
     virtual void setCamera(scene::CameraPtr camera)
     {
         camera_ = camera;
+        preLoadRange_ = camera_->getCameraWidth() * 2.0f;
     }
     virtual void clearDrawable()
     {
         drawableList_.clear();
     }
 private:
+    void updatePreLoadRect();
+    void updatePreLoadDrawable();
     void updateDrawable();
-    RectFloat getPreLoadRect();
 
     void update(float dt)
     {
@@ -69,11 +72,14 @@ private:
 
     common::ContextPtr context_;
     std::list<DrawablePtr> drawableList_;
+    std::list<DrawablePtr> renderList_;
     graphics::RendererHandle handle_;
     float fps_;
     scene::CameraPtr camera_;
     SDL_Texture* backgroundTexture_;
     float preLoadRange_;
+    RectFloat preLoadRect_;
+    RectFloat preLoadTrigerRect_;
 };
 }
 }

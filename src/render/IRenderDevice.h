@@ -21,6 +21,7 @@ ELF_OBJECT(IRenderDevice, common::IObject);
 public:
     virtual ~IRenderDevice() = default;
 
+    virtual bool initialize() = 0;
     virtual void render(float timeStep) = 0;
     virtual void addDrawable(DrawablePtr drawable) = 0;
     virtual void setCamera(scene::CameraPtr camera) = 0;
