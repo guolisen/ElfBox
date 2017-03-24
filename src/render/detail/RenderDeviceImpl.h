@@ -42,8 +42,8 @@ public:
 private:
     void updatePreLoadRect();
     void updatePreLoadDrawable();
-    void updateDrawable();
 
+    void drawTestRect(RectFloat rect);
     void update(float dt)
     {
 #if 0

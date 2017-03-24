@@ -19,13 +19,44 @@ Scene::Scene(common::ContextPtr context) :
     messageBroadcaster_(context_->getComponent<common::IMessageBroadcaster>(nullptr)),
     renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr)),
     camera_(std::make_shared<Camera>(
-    context, Point2DFloat(0.0f, 0.0f), 1.0f, 768.0f, 4.0f / 3.0f))
+    context, Point2DFloat(8229.0f, 5857.0f), 1.0f, 768.0f, 4.0f / 3.0f))
 {
 }
 
 void Scene::update(float timeStep)
 {
-    rootNode_->startToDraw();
+    int speedInt = 300;
+    if (key_ == 'w')
+    {
+        camera_->moveCamera(0, -1 * speedInt * timeStep);
+    }
+    if (key_ == 's')
+    {
+        camera_->moveCamera(0, 1 * speedInt * timeStep);
+    }
+    if (key_ == 'a')
+    {
+        camera_->moveCamera(-1 * speedInt * timeStep, 0);
+    }
+    if (key_ == 'd')
+    {
+        camera_->moveCamera(1 * speedInt * timeStep, 0);
+    }
+
+    static float zoom = 1.0;
+    if (key_ == 't')
+    {
+        zoom += 0.1 * timeStep;
+        camera_->setCameraZoom(zoom);
+    }
+
+    if (key_ == 'g')
+    {
+        zoom -= 0.1 * timeStep;
+        camera_->setCameraZoom(zoom);
+    }
+
+    rootNode_->update(timeStep);
 }
 
 bool Scene::load(const std::string& fileName)
@@ -42,49 +73,32 @@ bool Scene::load(const std::string& fileName)
 
 bool Scene::initialize()
 {
-    camera_->setPosition(Point2DFloat(0.0f, 0.0f));
+    camera_->setPosition(Point2DFloat(8229.0f, 5857.0f));
     renderDevice_->setCamera(camera_);
 
     messageBroadcaster_->subscribe(
         common::SYSTEM_EVENT_KEYDOWN,
         std::bind(&Scene::keyHandler, this, std::placeholders::_1));
 
+    messageBroadcaster_->subscribe(
+        common::SYSTEM_EVENT_KEYUP,
+        std::bind(&Scene::keyUpHandler, this, std::placeholders::_1));
+
+
     return true;
+}
+
+void Scene::keyUpHandler(common::MessageData data)
+{
+    printf("KEY UP!!!!!!!!\n");
+    key_ = -1;
 }
 
 void Scene::keyHandler(common::MessageData data)
 {
     printf("KEY!!!!!!!!\n");
     int key = data["KEY"];
-    if (key == 'w')
-    {
-        camera_->moveCamera(0, -100);
-    }
-    if (key == 's')
-    {
-        camera_->moveCamera(0, 100);
-    }
-    if (key == 'a')
-    {
-        camera_->moveCamera(-100, 0);
-    }
-    if (key == 'd')
-    {
-        camera_->moveCamera(100, 0);
-    }
-
-    static float zoom = 1.0;
-    if (key == 't')
-    {
-        zoom += 0.1;
-        camera_->setCameraZoom(zoom);
-    }
-
-    if (key == 'g')
-    {
-        zoom -= 0.1;
-        camera_->setCameraZoom(zoom);
-    }
+    key_ = data["KEY"];
 }
 
 }

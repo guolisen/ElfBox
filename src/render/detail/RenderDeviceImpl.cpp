@@ -49,7 +49,6 @@ void RenderDeviceImpl::render(float timeStep)
         }
     }
 
-    //updateDrawable();
     updatePreLoadRect();
     updatePreLoadDrawable();
 
@@ -81,6 +80,14 @@ void RenderDeviceImpl::render(float timeStep)
     SDL_RenderClear((SDL_Renderer*)handle_);
 
     SDL_RenderCopy((SDL_Renderer*)handle_, backgroundTexture_, &zoomCameraRect, &viewRect);
+
+    for (auto &drawable : drawableList_)
+    {
+        RectFloat worldToCameraRect =
+            camera_->worldToCamera(drawable->getData().worldRect);
+        drawTestRect(worldToCameraRect);
+    }
+
     SDL_RenderPresent((SDL_Renderer*)handle_);
 
     update(timeStep);
@@ -89,11 +96,6 @@ void RenderDeviceImpl::render(float timeStep)
 void RenderDeviceImpl::addDrawable(DrawablePtr drawable)
 {
     drawableList_.push_back(drawable);
-}
-
-void RenderDeviceImpl::updateDrawable()
-{
-
 }
 
 void RenderDeviceImpl::updatePreLoadDrawable()
@@ -125,6 +127,8 @@ void RenderDeviceImpl::updatePreLoadDrawable()
             drawable->getData().drawableState = DrawableStateDrawing;
             renderList_.push_back(drawable);
         }
+        int b = 10;
+        b++;
     }
 
     int a = 10;
@@ -137,6 +141,7 @@ void RenderDeviceImpl::updatePreLoadRect()
     
     if (!preLoadTrigerRect_.isIncludeRect(cameraRect))
     {
+        printf("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\n");
         Point2DFloat center = camera_->getCameraCenter();
         preLoadRect_.x = center.x - preLoadRange_ / 2.0f;
         preLoadRect_.y = center.y - preLoadRange_ / 2.0f;
@@ -149,6 +154,21 @@ void RenderDeviceImpl::updatePreLoadRect()
 bool RenderDeviceImpl::initialize()
 {
     return true;
+}
+
+void RenderDeviceImpl::drawTestRect(RectFloat rect)
+{
+    SDL_SetRenderDrawColor((SDL_Renderer*)handle_, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    Point2DFloat ul = rect.getUpperLeft();
+    Point2DFloat ur = rect.getUpperRight();
+    Point2DFloat bl = rect.getBottomLeft();
+    Point2DFloat br = rect.getBottomRight();
+
+    SDL_RenderDrawLine((SDL_Renderer*)handle_, (int)ul.x, (int)ul.y, (int)ur.x, (int)ur.y);
+    SDL_RenderDrawLine((SDL_Renderer*)handle_, (int)ur.x, (int)ur.y, (int)br.x, (int)br.y);
+    SDL_RenderDrawLine((SDL_Renderer*)handle_, (int)br.x, (int)br.y, (int)bl.x, (int)bl.y);
+    SDL_RenderDrawLine((SDL_Renderer*)handle_, (int)bl.x, (int)bl.y, (int)ul.x, (int)ul.y);
 }
 }
 }

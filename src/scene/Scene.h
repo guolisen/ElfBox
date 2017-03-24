@@ -31,18 +31,25 @@ public:
     virtual void update(float timeStep);
     virtual bool load(const std::string& fileName);
 
+    virtual void startToDraw()
+    {
+        rootNode_->startToDraw();
+    }
+
     static common::IObjectPtr getFactory()
     {
         return std::make_shared<common::ObjectFactoryWrapper<Scene>>();
     }
 private:
     void keyHandler(common::MessageData data);
+    void keyUpHandler(common::MessageData data);
 
     common::ContextPtr context_;
     common::MessageBroadcasterPtr messageBroadcaster_;
     render::RenderDevicePtr renderDevice_;
     SceneNodePtr rootNode_;
     CameraPtr camera_;
+    int key_;
 };
 
 

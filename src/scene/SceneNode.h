@@ -60,6 +60,7 @@ public:
     {
         component->setDrawable(drawable_);
         component->setActivate(true);
+        component->startup();
         componentMap_.insert(std::make_pair(componentName, component));
     }
 

@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include "SceneTmxParserImpl.h"
+#include "../component/AnimationComponent.h"
 
 namespace elfbox
 {
@@ -110,11 +111,14 @@ const Tmx::Image* SceneTmxParserImpl::getTileImage(int tileGId, const Tmx::Tiles
         int gid = tileSet->GetFirstGid() + tile->GetId();
         if (gid != tileGId)
             continue;
+        
+        if (!tile->GetImage())
+            break;
 
         return tile->GetImage();
     }
 
-    return nullptr;
+    return tileSet->GetImage();
 }
 
 SceneNodePtr SceneTmxParserImpl::Parser()
@@ -126,8 +130,8 @@ SceneNodePtr SceneTmxParserImpl::Parser()
         int MapWidth = tileLayer->GetWidth();
         int MapHeight = tileLayer->GetHeight();
 
-        for (int Y = 0; Y < MapWidth; Y++) {
-            for (int X = 0; X < MapHeight; X++)
+        for (int X = 0; X < MapWidth; X++) {
+            for (int Y = 0; Y < MapHeight; Y++)
             {
                 Point2DFloat worldPosition = tilePositionToWorld(X, Y);
                 int tileGId = tileLayer->GetTileGid(X, Y);
@@ -183,21 +187,44 @@ SceneNodePtr SceneTmxParserImpl::Parser()
             const Tmx::Image* tileSetImage = getTileImage(tileGId, tileSet);
             if (!tileSetImage)
             {
-                ELFBOX_LOGERROR(log_, "tileId(%d) doesn't have Image", tileGId);
+                ELFBOX_LOGERROR(log_, "object tileId(%d) doesn't have Image", tileGId);
                 return scene::SceneNodePtr();
             }
 
             float objectWorldX = object->GetX();
             float objectWorldY = object->GetY() - tileSetImage->GetHeight();
-            float objectPixelWidth = object->GetWidth();
-            float objectPixelHeight = object->GetHeight();
+            float objectWorldWidth = object->GetWidth();
+            float objectWorldHeight = object->GetHeight();
+            float objectPixelWidth = tileSet->GetTileWidth();
+            float objectPixelHeight = tileSet->GetTileHeight();
 
             RectFloat srcRect = { 0, 0, objectPixelWidth, objectPixelHeight };
             RectFloat worldtRect = { objectWorldX, objectWorldY,
-                objectPixelWidth, objectPixelHeight };
+                objectWorldWidth, objectWorldHeight };
 
             SceneNodePtr tileNode = nodeFactory_->createNode<render::ImageDrawable>(
                 object->GetName(), tileSetImage->GetSource(), worldtRect, srcRect, 0);
+
+            const Tmx::Tile* tile = isAnimation(tileGId, tileSet);
+            if (tile)
+            {
+                system::ResourceCachePtr cache =
+                    context_->getComponent<elfbox::system::IResourceCache>(nullptr);
+                render::RenderMaterialPtr material =
+                    cache->getResource<render::IRenderMaterial>(tileSetImage->GetSource());
+                if (!material)
+                {
+                    printf("Animation material read error(%s)!\n", tileSetImage->GetSource().c_str());
+                    return SceneNodePtr();
+                }
+
+                NodeComponentPtr component =
+                    std::make_shared<component::AnimationComponent>(
+                        material, tile->GetFrames().size(), tileSetImage->GetWidth(),
+                        tileSetImage->GetHeight(), objectPixelWidth, objectPixelHeight,
+                        100.0f);
+                tileNode->addComponent(tileSet->GetName(), component);
+            }
 
             rootNode->addChild(tileNode);
         }
@@ -206,6 +233,22 @@ SceneNodePtr SceneTmxParserImpl::Parser()
     return rootNode;
 }
 
+const Tmx::Tile* SceneTmxParserImpl::isAnimation(int tileGId, const Tmx::Tileset* tileSet)
+{
+    int tt = tileSet->GetTiles().size();
+    for (auto tile : tileSet->GetTiles())
+    {
+        int id = tile->GetId();
+        int gid = tileSet->GetFirstGid() + tile->GetId();
+        if (gid != tileGId)
+            continue;
+
+        bool ttw = tile->IsAnimated();
+        return tile->IsAnimated() ? tile : nullptr;
+    }
+
+    return nullptr;
+}
 }
 }
 }

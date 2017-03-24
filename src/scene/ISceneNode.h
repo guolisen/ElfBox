@@ -36,6 +36,8 @@ public:
     virtual std::string getNodeName() = 0;
 
     virtual void addChild(std::shared_ptr<ISceneNode> childNode) = 0;
+    virtual void addComponent(const std::string& componentName,
+                              NodeComponentPtr component) = 0;
 };
 
 typedef std::shared_ptr<ISceneNode> SceneNodePtr;

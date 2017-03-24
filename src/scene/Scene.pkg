@@ -21,4 +21,5 @@ class Scene
     virtual bool initialize();
     virtual void update(float timeStep);
     virtual bool load(const std::string& fileName);
+    virtual void startToDraw();
 };

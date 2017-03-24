@@ -29,13 +29,14 @@ function gameIntroState.onEntry(sm)
 	print(tostring(sm))
 print("type is "..tolua.type(sm))
 
-    pl_window:createWindow("Test1", 1024, 768, 0);
+    pl_window:createWindow("Test1", 1280, 800, 0);
 	
 	local context = getContext()
 	gameIntroState.scene = Scene:new(context)
 	gameIntroState.scene:initialize()
-	gameIntroState.scene:load("E:/code/ElfClion/ElfBox/res/GameIntro.tmx")
-	gameIntroState.scene:update(0.0)
+	gameIntroState.scene:load("E:/code/ElfClion/ElfBox/res/GameIntro.tmx")	
+	gameIntroState.scene:startToDraw()
+
 	gameIntroState.counter = 0
 end
 function gameIntroState.onUpdate(sm, timeStep)
@@ -45,6 +46,8 @@ function gameIntroState.onUpdate(sm, timeStep)
 		local e = StateEvent:new("menuEvent")
 		pl_stateMachine:prcessEvent(e)
 	end
+	
+	gameIntroState.scene:update(timeStep)
 end
 function gameIntroState.onExit(sm)
 	print("LUA gameIntroState onExit! ")
@@ -59,13 +62,14 @@ function menuState.onEntry(sm)
 	menuState.scene = Scene:new(context)
 	menuState.scene:initialize()
 	menuState.scene:load("E:/code/ElfClion/ElfBox/res/map.tmx")
-	menuState.scene:update(0.0)
+	menuState.scene:startToDraw()
 end
-function menuState.onUpdate(timeStep, sm)
+function menuState.onUpdate(sm, timeStep)
 	--print("LUA menuState onUpdate!11111 ")
 	--local eOff = StateEvent:new("turnOffEvent")
     --stateMachine:prcessEvent(eOff)
 	--print("LUA menuState onUpdate!22222 ")
+	menuState.scene:update(timeStep)
 end
 function menuState.onExit(sm)
 	print("LUA menuState onExit! ")

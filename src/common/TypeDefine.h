@@ -6,6 +6,7 @@
 #define ELFBOX_TYPEDEFINE_H
 
 #include <string>
+#include <math.h>
 
 namespace elfbox
 {
@@ -110,6 +111,11 @@ struct Rect
         return Point2D<T>(x, y);
     }
 
+    Point2D<T> getCenter()
+    {
+        return Point2D<T>(x + w / 2.0f, y + h / 2.0f);
+    }
+
     Point2D<T> getUpperLeft()
     {
         return getPosition();
@@ -170,8 +176,18 @@ struct Rect
         Point2DFloat upperRightSelf = getUpperRight();
         if (rect.isInRect(upperRightSelf))
             return true;
-        
-        return false;
+
+        //return false;
+
+        Point2DFloat selfCenter(x + w/2.0f, y + h/2.0f);
+        Point2DFloat otherCenter(rect.x + rect.w/2.0f, rect.y + rect.h/2.0f);
+
+        float verticalDistance = abs(int(selfCenter.x - otherCenter.x));
+        float horizontalDistance = abs(int(selfCenter.y - otherCenter.y));
+
+        return (verticalDistance < (h / 2.0f + rect.h / 2.0f)) &&
+                   (horizontalDistance < (w / 2.0f + rect.w / 2.0f))
+               ? true : false;
     }
 
     bool isIncludeRect(Rect<T> rect)

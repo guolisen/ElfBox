@@ -29,7 +29,10 @@ void SceneNode::update(float timeStep)
             component.second->update(timeStep);
     }
 
-    //componentMap_
+    for (auto& childNode : childList_)
+    {
+        childNode->update(timeStep);
+    }
 }
 
 void SceneNode::translate()

@@ -22,7 +22,10 @@ public:
         componentType_(componentType), activate_(false) {}
     virtual ~INodeComponent() = default;
 
+    virtual void startup() = 0;
     virtual void update(float timeStep) = 0;
+    virtual void teardown() = 0;
+
     virtual bool isActivate()
     {
         return activate_;
@@ -42,7 +45,8 @@ public:
     {
         return componentType_;
     }
-private:
+
+protected:
     render::DrawablePtr drawable_;
     std::string componentType_;
     bool activate_;

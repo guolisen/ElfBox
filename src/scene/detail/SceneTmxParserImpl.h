@@ -41,6 +41,7 @@ private:
     Point2DFloat tilePositionToWorld(int tileX, int tileY);
     const Tmx::Tileset* getTileSet(int tileGId);
     const Tmx::Image* getTileImage(int tileGId, const Tmx::Tileset* tileSet);
+    const Tmx::Tile* isAnimation(int tileGId, const Tmx::Tileset* tileSet);
 
     common::ContextPtr context_;
     SceneNodeFactoryPtr nodeFactory_;
