@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="9" height="17" tilewidth="1312" tileheight="491" nextobjectid="6">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="9" height="17" tilewidth="1312" tileheight="491" nextobjectid="9">
  <tileset firstgid="1" name="d" tilewidth="1312" tileheight="492" tilecount="153" columns="0">
   <tile id="1">
    <image width="1312" height="491" source="map/6/images/Background_01.png"/>
@@ -1900,22 +1900,22 @@
    <image width="1312" height="492" source="map/10/images/guangying_18.png"/>
   </tile>
   <tile id="18">
-   <image width="1312" height="491" source="map/10/images/guangying_19.png"/>
+   <image source="map/10/images/guangying_19.png"/>
   </tile>
   <tile id="19">
-   <image width="1312" height="491" source="map/10/images/guangying_20.png"/>
+   <image source="map/10/images/guangying_20.png"/>
   </tile>
   <tile id="20">
-   <image width="1312" height="491" source="map/10/images/guangying_21.png"/>
+   <image source="map/10/images/guangying_21.png"/>
   </tile>
   <tile id="21">
-   <image width="1312" height="491" source="map/10/images/guangying_22.png"/>
+   <image source="map/10/images/guangying_22.png"/>
   </tile>
   <tile id="22">
-   <image width="1312" height="491" source="map/10/images/guangying_23.png"/>
+   <image source="map/10/images/guangying_23.png"/>
   </tile>
   <tile id="23">
-   <image width="1312" height="491" source="map/10/images/guangying_24.png"/>
+   <image source="map/10/images/guangying_24.png"/>
   </tile>
   <tile id="24">
    <image source="map/10/images/guangying_25.png"/>
@@ -2095,13 +2095,13 @@
    <image source="map/10/images/guangying_83.png"/>
   </tile>
   <tile id="83">
-   <image width="1312" height="492" source="map/10/images/guangying_84.png"/>
+   <image source="map/10/images/guangying_84.png"/>
   </tile>
   <tile id="84">
-   <image width="1312" height="492" source="map/10/images/guangying_85.png"/>
+   <image source="map/10/images/guangying_85.png"/>
   </tile>
   <tile id="85">
-   <image width="1312" height="492" source="map/10/images/guangying_86.png"/>
+   <image source="map/10/images/guangying_86.png"/>
   </tile>
   <tile id="86">
    <image source="map/10/images/guangying_87.png"/>
@@ -2305,9 +2305,16 @@
    <image source="map/10/images/guangying_153.png"/>
   </tile>
  </tileset>
- <tileset firstgid="770" name="sp" tilewidth="100" tileheight="168" tilecount="8" columns="8">
-  <image source="../../../s/ren/8c.png" width="800" height="168"/>
+ <tileset firstgid="770" name="w2" tilewidth="100" tileheight="168" tilecount="8" columns="8">
+  <properties>
+   <property name="type" value="animation"/>
+  </properties>
+  <image source="8.png" width="800" height="1344"/>
   <tile id="0">
+   <properties>
+    <property name="activate" value="true"/>
+    <property name="name" value="down"/>
+   </properties>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="1" duration="100"/>
@@ -2319,8 +2326,112 @@
     <frame tileid="7" duration="100"/>
    </animation>
   </tile>
+  <tile id="8">
+   <properties>
+    <property name="name" value="bl"/>
+   </properties>
+   <animation>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+    <frame tileid="10" duration="100"/>
+    <frame tileid="11" duration="100"/>
+    <frame tileid="12" duration="100"/>
+    <frame tileid="13" duration="100"/>
+    <frame tileid="14" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="name" value="left"/>
+   </properties>
+   <animation>
+    <frame tileid="16" duration="100"/>
+    <frame tileid="17" duration="100"/>
+    <frame tileid="18" duration="100"/>
+    <frame tileid="19" duration="100"/>
+    <frame tileid="20" duration="100"/>
+    <frame tileid="21" duration="100"/>
+    <frame tileid="22" duration="100"/>
+    <frame tileid="23" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="name" value="ul"/>
+   </properties>
+   <animation>
+    <frame tileid="24" duration="100"/>
+    <frame tileid="25" duration="100"/>
+    <frame tileid="26" duration="100"/>
+    <frame tileid="27" duration="100"/>
+    <frame tileid="28" duration="100"/>
+    <frame tileid="29" duration="100"/>
+    <frame tileid="30" duration="100"/>
+    <frame tileid="31" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="name" value="up"/>
+   </properties>
+   <animation>
+    <frame tileid="32" duration="100"/>
+    <frame tileid="33" duration="100"/>
+    <frame tileid="34" duration="100"/>
+    <frame tileid="35" duration="100"/>
+    <frame tileid="36" duration="100"/>
+    <frame tileid="37" duration="100"/>
+    <frame tileid="38" duration="100"/>
+    <frame tileid="39" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="name" value="ur"/>
+   </properties>
+   <animation>
+    <frame tileid="40" duration="100"/>
+    <frame tileid="41" duration="100"/>
+    <frame tileid="42" duration="100"/>
+    <frame tileid="43" duration="100"/>
+    <frame tileid="44" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="47" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="48">
+   <properties>
+    <property name="name" value="right"/>
+   </properties>
+   <animation>
+    <frame tileid="48" duration="100"/>
+    <frame tileid="49" duration="100"/>
+    <frame tileid="50" duration="100"/>
+    <frame tileid="51" duration="100"/>
+    <frame tileid="52" duration="100"/>
+    <frame tileid="53" duration="100"/>
+    <frame tileid="54" duration="100"/>
+    <frame tileid="55" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="56">
+   <properties>
+    <property name="name" value="br"/>
+   </properties>
+   <animation>
+    <frame tileid="56" duration="100"/>
+    <frame tileid="57" duration="100"/>
+    <frame tileid="58" duration="100"/>
+    <frame tileid="59" duration="100"/>
+    <frame tileid="60" duration="100"/>
+    <frame tileid="61" duration="100"/>
+    <frame tileid="62" duration="100"/>
+    <frame tileid="63" duration="100"/>
+   </animation>
+  </tile>
  </tileset>
- <layer name="back" width="9" height="17">
+ <layer name="back" width="9" height="17" visible="0">
   <data encoding="csv">
 2,3,4,5,6,7,8,9,10,
 11,12,13,14,15,16,17,18,19,
@@ -2341,7 +2452,7 @@
 146,147,148,149,150,151,152,153,154
 </data>
  </layer>
- <layer name="shan" width="9" height="17">
+ <layer name="shan" width="9" height="17" visible="0">
   <data encoding="csv">
 311,312,313,314,315,316,317,318,319,
 320,321,322,323,324,325,326,327,328,
@@ -2362,7 +2473,7 @@
 455,456,457,458,459,460,461,462,463
 </data>
  </layer>
- <layer name="jianzhu" width="9" height="17">
+ <layer name="jianzhu" width="9" height="17" visible="0">
   <data encoding="csv">
 155,156,157,158,159,160,161,162,163,
 164,165,166,167,168,169,170,171,172,
@@ -2383,7 +2494,7 @@
 299,300,301,302,303,304,305,306,307
 </data>
  </layer>
- <layer name="shu" width="9" height="17">
+ <layer name="shu" width="9" height="17" visible="0">
   <data encoding="csv">
 464,465,466,467,468,469,470,471,472,
 473,474,475,476,477,478,479,480,481,
@@ -2405,7 +2516,11 @@
 </data>
  </layer>
  <objectgroup name="对象层 1">
-  <object id="2" name="camera" x="8336" y="5616" width="1202.79" height="904.364"/>
-  <object id="5" name="sp" gid="770" x="8695.45" y="6220.36" width="200" height="336"/>
+  <object id="2" name="camera" x="7875.39" y="5352.36" width="1861.82" height="1327.27"/>
+  <object id="6" name="sp" type="NPC" gid="826" x="8730" y="6064" width="100" height="168">
+   <properties>
+    <property name="Sprite" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

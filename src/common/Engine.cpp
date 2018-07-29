@@ -1,4 +1,5 @@
 
+
 #include <common/Engine.h>
 #include <graphics/IGraphics.h>
 #include <system/IWindow.h>
@@ -111,20 +112,20 @@ void Engine::run()
         systemEventProcess->run();
         messageBroadcaster->notifyMessage(-1);
 
-        mainStateMachine_->update(timeStep_);
-        renderDevice_->render(timeStep_);
+        update();
+        render();
         applyTimeStep();
     }
 }
 
 void Engine::render()
 {
-
+    renderDevice_->render(timeStep_);
 }
 
 void Engine::update()
 {
-
+    mainStateMachine_->update(timeStep_);
 }
 
 void Engine::start()

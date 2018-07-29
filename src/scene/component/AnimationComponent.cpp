@@ -34,12 +34,12 @@ AnimationComponent::AnimationComponent(render::RenderMaterialPtr animationMateri
 
 void AnimationComponent::teardown()
 {
-    drawable_->getData().material = backupMaterial_;
+    //drawable_->getData().material = backupMaterial_;
 }
 
 void AnimationComponent::update(float timeStep)
 {
-    elapsedTime_ += timeStep * 100000;
+    elapsedTime_ += timeStep * 1000;
     if (elapsedTime_ <= animationSpeedTime_)
     {
         return;
@@ -63,8 +63,8 @@ void AnimationComponent::update(float timeStep)
 
 void AnimationComponent::startup()
 {
-    backupMaterial_ = drawable_->getData().material;
-    drawable_->getData().material = animationMaterial_;
+    //backupMaterial_ = drawable_->getData().material;
+    //drawable_->getData().material = animationMaterial_;
 }
 
 void AnimationComponent::updateFrame()

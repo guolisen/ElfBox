@@ -14,7 +14,7 @@ SceneNode::SceneNode(common::ContextPtr context,
                      const std::string& nodeName,
                      render::DrawablePtr drawable) :
     context_(context), nodeName_(nodeName),
-    drawable_(drawable) {}
+    drawable_(drawable), worldVec_(0,0) {}
 
 bool SceneNode::initialize()
 {
@@ -31,12 +31,18 @@ void SceneNode::update(float timeStep)
 
     for (auto& childNode : childList_)
     {
-        childNode->update(timeStep);
+		if (childNode)
+			childNode->update(timeStep);
     }
 }
 
-void SceneNode::translate()
+void SceneNode::translate(Vector2DFloat moveDelta)
 {
+    Point2DFloat position = drawable_->getData().worldRect.getPosition();
+
+    position = position + moveDelta;
+
+    drawable_->getData().worldRect.setPosition(position);
 }
 
 void SceneNode::rotate()
@@ -47,7 +53,7 @@ void SceneNode::scale(float scale)
 {
 }
 
-void SceneNode::translateTo()
+void SceneNode::translateTo(Vector2DFloat directVec, int speed)
 {
 }
 
@@ -78,8 +84,14 @@ void SceneNode::startToDraw()
 
     for (auto& childNode : childList_)
     {
-        childNode->startToDraw();
+		if (childNode)
+			childNode->startToDraw();
     }
+}
+
+RectFloat SceneNode::getNodeRect()
+{
+    return drawable_->getData().worldRect;
 }
 }
 }

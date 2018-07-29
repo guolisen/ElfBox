@@ -12,11 +12,11 @@ class ISceneNode
     virtual bool initialize();
     virtual void update(float timeStep);
     virtual void startToDraw();
-    virtual void translate();
+    virtual void translate(Vector2DFloat moveDelta);
     virtual void rotate();
     virtual void scale(float scale);
 
-    virtual void translateTo();
+    //virtual void translateTo();
     virtual void rotateTo();
     virtual void scaleTo(float scale);
 

@@ -21,7 +21,7 @@ SceneNodePtr SceneNodeFactory::createNode(
     if (!material)
     {
         printf("material read error(%s)!\n", resFileName.c_str());
-        return false;
+        return SceneNodePtr();
     }
     drawable->setMaterial(material);
 

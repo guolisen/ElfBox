@@ -34,11 +34,12 @@ public:
     virtual void update(float timeStep);
     virtual void startToDraw();
 
-    virtual void translate();
+    virtual RectFloat getNodeRect();
+    virtual void translate(Vector2DFloat moveDelta);
     virtual void rotate();
     virtual void scale(float scale);
 
-    virtual void translateTo();
+    virtual void translateTo(Vector2DFloat directVec, int speed);
     virtual void rotateTo();
     virtual void scaleTo(float scale);
 
@@ -52,6 +53,7 @@ public:
 
     virtual void addChild(std::shared_ptr<ISceneNode> childNode)
     {
+        //childNode->setParentNode(this);
         childList_.push_back(childNode);
     }
 

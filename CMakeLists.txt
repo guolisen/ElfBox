@@ -25,37 +25,49 @@ find_package(SDL2)
 find_package(LUA)
 find_package(TOLUA)
 
-#set(SDL2_INCLUDE_DIR "E:/code/lib/SDL2-2.0.5/include")
-#set(SDL2_IMAGE_INCLUDE_DIR "E:/code/lib/SDL2_image-2.0.1/include")
-#set(SDL2MAIN_LIBRARY "E:/code/lib/SDL2-2.0.5/lib/x86/SDL2main.lib")
-#set(SDL2_LIBRARY "E:/code/lib/SDL2-2.0.5/lib/x86/SDL2.lib")
-#set(SDL2_IMAGE_LIBRARY "/usr/lib/libSDL2_image.dll.a")
-#set(SDL2_IMAGE_LIBRARY "E:/code/lib/SDL2_image-2.0.1/lib/x86/SDL2_image.lib")
-
 #添加C++11支持及其他选项
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
 
 add_executable(run_tests test/testmain.cpp)
 
-include_directories(${TOLUA_INCLUDE_DIR})
+include_directories(${TOLUAPP_INCLUDE_DIR})
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${TMXPARSER_INCLUDE_DIR})
 include_directories(${TINYXML2_INCLUDE_DIR})
 include_directories(${ZLIB_INCLUDE_DIRS})
-include_directories(${SDL2_INCLUDE_DIR})
-include_directories(${SDL2_IMAGE_INCLUDE_DIR})
+include_directories(${SDL_INCLUDE_DIR})
+include_directories(${SDL_IMAGE_INCLUDE_DIR})
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
+message("========== Var ==========")
+message("SDL_INCLUDE_DIR: ${SDL_INCLUDE_DIR}")
+message("SDL_LIBRARY: ${SDL_LIBRARY}")
+message("SDL_IMAGE_INCLUDE_DIR: ${SDL_IMAGE_INCLUDE_DIR}")
+message("SDL_IMAGE_LIBRARY: ${SDL_IMAGE_LIBRARY}")
+message("LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
+message("LUA_LIBRARIES: ${LUA_LIBRARIES}")
+message("ZLIB_LIBRARIES: ${ZLIB_LIBRARIES}")
+message("ZLIB_INCLUDE_DIRS: ${ZLIB_INCLUDE_DIRS}")
+message("TINYXML2_INCLUDE_DIR: ${TINYXML2_INCLUDE_DIR}")
+message("TINYXML2_LIBRARIES: ${TINYXML2_LIBRARIES}")
+message("TOLUAPP_LIBRARIES: ${TOLUAPP_LIBRARIES}")
+message("TOLUAPP_INCLUDE_DIR: ${TOLUAPP_INCLUDE_DIR}")
+message("TMXPARSER_INCLUDE_DIR: ${TMXPARSER_INCLUDE_DIR}")
+message("TMXPARSER_LIBRARIES: ${TMXPARSER_LIBRARIES}")
+
+
 #target_link_libraries(run_tests libelfbox ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES} 
 #	${SDL_LIBRARY} ${SDL_IMAGE_LIBRARY} ${SDLMAIN_LIBRARY})
+#target_link_libraries(run_tests libelfbox
+#        ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY}
+#        ${TMXPARSER_LIBRARIES} ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES} ${LUA_LIBRARIES}
+#        ${TOLUAPP_LIBRARIES} ${TOLUA_LIBRARIES})
 target_link_libraries(run_tests libelfbox
-		 ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY}
-		 ${TMXPARSER_LIBRARIES} ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES} ${LUA_LIBRARIES}
-		 ${TOLUA_LIBRARIES})
+		 ${SDL_IMAGE_LIBRARY} ${SDL_LIBRARY} ${SDLMAIN_LIBRARY}
+		 ${TMXPARSER_LIBRARIES} ${TINYXML2_LIBRARIES} ${ZLIB_LIBRARIES}
+		 ${LUA_LIBRARIES} ${TOLUAPP_LIBRARIES})
 
-message("@@@@ ${TMXPARSER_INCLUDE_DIR}")
-message("@@@@ ${LUA_LIBRARIES}")
 
 #install(FILES ${HEADERS} DESTINATION include/tmxparser)
 #install(TARGETS tmxparser tmxparser_static DESTINATION lib)

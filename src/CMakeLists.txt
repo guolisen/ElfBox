@@ -15,21 +15,15 @@ foreach (API_PKG_FILE ${LUA_PKG_FILES})
     message("DIRECTORY: ${DIRECTORY}")
     string (CONCAT COMPLETE_NAME_C ${DIRECTORY} "/" ${NAME_C})
     message("COMPLETE_NAME_C: ${COMPLETE_NAME_C}")
-    #    set (GEN_CPP_FILE LuaScript/generated/${DIR}LuaAPI.cpp)
-    #message("GEN_CPP_FILE: ${GEN_CPP_FILE}")
-    #    list (APPEND GEN_CPP_FILES ${GEN_CPP_FILE})
-    #message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
     message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
     #    file (GLOB PKG_FILES LuaScript/pkgs/${DIR}/*.pkg)
-    string (CONCAT COMMAND_TOLUA ${PROJECT_SOURCE_DIR} "/tool/tolua")
-    message("COMMAND_TOLUA: ${COMMAND_TOLUA}")
+    string (CONCAT COMMAND_TOLUA ${PROJECT_SOURCE_DIR} "/tool/tolua.exe")
+	message("COMMAND_TOLUA: ${COMMAND_TOLUA}")
     add_custom_command (OUTPUT ${COMPLETE_NAME_C}
-            PRE_BUILD
-            COMMAND ${COMMAND_TOLUA} -n ${NAME_TMP} -o ${NAME_C} ${API_PKG_FILE}
-            DEPENDS ${COMMAND_TOLUA} ${API_PKG_FILE}
-            WORKING_DIRECTORY ${DIRECTORY}
-            COMMENT "Generating tolua++ API binding on the fly for ${COMPLETE_NAME_C}")
-
+            COMMAND ${PROJECT_SOURCE_DIR}/tool/tolua.exe -n ${NAME_TMP} -o ${NAME_C} ${NAME}
+            DEPENDS ${PROJECT_SOURCE_DIR}/tool/tolua.exe
+            COMMENT "Creating Tolua Cpp File: ${COMPLETE_NAME_C}"
+            WORKING_DIRECTORY "${DIRECTORY}")
     list (APPEND TOLUA_C_FILES ${COMPLETE_NAME_C})
 endforeach ()
 
@@ -51,8 +45,10 @@ ELSE ()
     set(SYSTEM_DETAIL_SOURCES "${SYSTEM_DETAIL_SOURCES};system/detail/platform/TimeServiceOtherImpl.cpp")
 ENDIF (WIN32)
 
-include_directories(${TOLUA_INCLUDE_DIR})
-include_directories(${LUA_INCLUDE_DIR})
+message("@@@@ ${TMXPARSER_INCLUDE_DIR}")
+
+include_directories(${TOLUAPP_INCLUDE_DIR})
+include_directories(${LUA51_INCLUDE_DIR})
 include_directories(${TMXPARSER_INCLUDE_DIR})
 include_directories(${TINYXML2_INCLUDE_DIR})
 include_directories(${ZLIB_INCLUDE_DIRS})

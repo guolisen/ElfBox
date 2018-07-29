@@ -85,7 +85,25 @@ typedef char_ tchar_;
 template <class T>
 struct Point2D
 {
-    T x, y;
+    T x;
+    T y;
+
+    Point2D<T> operator-(Point2D<T> other)
+    {
+        return Point2D<T>(x - other.x, y - other.y);
+    }
+    Point2D<T> operator+(Point2D<T> other)
+    {
+        return Point2D<T>(x + other.x, y + other.y);
+    }
+    Point2D<T> operator*(Point2D<T> other)
+    {
+        return Point2D<T>(x * other.x, y * other.y);
+    }
+    Point2D<T> operator*(T other)
+    {
+        return Point2D<T>(x * other, y * other);
+    }
 
     Point2D(): x(0), y(0) {}
     Point2D(T rx, T ry): x(rx), y(ry) {}
@@ -98,13 +116,37 @@ struct Point2D
 
 typedef Point2D<int> Point2DInt;
 typedef Point2D<float> Point2DFloat;
-typedef Point2DFloat Vector2DFloat;
+
+template <class T>
+struct Vector2D : public Point2D<T>
+{
+    T length()
+    {
+        //return static_cast<T>(sqrt(x*x + y*y));
+        return static_cast<T>(0);
+    }
+
+    Vector2D(T rx, T ry): Point2D<T>(rx, ry) {}
+    Vector2D(const Point2D<T> other)
+    {
+        //x = other.x;
+        //y = other.y;
+    }
+};
+
+typedef Vector2D<float> Vector2DFloat;
 
 template <class T>
 struct Rect
 {
     T x, y;
     T w, h;
+
+    void setPosition(const Point2D<T>& position)
+    {
+        x = position.x;
+        y = position.y;
+    }
 
     Point2D<T> getPosition()
     {

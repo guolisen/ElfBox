@@ -6,8 +6,13 @@
 # TINYXML2_INCLUDE_DIR
 # TINYXML2_LIBRARIES
 
-find_path(TINYXML2_INCLUDE_DIR NAMES tinyxml2.h)
-find_library(TINYXML2_LIBRARIES NAMES tinyxml2)
+find_path(TINYXML2_INCLUDE_DIR 
+	NAMES tinyxml2.h
+	PATH_SUFFIXES inc
+	PATHS E:/code/lib2017/tinyxml2)
+find_library(TINYXML2_LIBRARIES 
+	NAMES tinyxml2
+	PATHS E:/code/lib2017/tinyxml2)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(TINYXML2 DEFAULT_MSG TINYXML2_LIBRARIES TINYXML2_INCLUDE_DIR)

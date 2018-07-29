@@ -9,15 +9,18 @@
 MESSAGE(STATUS "Using bundled FindTmxParser.cmake...")
 FIND_PATH(
    TMXPARSER_INCLUDE_DIR
-   Tmx.h
+   tmxparser/Tmx.h
    /usr/include/
+   /usr/include/tmxparser
    /usr/local/include/
+   E:/code/lib2017/tmx/inc/
    )
 
 FIND_LIBRARY(
    TMXPARSER_LIBRARIES NAMES  tmxparser
-   PATHS /usr/lib/ /usr/local/lib/
+   PATHS /usr/lib/ /usr/local/lib/ E:/code/lib2017/tmx
    )
+
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(TMXPARSER DEFAULT_MSG TMXPARSER_LIBRARIES TMXPARSER_INCLUDE_DIR)

@@ -60,8 +60,8 @@ Point2DFloat SceneTmxParserImpl::tilePositionToWorld(int tileX, int tileY)
 
     if (sceneInfo_.orientation == 1)
     {
-        point.x = tileX * tileW;
-        point.y = tileY * tileH;
+        point.x = (float)(tileX * tileW);
+        point.y = (float)(tileY * tileH);
     }
     else if (sceneInfo_.orientation == 2)
     {
@@ -205,26 +205,10 @@ SceneNodePtr SceneTmxParserImpl::Parser()
             SceneNodePtr tileNode = nodeFactory_->createNode<render::ImageDrawable>(
                 object->GetName(), tileSetImage->GetSource(), worldtRect, srcRect, 0);
 
-            const Tmx::Tile* tile = isAnimation(tileGId, tileSet);
-            if (tile)
-            {
-                system::ResourceCachePtr cache =
-                    context_->getComponent<elfbox::system::IResourceCache>(nullptr);
-                render::RenderMaterialPtr material =
-                    cache->getResource<render::IRenderMaterial>(tileSetImage->GetSource());
-                if (!material)
-                {
-                    printf("Animation material read error(%s)!\n", tileSetImage->GetSource().c_str());
-                    return SceneNodePtr();
-                }
-
-                NodeComponentPtr component =
-                    std::make_shared<component::AnimationComponent>(
-                        material, tile->GetFrames().size(), tileSetImage->GetWidth(),
-                        tileSetImage->GetHeight(), objectPixelWidth, objectPixelHeight,
-                        100.0f);
-                tileNode->addComponent(tileSet->GetName(), component);
-            }
+            auto propertiesMap = tileSet->GetProperties().GetList();
+            auto typeValue = propertiesMap["type"];
+            if (typeValue == "animation")
+                setAnimation(tileNode, tileSet);
 
             rootNode->addChild(tileNode);
         }
@@ -233,21 +217,53 @@ SceneNodePtr SceneTmxParserImpl::Parser()
     return rootNode;
 }
 
-const Tmx::Tile* SceneTmxParserImpl::isAnimation(int tileGId, const Tmx::Tileset* tileSet)
+bool SceneTmxParserImpl::setAnimation(std::shared_ptr<ISceneNode> node,
+                                      const Tmx::Tileset* tileSet)
 {
-    int tt = tileSet->GetTiles().size();
-    for (auto tile : tileSet->GetTiles())
+    const Tmx::Image* tileSetImage = tileSet->GetImage();
+    if (!tileSetImage)
     {
-        int id = tile->GetId();
-        int gid = tileSet->GetFirstGid() + tile->GetId();
-        if (gid != tileGId)
-            continue;
-
-        bool ttw = tile->IsAnimated();
-        return tile->IsAnimated() ? tile : nullptr;
+        printf("SceneTmxParserImpl::setAnimation Cannot find Animation Image\n");
+        return false;
     }
 
-    return nullptr;
+    float objectPixelWidth = tileSet->GetTileWidth();
+    float objectPixelHeight = tileSet->GetTileHeight();
+
+    system::ResourceCachePtr cache =
+        context_->getComponent<elfbox::system::IResourceCache>(nullptr);
+    render::RenderMaterialPtr material =
+        cache->getResource<render::IRenderMaterial>(tileSetImage->GetSource());
+    if (!material)
+    {
+        printf("Animation material read error(%s)!\n", tileSetImage->GetSource().c_str());
+        return false;
+    }
+
+    auto tilesVar = tileSet->GetTiles();
+    for (auto tile : tilesVar)
+    {
+        if (!tile->IsAnimated())
+            continue;
+
+        NodeComponentPtr component =
+            std::make_shared<component::AnimationComponent>(
+                material, tile->GetFrames().size(), tileSetImage->GetWidth(),
+                tileSetImage->GetHeight(), objectPixelWidth, objectPixelHeight,
+                100.0f);
+
+        auto propertiesMap = tile->GetProperties().GetList();
+        auto activateValue = propertiesMap["activate"];
+        if ("true" == activateValue)
+        {
+            component->setActivate(true);
+        }
+        auto nameValue = propertiesMap["name"];
+        node->addComponent(nameValue, component);
+
+    }
+
+    return true;
 }
 }
 }

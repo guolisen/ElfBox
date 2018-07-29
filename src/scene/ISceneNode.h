@@ -22,12 +22,14 @@ public:
 
     virtual bool initialize() = 0;
     virtual void update(float timeStep) = 0;
+
+    virtual RectFloat getNodeRect() = 0;
     virtual void startToDraw() = 0;
-    virtual void translate() = 0;
+    virtual void translate(Vector2DFloat moveDelta) = 0;
     virtual void rotate() = 0;
     virtual void scale(float scale) = 0;
 
-    virtual void translateTo() = 0;
+    virtual void translateTo(Vector2DFloat directVec, int speed) = 0;
     virtual void rotateTo() = 0;
     virtual void scaleTo(float scale) = 0;
 
@@ -38,6 +40,14 @@ public:
     virtual void addChild(std::shared_ptr<ISceneNode> childNode) = 0;
     virtual void addComponent(const std::string& componentName,
                               NodeComponentPtr component) = 0;
+
+    virtual void setParentNode(std::shared_ptr<ISceneNode> parentNode)
+    {
+        parentNode_ = parentNode;
+    }
+
+protected:
+    std::shared_ptr<ISceneNode> parentNode_;
 };
 
 typedef std::shared_ptr<ISceneNode> SceneNodePtr;

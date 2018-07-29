@@ -8,18 +8,18 @@
 
 MESSAGE(STATUS "Using bundled FindToLua.cmake...")
 FIND_PATH(
-   TOLUA_INCLUDE_DIR
-   tolua.h
-   /usr/include/
+   TOLUAPP_INCLUDE_DIR
+   tolua++.h
    /usr/local/include/
+   E:/code/lib/tolua/inc
    )
 
 FIND_LIBRARY(
-   TOLUA_LIBRARIES NAMES  tolua
-   PATHS /usr/lib/ /usr/local/lib/
+   TOLUAPP_LIBRARIES NAMES  tolua++
+   PATHS /usr/local/lib/ E:/code/lib/tolua/
    )
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(TOLUA DEFAULT_MSG TOLUA_LIBRARIES TOLUA_INCLUDE_DIR)
+find_package_handle_standard_args(TOLUA DEFAULT_MSG TOLUAPP_LIBRARIES  TOLUAPP_INCLUDE_DIR)
 
 #mark_as_advanced(TMXPARSER_INCLUDE_DIR TMXPARSER_LIBRARIES)

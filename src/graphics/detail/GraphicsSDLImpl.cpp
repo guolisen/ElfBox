@@ -21,7 +21,7 @@ GraphicsImpl::GraphicsImpl(common::ContextPtr context) :
 
 bool GraphicsImpl::initialize()
 {
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         ELFBOX_LOGERROR(log_, "SDL_Init return %s", SDL_GetError());
         return false;

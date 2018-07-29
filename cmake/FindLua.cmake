@@ -10,13 +10,15 @@ MESSAGE(STATUS "Using bundled FindLua.cmake...")
 FIND_PATH(
    LUA_INCLUDE_DIR
    lua.h
-   /usr/include/
    /usr/local/include/
+   E:/code/lib2017/lua/inc
+   
    )
 
 FIND_LIBRARY(
-   LUA_LIBRARIES NAMES  lua
-   PATHS /usr/lib/ /usr/local/lib/
+   LUA_LIBRARIES NAMES  lua51 lua
+   PATHS  /usr/local/lib/
+   E:/code/lib2017/lua/x64
    )
 
 include(FindPackageHandleStandardArgs)
