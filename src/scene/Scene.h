@@ -33,7 +33,8 @@ public:
 
     virtual void startToDraw()
     {
-        rootNode_->startToDraw();
+        for (auto layer : layerList_)
+            layer->startToDraw();
     }
 
     static common::IObjectPtr getFactory()
@@ -47,7 +48,7 @@ private:
     common::ContextPtr context_;
     common::MessageBroadcasterPtr messageBroadcaster_;
     render::RenderDevicePtr renderDevice_;
-    SceneNodePtr rootNode_;
+    std::list<SceneNodePtr> layerList_;
     CameraPtr camera_;
     int key_;
 };

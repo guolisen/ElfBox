@@ -49,8 +49,8 @@ void RenderDeviceImpl::render(float timeStep)
         }
     }
 
-    updatePreLoadRect();
-    updatePreLoadDrawable();
+    //updatePreLoadRect();
+    //updatePreLoadDrawable();
 
     SDL_Rect viewRect = toSDLRect(camera_->getCameraScreenRect());
     SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
@@ -141,7 +141,7 @@ void RenderDeviceImpl::updatePreLoadRect()
     
     if (!preLoadTrigerRect_.isIncludeRect(cameraRect))
     {
-        printf("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\n");
+        //printf("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\n");
         Point2DFloat center = camera_->getCameraCenter();
         preLoadRect_.x = center.x - preLoadRange_ / 2.0f;
         preLoadRect_.y = center.y - preLoadRange_ / 2.0f;

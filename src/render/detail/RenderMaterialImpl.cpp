@@ -30,7 +30,7 @@ bool RenderMaterialImpl::loadResource()
     if (isLoad_)
         return true;
 
-    std::string tmpStr = std::string("E:/code/ElfClion/ElfBox/res/") + fileName_;
+    std::string tmpStr = std::string("E:/code/ElfClion/ElfBox/res/map2/") + fileName_;
     materialSurfaceHandle_ = (MaterialSurfaceHandle)IMG_Load(tmpStr.c_str());
     if (materialSurfaceHandle_ == nullptr)
     {

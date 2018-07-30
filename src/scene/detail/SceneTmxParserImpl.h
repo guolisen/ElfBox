@@ -5,6 +5,7 @@
 #ifndef ELFBOX_SCENETMXPARSERIMPL_H
 #define ELFBOX_SCENETMXPARSERIMPL_H
 
+#include <list>
 #include <vector>
 #include <memory>
 #include <common/IObject.h>
@@ -35,7 +36,7 @@ public:
         return sceneInfo_;
     }
 
-    SceneNodePtr Parser();
+    std::list<SceneNodePtr> Parser();
 
 private:
     Point2DFloat tilePositionToWorld(int tileX, int tileY);

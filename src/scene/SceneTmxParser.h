@@ -33,7 +33,7 @@ public:
         return impl_->getSceneInfo();
     }
 
-    virtual SceneNodePtr Parser()
+    virtual std::list<SceneNodePtr> Parser()
     {
         return impl_->Parser();
     }

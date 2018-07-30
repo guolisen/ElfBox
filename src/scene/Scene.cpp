@@ -19,7 +19,7 @@ Scene::Scene(common::ContextPtr context) :
     messageBroadcaster_(context_->getComponent<common::IMessageBroadcaster>(nullptr)),
     renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr)),
     camera_(std::make_shared<Camera>(
-    context, Point2DFloat(8229.0f, 5857.0f), 1.0f, 768.0f, 4.0f / 3.0f))
+    context, Point2DFloat(0.0f, 0.0f), 1.0f, 768.0f, 4.0f / 3.0f))
 {
 }
 
@@ -56,7 +56,8 @@ void Scene::update(float timeStep)
         camera_->setCameraZoom(zoom);
     }
 
-    rootNode_->update(timeStep);
+    for (auto layer : layerList_)
+        layer->update(timeStep);
 }
 
 bool Scene::load(const std::string& fileName)
@@ -67,13 +68,13 @@ bool Scene::load(const std::string& fileName)
                 context_, std::make_shared<SceneNodeFactory>(context_)));
 
     sceneTmxParser->loadTmxFile(fileName);
-    rootNode_ = sceneTmxParser->Parser();
+    layerList_ = sceneTmxParser->Parser();
     return true;
 }
 
 bool Scene::initialize()
 {
-    camera_->setPosition(Point2DFloat(8229.0f, 5857.0f));
+    camera_->setPosition(Point2DFloat(0.0f, 0.0f));
     renderDevice_->setCamera(camera_);
 
     messageBroadcaster_->subscribe(
@@ -90,7 +91,7 @@ bool Scene::initialize()
 
 void Scene::keyUpHandler(common::MessageData data)
 {
-    printf("KEY UP!!!!!!!!\n");
+    //printf("KEY UP!!!!!!!!\n");
     key_ = -1;
 }
 

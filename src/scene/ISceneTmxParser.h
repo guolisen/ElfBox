@@ -5,6 +5,7 @@
 #ifndef ELFBOX_ISCENETMXPARSER_H
 #define ELFBOX_ISCENETMXPARSER_H
 
+#include <list>
 #include <common/IObject.h>
 #include <common/Context.h>
 #include "ISceneNode.h"
@@ -57,7 +58,7 @@ public:
 
     virtual bool loadTmxFile(const std::string &fileName) = 0;
     virtual const SceneInfo& getSceneInfo() const = 0;
-    virtual SceneNodePtr Parser() = 0;
+    virtual std::list<SceneNodePtr> Parser() = 0;
 };
 
 typedef std::shared_ptr<ISceneTmxParser> SceneTmxParserPtr;

@@ -44,7 +44,8 @@ bool SceneTmxParserImpl::loadTmxFile(const std::string &fileName)
     sceneInfo_.numObjectGroups = tmxMap_->GetNumObjectGroups();
     sceneInfo_.numTilesets = tmxMap_->GetNumTilesets();
 
-    for (auto i = 0; i < tmxMap_->GetNumTilesets(); ++i)
+	int tilessetNum = tmxMap_->GetNumTilesets();
+    for (auto i = 0; i < tilessetNum; ++i)
     {
         tilesetList_.push_back(tmxMap_->GetTileset(i));
     }
@@ -81,13 +82,12 @@ Point2DFloat SceneTmxParserImpl::tilePositionToWorld(int tileX, int tileY)
 const Tmx::Tileset* SceneTmxParserImpl::getTileSet(int tileGId)
 {
     const Tmx::Tileset* result = nullptr;
-    for (auto tileSet = tilesetList_.begin();
-         tileSet != tilesetList_.end(); ++tileSet)
+    for (auto tileSet : tilesetList_)
     {
-        int gid = (*tileSet)->GetFirstGid();
-        if (tileGId >= (*tileSet)->GetFirstGid())
+        int gid = tileSet->GetFirstGid();
+        if (tileGId >= tileSet->GetFirstGid())
         {
-            result = *tileSet;
+            result = tileSet;
         }
         else
         {
@@ -105,7 +105,8 @@ const Tmx::Image* SceneTmxParserImpl::getTileImage(int tileGId, const Tmx::Tiles
         return tileSet->GetImage();
     }
 
-    for (auto tile : tileSet->GetTiles())
+    auto tiles = tileSet->GetTiles();
+    for (auto tile : tiles)
     {
         int id = tile->GetId();
         int gid = tileSet->GetFirstGid() + tile->GetId();
@@ -121,27 +122,34 @@ const Tmx::Image* SceneTmxParserImpl::getTileImage(int tileGId, const Tmx::Tiles
     return tileSet->GetImage();
 }
 
-SceneNodePtr SceneTmxParserImpl::Parser()
+std::list<SceneNodePtr> SceneTmxParserImpl::Parser()
 {
-    SceneNodePtr rootNode = std::make_shared<SceneNode>(context_, "root", nullptr);
+    std::list<SceneNodePtr> layerList;
+
     for (auto i = 0 ; i < sceneInfo_.numTileLayers; ++i)
     {
         const Tmx::TileLayer *tileLayer = tmxMap_->GetTileLayer(i);
+        std::string layerName = tileLayer->GetName();
         int MapWidth = tileLayer->GetWidth();
         int MapHeight = tileLayer->GetHeight();
 
-        for (int X = 0; X < MapWidth; X++) {
+        SceneNodePtr layer = std::make_shared<SceneNode>(context_, layerName, nullptr);
+        for (int X = 0; X < MapWidth; X++)
+        {
             for (int Y = 0; Y < MapHeight; Y++)
             {
                 Point2DFloat worldPosition = tilePositionToWorld(X, Y);
                 int tileGId = tileLayer->GetTileGid(X, Y);
+
+                if (0 == tileGId) //transparent continue
+                    continue;
 
                 const Tmx::Tileset* tileSet = getTileSet(tileGId);
                 const Tmx::Image* tileSetImage = getTileImage(tileGId, tileSet);
                 if (!tileSetImage)
                 {
                     ELFBOX_LOGERROR(log_, "tileId(%d) doesn't have Image", tileGId);
-                    return scene::SceneNodePtr();
+                    return std::list<scene::SceneNodePtr>();
                 }
 
                 float tilePixelWidth = tileSet->GetTileWidth();
@@ -149,10 +157,10 @@ SceneNodePtr SceneTmxParserImpl::Parser()
                 float tileImagePixelWidth = tileSetImage->GetWidth();
                 int TilesetWidthCount = (int)(tileImagePixelWidth / tilePixelWidth);
 
-                //float tileSrcX = ((tileGId - 1) % TilesetWidthCount) * tilePixelWidth;
-                //float tileSrcY = ((tileGId - 1) / TilesetWidthCount) * tilePixelHeight;
-                float tileSrcX = 0.0f;
-                float tileSrcY = 0.0f;
+                float tileSrcX = ((tileGId - 1) % TilesetWidthCount) * tilePixelWidth;
+                float tileSrcY = ((tileGId - 1) / TilesetWidthCount) * tilePixelHeight;
+                //float tileSrcX = 0.0f;
+                //float tileSrcY = 0.0f;
 
                 RectFloat srcRect = { tileSrcX, tileSrcY, tilePixelWidth, tilePixelHeight };
                 RectFloat worldtRect = { worldPosition.x, worldPosition.y,
@@ -167,11 +175,12 @@ SceneNodePtr SceneTmxParserImpl::Parser()
                 SceneNodePtr tileNode = nodeFactory_->createNode<render::ImageDrawable>(
                     nodeName, tileSetImage->GetSource(), worldtRect, srcRect, 0);
 
-                rootNode->addChild(tileNode);
+                layer->addChild(tileNode);
             }
         }
+        layerList.push_back(layer);
     }
-
+#if 0
     for (auto i = 0 ; i < sceneInfo_.numObjectGroups; ++i)
     {
         const Tmx::ObjectGroup *objectGroup = tmxMap_->GetObjectGroup(i);
@@ -188,7 +197,7 @@ SceneNodePtr SceneTmxParserImpl::Parser()
             if (!tileSetImage)
             {
                 ELFBOX_LOGERROR(log_, "object tileId(%d) doesn't have Image", tileGId);
-                return scene::SceneNodePtr();
+                return std::list<scene::SceneNodePtr>();
             }
 
             float objectWorldX = object->GetX();
@@ -210,11 +219,11 @@ SceneNodePtr SceneTmxParserImpl::Parser()
             if (typeValue == "animation")
                 setAnimation(tileNode, tileSet);
 
-            rootNode->addChild(tileNode);
+            //rootNode->addChild(tileNode);
         }
     }
-
-    return rootNode;
+#endif
+    return layerList;
 }
 
 bool SceneTmxParserImpl::setAnimation(std::shared_ptr<ISceneNode> node,

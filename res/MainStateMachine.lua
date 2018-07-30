@@ -27,9 +27,9 @@ finishGameState = {}
 function gameIntroState.onEntry(sm)
 	print("LUA gameIntroState onEntry! ")
 	print(tostring(sm))
-print("type is "..tolua.type(sm))
+    print("type is "..tolua.type(sm))
 
-    pl_window:createWindow("Test1", 1280, 800, 0);
+    pl_window:createWindow("Game1", 1600, 1024, 0);
 	
 	local context = getContext()
 	gameIntroState.scene = Scene:new(context)
@@ -61,7 +61,7 @@ function menuState.onEntry(sm)
 	local context = getContext()
 	menuState.scene = Scene:new(context)
 	menuState.scene:initialize()
-	menuState.scene:load("E:/code/ElfClion/ElfBox/res/map.tmx")
+	menuState.scene:load("E:/code/ElfClion/ElfBox/res/map2/map2.tmx")
 	menuState.scene:startToDraw()
 end
 function menuState.onUpdate(sm, timeStep)
