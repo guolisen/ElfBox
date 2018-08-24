@@ -1,10 +1,13 @@
 //
 // Created by Lewis on 2017/2/20.
 //
+
+#include <list>
 #include <SDL.h>
 #include <graphics/IGraphics.h>
 #include <scene/Camera.h>
 #include <system/IWindow.h>
+#include <algorithm>
 #include "RenderDeviceImpl.h"
 
 namespace elfbox
@@ -20,6 +23,14 @@ RenderDeviceImpl::RenderDeviceImpl(common::ContextPtr context):
     preLoadRect_(RectFloat(0, 0, preLoadRange_, preLoadRange_)),
     preLoadTrigerRect_(RectFloat(0, 0, preLoadRange_ * 0.8f, preLoadRange_ * 0.8f))
 {
+    system::WindowPtr window =
+        context_->getComponent<system::IWindow>(nullptr);
+
+    float winWidth = window->getWindowWidth();
+    float winHeight = window->getWindowHeight();
+    setCamera(std::make_shared<scene::Camera>(
+        context_, Point2DFloat(0, 0), 1.0,
+        winHeight, winWidth / winHeight));
 }
 
 void RenderDeviceImpl::render(float timeStep)
@@ -35,22 +46,11 @@ void RenderDeviceImpl::render(float timeStep)
         backgroundTexture_ = SDL_CreateTexture(
             (SDL_Renderer*)handle_, SDL_PIXELFORMAT_RGBA8888,
             SDL_TEXTUREACCESS_TARGET, 1024, 768);
-
-        if (!camera_)
-        {
-            system::WindowPtr window =
-                context_->getComponent<system::IWindow>(nullptr);
-
-            float winWidth = window->getWindowWidth();
-            float winHeight = window->getWindowHeight();
-            camera_ = std::make_shared<scene::Camera>(
-                context_, Point2DFloat(0, 0), 1.0,
-                winHeight, winWidth / winHeight);
-        }
     }
 
     //updatePreLoadRect();
     //updatePreLoadDrawable();
+    updateCheckDrawable();
 
     SDL_Rect viewRect = toSDLRect(camera_->getCameraScreenRect());
     SDL_RenderSetClipRect((SDL_Renderer*)handle_, &viewRect);
@@ -81,11 +81,11 @@ void RenderDeviceImpl::render(float timeStep)
 
     SDL_RenderCopy((SDL_Renderer*)handle_, backgroundTexture_, &zoomCameraRect, &viewRect);
 
-    for (auto &drawable : drawableList_)
+    //for (auto &drawable : drawableList_)
     {
-        RectFloat worldToCameraRect =
-            camera_->worldToCamera(drawable->getData().worldRect);
-        drawTestRect(worldToCameraRect);
+        //RectFloat worldToCameraRect =
+         //   camera_->worldToCamera(drawable->getData().worldRect);
+        //drawTestRect(worldToCameraRect);
     }
 
     SDL_RenderPresent((SDL_Renderer*)handle_);
@@ -170,6 +170,33 @@ void RenderDeviceImpl::drawTestRect(RectFloat rect)
     SDL_RenderDrawLine((SDL_Renderer*)handle_, (int)br.x, (int)br.y, (int)bl.x, (int)bl.y);
     SDL_RenderDrawLine((SDL_Renderer*)handle_, (int)bl.x, (int)bl.y, (int)ul.x, (int)ul.y);
 }
+
+void RenderDeviceImpl::updateCheckDrawable()
+{
+    struct cmpFunc
+    {
+        bool operator()(const DrawablePtr& lo, const DrawablePtr& ro) const
+        {
+            return (lo->getData().zorder < ro->getData().zorder);
+        }
+    };
+
+    renderList_.clear();
+    for (auto &drawable : drawableList_)
+    {
+        RectFloat worldToCameraRect =
+            camera_->worldToCamera(drawable->getData().worldRect);
+        //if (!camera_->isInView(worldToCameraRect))
+        //    continue;
+        //if (DrawableStatePending == drawable->getData().drawableState)
+        //    continue;
+        renderList_.push_back(drawable);
+    }
+
+
+	renderList_.sort(cmpFunc());
+}
+
 }
 }
 }
