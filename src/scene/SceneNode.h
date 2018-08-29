@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <list>
+#include <vector>
 #include <map>
 #include <common/IObject.h>
 #include <common/Context.h>
@@ -66,6 +67,9 @@ public:
         componentMap_.insert(std::make_pair(componentName, component));
     }
 
+    virtual void move(Point2DFloat destinationPoint, int speed);
+    virtual void moveUpdate(float timeStep);
+    //virtual bool setAnimation(const std::string animationName);
 private:
     common::ContextPtr context_;
     std::string nodeName_;
@@ -73,6 +77,7 @@ private:
     Vector2DFloat worldVec_;
     std::list<std::shared_ptr<ISceneNode>> childList_;
     ComponentMap componentMap_;
+    std::vector<Point2DFloat> targetPosition_;
 };
 }
 }

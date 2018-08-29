@@ -45,7 +45,8 @@ public:
     {
         parentNode_ = parentNode;
     }
-
+    virtual void move(Point2DFloat destinationPoint, int speed) = 0;
+    virtual void moveUpdate(float timeStep) = 0;
 protected:
     std::shared_ptr<ISceneNode> parentNode_;
 };

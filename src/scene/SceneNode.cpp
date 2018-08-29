@@ -23,6 +23,7 @@ bool SceneNode::initialize()
 
 void SceneNode::update(float timeStep)
 {
+    moveUpdate(timeStep);
     for (auto& component : componentMap_)
     {
         if (component.second->isActivate())
@@ -93,5 +94,36 @@ RectFloat SceneNode::getNodeRect()
 {
     return drawable_->getData().worldRect;
 }
+
+void SceneNode::move(Point2DFloat destinationPoint, int speed)
+{
+    //RectFloat currentRect = node_->getNodeRect();
+    //Point2DFloat currentPosition = currentRect.getPosition();
+    //Vector2DFloat vec = (Point2DFloat)(destinationPoint - currentPosition);
+
+    targetPosition_.push_back(destinationPoint);
+}
+
+void SceneNode::moveUpdate(float timeStep)
+{
+    if (targetPosition_.empty())
+        return;
+
+    Point2DFloat nextPosition = targetPosition_[0];
+    float move = 5.0f * timeStep;
+    RectFloat currentRect = getNodeRect();
+    Point2DFloat currentPosition = currentRect.getPosition();
+
+    Vector2DFloat vec = nextPosition - currentPosition;
+    float distance = vec.length();
+    if (move > distance)
+        move = distance;
+
+    //jackNode_->Translate(Vector3::FORWARD * move);
+    translate(vec * move);
+    if (distance < 0.1f)
+        targetPosition_.clear();
+}
+
 }
 }
