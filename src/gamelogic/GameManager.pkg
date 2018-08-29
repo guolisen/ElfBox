@@ -1,0 +1,31 @@
+
+$#include <scene/Scene.h>
+$#include <gamelogic/IGameManager.h>
+$#include <script/detail/ScriptUtil.h>
+
+${
+using namespace elfbox;
+using namespace elfbox::gamelogic;
+using namespace elfbox::script;
+using namespace elfbox::script::detail;
+using namespace elfbox;
+using namespace elfbox::scene;
+$}
+
+class IGameManager
+{
+    virtual void setCurrentScene(ScenePtr newScene);
+    virtual ScenePtr sceneFactory();
+};
+
+tolua_readonly tolua_property__get_set IGameManager* pl_gameManager;
+
+${
+
+#define TOLUA_DISABLE_tolua_get_pl_gameManager_ptr
+static int tolua_get_pl_gameManager_ptr(lua_State* tolua_S)
+{
+  return toluaGetCompoent<IGameManager>(tolua_S);
+}
+
+$}

@@ -3,8 +3,8 @@
 
 #include "IApplicationCore.h"
 #include <common/Application.h>
-#include <common/IEngine.h>
-#include <common/Engine.h>
+#include <gamelogic/IEngine.h>
+#include <gamelogic/Engine.h>
 #include <common/Context.h>
 #include <common/MessageBroadcaster.h>
 #include <graphics/Graphics.h>
@@ -24,12 +24,19 @@
 #include <common/ObjectFactory.h>
 #include <scene/Scene.h>
 #include <scene/SceneNodeFactory.h>
+#include <scene/SceneManager.h>
 #include <sm/State.h>
 #include <sm/StateEvent.h>
 #include <sm/StateMachine.h>
 #include <sm/detail/StateMachineImpl.h>
 #include <script/ScriptCenter.h>
 #include <script/detail/ScriptCenterImpl.h>
+#include <gamelogic/GameDirector.h>
+#include <gamelogic/IGameDirector.h>
+#include <gamelogic/GameData.h>
+#include <gamelogic/IGameData.h>
+#include <gamelogic/IGameManager.h>
+#include <gamelogic/GameManager.h>
 
 namespace elfbox
 {
@@ -39,7 +46,7 @@ Application::Application(
         std::shared_ptr<common::IApplicationCore> applicationCore,
         std::shared_ptr<Context> context) :
         context_(context),
-        elfBoxEngine_(context_->getComponent<IEngine>(nullptr)),
+        elfBoxEngine_(context_->getComponent<gamelogic::IEngine>(nullptr)),
         applicationCore_(applicationCore),
         log_(context_->getComponent<ILogger>(nullptr))
 {
@@ -176,7 +183,19 @@ void appMain()
         std::make_shared<elfbox::sm::detail::StateMachineImpl>(context));
     context->addComponent(stateMachine);
 
-    context->addComponent(std::make_shared<elfbox::common::Engine>(context));
+    elfbox::gamelogic::GameDirectorPtr gameDirector =
+        std::make_shared<elfbox::gamelogic::GameDirector>(context);
+    elfbox::gamelogic::GameDataPtr gameData =
+        std::make_shared<elfbox::gamelogic::GameData>(context);
+    elfbox::scene::SceneManagerPtr sceneManager =
+        std::make_shared<elfbox::scene::SceneManager>(context);
+    context->addComponent(std::make_shared<elfbox::gamelogic::Engine>(
+        context, gameDirector, gameData, sceneManager));
+
+    elfbox::gamelogic::GameManagerPtr gameManager =
+        std::make_shared<elfbox::gamelogic::GameManager>(
+            context, gameDirector, gameData, sceneManager);
+    context->addComponent(gameManager);
 
     elfbox::common::Application app(0, context);
     app.run();

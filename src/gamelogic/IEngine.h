@@ -5,11 +5,11 @@
 
 namespace elfbox
 {
-namespace common
+namespace gamelogic
 {
-class IEngine : public IObject
+class IEngine : public common::IObject
 {
-ELF_OBJECT(IEngine, IObject);
+ELF_OBJECT(IEngine, common::IObject);
 public:
     virtual ~IEngine() = default;
 

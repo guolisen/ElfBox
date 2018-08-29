@@ -1,6 +1,6 @@
 
 
-#include <common/Engine.h>
+#include <gamelogic/Engine.h>
 #include <graphics/IGraphics.h>
 #include <system/IWindow.h>
 #include <system/ITimeService.h>
@@ -18,11 +18,19 @@
 
 namespace elfbox
 {
-namespace common
+namespace gamelogic
 {
-Engine::Engine(ContextPtr context) :
-    context_(context), log_(context_->getComponent<ILogger>(nullptr)),
+Engine::Engine(common::ContextPtr context, GameDirectorPtr gameDirector,
+               GameDataPtr gameData, scene::SceneManagerPtr sceneManager) :
+    context_(context), gameDirector_(gameDirector), gameData_(gameData),
+    sceneManager_(sceneManager),
+    log_(context_->getComponent<ILogger>(nullptr)),
     timeStep_(0.0), timeStepSmoothing_(2),
+    scriptCenter_(context_->getComponent<script::IScriptCenter>(nullptr)),
+    mainStateMachine_(context_->getComponent<sm::IStateMachine>(nullptr)),
+    window_(context_->getComponent<system::IWindow>(nullptr)),
+    graphics_(context_->getComponent<graphics::IGraphics>(nullptr)),
+    timeService_(context_->getComponent<system::ITimeService>(nullptr)),
     renderDevice_(context_->getComponent<render::IRenderDevice>(nullptr)),
     scene_(context_)
 {
@@ -36,32 +44,24 @@ Engine::~Engine()
 
 bool Engine::initialize()
 {
-    script::ScriptCenterPtr scriptCenter =
-        context_->getComponent<script::IScriptCenter>(nullptr);
-    scriptCenter->initialize();
+    ELFBOX_ASSERT(graphics_);
+    graphics_->initialize();
 
-    mainStateMachine_ = context_->getComponent<sm::IStateMachine>(nullptr);
-    mainStateMachine_->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
-
-    graphics::GraphicsPtr graphics =
-        context_->getComponent<graphics::IGraphics>(nullptr);
-    ELFBOX_ASSERT(graphics);
-    graphics->initialize();
-
-    window_ = context_->getComponent<system::IWindow>(nullptr);
     ELFBOX_ASSERT(window_);
     window_->initialize();
 
+    scriptCenter_->initialize();
+    sceneManager_->initialize();
     renderDevice_->initialize();
+
+    mainStateMachine_->load("E:/code/ElfClion/ElfBox/res/MainStateMachine.xml");
 
     return true;
 }
 
 void Engine::applyTimeStep()
 {
-    system::TimeServicePtr timeService =
-        context_->getComponent<system::ITimeService>(nullptr);
-    static long long lastTime = timeService->getMicroseconds();
+    static long long lastTime = timeService_->getMicroseconds();
     long long elapsed = 0;
     unsigned maxFps = 60;
 
@@ -69,7 +69,7 @@ void Engine::applyTimeStep()
 
     for (;;)
     {
-        elapsed = timeService->getMicroseconds() - lastTime;
+        elapsed = timeService_->getMicroseconds() - lastTime;
         if (elapsed >= targetMax)
             break;
 
@@ -77,12 +77,12 @@ void Engine::applyTimeStep()
         if (targetMax - elapsed >= 1000LL)
         {
             unsigned sleepTime = (unsigned)((targetMax - elapsed) / 1000LL);
-            timeService->sleep(sleepTime);
+            timeService_->sleep(sleepTime);
         }
     }
 
-    elapsed = timeService->getMicroseconds() - lastTime;
-    lastTime = timeService->getMicroseconds();
+    elapsed = timeService_->getMicroseconds() - lastTime;
+    lastTime = timeService_->getMicroseconds();
 
     // Perform timestep smoothing
     timeStep_ = 0.0f;
@@ -126,6 +126,8 @@ void Engine::render()
 void Engine::update()
 {
     mainStateMachine_->update(timeStep_);
+    gameDirector_->update(timeStep_);
+    sceneManager_->update(timeStep_);
 }
 
 void Engine::start()

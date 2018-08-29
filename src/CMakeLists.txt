@@ -38,6 +38,7 @@ file(GLOB_RECURSE SM_SOURCES ./sm/*.cpp)
 file(GLOB_RECURSE SCRIPT_SOURCES ./script/*.cpp ./script/*.c)
 file(GLOB SYSTEM_SOURCES ./system/*.cpp)
 file(GLOB SYSTEM_DETAIL_SOURCES ./system/detail/*.cpp)
+file(GLOB_RECURSE GAMELOGIC_SOURCES ./gamelogic/*.cpp)
 
 IF (WIN32)
     set(SYSTEM_DETAIL_SOURCES "${SYSTEM_DETAIL_SOURCES};system/detail/platform/TimeServiceWinImpl.cpp")
@@ -59,6 +60,7 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 
 add_library(libelfbox ${HEADERS} ${ROOT_SOURCES} ${SYSTEM_SOURCES} ${COMMON_SOURCES}
         ${GRAPHICS_SOURCES} ${UTIL_SOURCES} ${SYSTEM_DETAIL_SOURCES} ${RENDER_SOURCES}
-        ${SCENE_SOURCES} ${SM_SOURCES} ${SCRIPT_SOURCES} ${TOLUA_C_FILES})
+        ${SCENE_SOURCES} ${SM_SOURCES} ${SCRIPT_SOURCES} ${GAMELOGIC_SOURCES}
+        ${TOLUA_C_FILES})
 
 

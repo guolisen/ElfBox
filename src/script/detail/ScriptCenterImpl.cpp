@@ -24,6 +24,7 @@ extern int tolua_Window_open (lua_State* tolua_S);
 extern int tolua_Scene_open (lua_State* tolua_S);
 extern int tolua_RenderDevice_open (lua_State* tolua_S);
 extern int tolua_TimeService_open (lua_State* tolua_S);
+extern int tolua_GameManager_open (lua_State* tolua_S);
 
 namespace elfbox
 {
@@ -54,6 +55,7 @@ bool ScriptCenterImpl::initialize()
     tolua_Scene_open (luaState_);
     tolua_RenderDevice_open (luaState_);
     tolua_TimeService_open (luaState_);
+    tolua_GameManager_open(luaState_);
 
     setContext();
 

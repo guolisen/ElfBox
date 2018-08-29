@@ -23,6 +23,7 @@ public:
     virtual void update(float timeStep) = 0;
     virtual bool load(const std::string& fileName) = 0;
     virtual void startToDraw() = 0;
+    virtual void terminate() = 0;
 };
 typedef std::shared_ptr<IScene> ScenePtr;
 }

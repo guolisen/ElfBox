@@ -12,14 +12,16 @@ using namespace elfbox::script::detail;
 using namespace elfbox::common;
 $}
 
-class Scene
+class IScene
 {
-    Scene();
-    Scene(ContextPtr context);
-    virtual ~Scene();
-
     virtual bool initialize();
     virtual void update(float timeStep);
     virtual bool load(const std::string& fileName);
     virtual void startToDraw();
 };
+
+class ScenePtr
+{
+public:
+    IScene* get() const;
+}

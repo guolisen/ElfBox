@@ -25,19 +25,31 @@ gameLoopState = {}
 finishGameState = {}
 
 function gameIntroState.onEntry(sm)
+
+	--print("LUA >>>>>>A: ", collectgarbage("count"))
+	--print("LUA >>>>>>B: ", collectgarbage("count"))
+	
+	--collectgarbage("collect")
+	--print("LUA >>>>>>C: ", collectgarbage("count"))
+
+	
 	print("LUA gameIntroState onEntry! ")
 	print(tostring(sm))
     print("type is "..tolua.type(sm))
-
+	
     pl_window:createWindow("Game1", 640, 480, 0);
 	
-	local context = getContext()
-	gameIntroState.scene = Scene:new(context)
-	gameIntroState.scene:initialize()
-	gameIntroState.scene:load("E:/code/ElfClion/ElfBox/res/GameIntro.tmx")	
-	gameIntroState.scene:startToDraw()
+	--local context = getContext()
+	scenePtr = pl_gameManager:sceneFactory()
+	scene = scenePtr:get()
+	scene:initialize()
+	scene:load("E:/code/ElfClion/ElfBox/res/GameIntro.tmx")
 
 	gameIntroState.counter = 0
+	
+	print("LUA TTT1! ")
+    pl_gameManager:setCurrentScene(scenePtr)
+	print("LUA TTT2! ")
 end
 function gameIntroState.onUpdate(sm, timeStep)
     --print("LUA gameIntroState onUpdate! ")
@@ -47,29 +59,33 @@ function gameIntroState.onUpdate(sm, timeStep)
 		pl_stateMachine:prcessEvent(e)
 	end
 	
-	gameIntroState.scene:update(timeStep)
+	--gameIntroState.scene:update(timeStep)
 end
 function gameIntroState.onExit(sm)
 	print("LUA gameIntroState onExit! ")
 	pl_renderDevice:clearDrawable()
+	--collectgarbage("collect")
 end
 
 --/////////////////////////////////
 function menuState.onEntry(sm)
 	print("LUA menuState onEntry! ")
 	
-	local context = getContext()
-	menuState.scene = Scene:new(context)
-	menuState.scene:initialize()
-	menuState.scene:load("E:/code/ElfClion/ElfBox/res/map3/map3.tmx")
-	menuState.scene:startToDraw()
+	--local context = getContext()
+	scenePtr = pl_gameManager:sceneFactory()
+	scene = scenePtr:get()
+	scene:initialize()
+	scene:load("E:/code/ElfClion/ElfBox/res/map3/map3.tmx")
+
+	print("LUA TTT3! ")
+    pl_gameManager:setCurrentScene(scenePtr)
 end
 function menuState.onUpdate(sm, timeStep)
 	--print("LUA menuState onUpdate!11111 ")
 	--local eOff = StateEvent:new("turnOffEvent")
     --stateMachine:prcessEvent(eOff)
 	--print("LUA menuState onUpdate!22222 ")
-	menuState.scene:update(timeStep)
+	--menuState.scene:update(timeStep)
 end
 function menuState.onExit(sm)
 	print("LUA menuState onExit! ")

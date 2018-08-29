@@ -4,15 +4,13 @@
 #include <memory>
 #include <common/IObject.h>
 #include <util/BaseLogger.h>
+#include <gamelogic/IEngine.h>
 
 namespace elfbox
 {
 namespace common
 {
-class IEngine;
-
 class IApplicationCore;
-
 class Context;
 
 class Application : public IObject
@@ -32,7 +30,7 @@ private:
     virtual bool terminat();
 
     std::shared_ptr<Context> context_;
-    std::shared_ptr<IEngine> elfBoxEngine_;
+    std::shared_ptr<gamelogic::IEngine> elfBoxEngine_;
     std::shared_ptr<IApplicationCore> applicationCore_;
     LoggerPtr log_;
 };

@@ -1,6 +1,7 @@
 //
 // Created by Lewis on 2017/2/25.
 //
+#include <functional>
 #include "SceneTmxParser.h"
 #include "detail/SceneTmxParserImpl.h"
 #include "SceneNodeFactory.h"
@@ -77,14 +78,15 @@ bool Scene::initialize()
     camera_->setPosition(Point2DFloat(0.0f, 0.0f));
     renderDevice_->setCamera(camera_);
 
-    messageBroadcaster_->subscribe(
+    common::Subscription downSub = messageBroadcaster_->subscribe(
         common::SYSTEM_EVENT_KEYDOWN,
         std::bind(&Scene::keyHandler, this, std::placeholders::_1));
 
-    messageBroadcaster_->subscribe(
+    subscriptionList_.push_back(downSub);
+    common::Subscription upSub = messageBroadcaster_->subscribe(
         common::SYSTEM_EVENT_KEYUP,
         std::bind(&Scene::keyUpHandler, this, std::placeholders::_1));
-
+    subscriptionList_.push_back(upSub);
 
     return true;
 }
@@ -100,6 +102,13 @@ void Scene::keyHandler(common::MessageData data)
     printf("KEY!!!!!!!!\n");
     int key = data["KEY"];
     key_ = data["KEY"];
+}
+
+void Scene::terminate()
+{
+    renderDevice_->clearDrawable();
+    for (auto sub : subscriptionList_)
+        messageBroadcaster_->unsubscribe(sub);
 }
 
 }
