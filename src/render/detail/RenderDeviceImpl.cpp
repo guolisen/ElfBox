@@ -5,7 +5,7 @@
 #include <list>
 #include <SDL.h>
 #include <graphics/IGraphics.h>
-#include <scene/Camera.h>
+#include <gamelogic/scene/Camera.h>
 #include <system/IWindow.h>
 #include <algorithm>
 #include "RenderDeviceImpl.h"

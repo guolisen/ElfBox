@@ -8,7 +8,7 @@
 #include <render/detail/RenderDeviceImpl.h>
 #include <util/BaseLogger.h>
 #include <render/ImageDrawable.h>
-#include <scene/Scene.h>
+#include <gamelogic/scene/Scene.h>
 #include <sm/IStateMachine.h>
 #include <system/IWindow.h>
 #include <script/IScriptCenter.h>
@@ -16,7 +16,7 @@
 #include <gamelogic/IGameData.h>
 #include <gamelogic/IGameManager.h>
 #include <system/ITimeService.h>
-#include <scene/ISceneManager.h>
+#include <gamelogic/scene/ISceneManager.h>
 
 namespace elfbox
 {

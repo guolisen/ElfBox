@@ -3,7 +3,7 @@
 //
 
 #include "GameManager.h"
-#include <scene/Scene.h>
+#include <gamelogic/scene/Scene.h>
 
 
 namespace elfbox

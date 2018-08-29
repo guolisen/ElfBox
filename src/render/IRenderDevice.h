@@ -8,7 +8,7 @@
 #include <list>
 #include <common/IObject.h>
 #include <common/Context.h>
-#include <scene/ICamera.h>
+#include <gamelogic/scene/ICamera.h>
 #include "IDrawable.h"
 
 namespace elfbox

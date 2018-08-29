@@ -1,5 +1,5 @@
 
-$#include <scene/Scene.h>
+$#include <gamelogic/scene/Scene.h>
 $#include <gamelogic/IGameManager.h>
 $#include <script/detail/ScriptUtil.h>
 

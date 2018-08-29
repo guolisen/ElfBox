@@ -1,6 +1,6 @@
 
 
-$#include <scene/Scene.h>
+$#include <gamelogic/scene/Scene.h>
 $#include <script/detail/ScriptUtil.h>
 ${
 using namespace elfbox;

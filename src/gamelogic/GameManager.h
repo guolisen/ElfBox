@@ -10,8 +10,8 @@
 #include <gamelogic/IGameData.h>
 #include <gamelogic/IGameDirector.h>
 #include <gamelogic/IGameManager.h>
-#include <scene/IScene.h>
-#include <scene/ISceneManager.h>
+#include <gamelogic/scene/IScene.h>
+#include <gamelogic/scene/ISceneManager.h>
 #include <common/IObjectFactory.h>
 
 namespace elfbox

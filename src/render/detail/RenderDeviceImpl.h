@@ -10,7 +10,7 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 #include <graphics/IGraphics.h>
-#include <scene/ICamera.h>
+#include <gamelogic/scene/ICamera.h>
 #include "../IDrawable.h"
 #include "../IRenderDevice.h"
 

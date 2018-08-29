@@ -7,8 +7,8 @@
 
 #include <common/IObject.h>
 #include <common/Context.h>
-#include <scene/ISceneManager.h>
-#include <scene/IScene.h>
+#include <gamelogic/scene/ISceneManager.h>
+#include <gamelogic/scene/IScene.h>
 
 namespace elfbox
 {

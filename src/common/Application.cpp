@@ -22,9 +22,9 @@
 #include <system/SystemEventProcess.h>
 #include <system/detail/SystemEventProcessImpl.h>
 #include <common/ObjectFactory.h>
-#include <scene/Scene.h>
-#include <scene/SceneNodeFactory.h>
-#include <scene/SceneManager.h>
+#include <gamelogic/scene/Scene.h>
+#include <gamelogic/scene/SceneNodeFactory.h>
+#include <gamelogic/scene/SceneManager.h>
 #include <sm/State.h>
 #include <sm/StateEvent.h>
 #include <sm/StateMachine.h>
