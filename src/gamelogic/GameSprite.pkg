@@ -1,0 +1,15 @@
+
+
+$#include <gamelogic/IGameSprite.h>
+
+${
+using namespace elfbox;
+using namespace elfbox::gamelogic;
+
+$}
+
+class IGameSprite
+{
+    virtual void move(int processLineId, Point2DFloat targetPoint, float speed);
+};
+

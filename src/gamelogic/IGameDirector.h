@@ -22,10 +22,12 @@ public:
     virtual ~IGameDirector() = default;
 
     virtual bool initialize(const std::string& gameDescriptionFile) = 0;
-    virtual bool update(float timeStep) = 0;
-
-    virtual int attach(const IGameProcess& process) = 0;
-    virtual void detach(int processId) = 0;
+    virtual void update(float timeStep) = 0;
+    virtual void pauseProcess() = 0;
+    virtual void resumeProcess() = 0;
+    virtual int createProcessLine() = 0;
+    virtual int attach(int processLineNum, GameProcessPtr process) = 0;
+    virtual void detach(int processLineNum, int processId) = 0;
 
 
 private:

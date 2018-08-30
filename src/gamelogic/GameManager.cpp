@@ -4,7 +4,7 @@
 
 #include "GameManager.h"
 #include <gamelogic/scene/Scene.h>
-
+#include "GameSprite.h"
 
 namespace elfbox
 {
@@ -30,5 +30,13 @@ scene::ScenePtr GameManager::sceneFactory()
 {
     return objFactory_->createObject<scene::IScene>(context_);
 }
+
+void GameManager::registerSprite(const std::string& spriteName,
+                                 scene::SceneNodePtr spriteNode)
+{
+    spriteMap_.insert(std::make_pair(spriteName,
+                                     std::make_shared<GameSprite>(context_, spriteNode)));
+}
+
 }
 }

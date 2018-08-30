@@ -1,0 +1,32 @@
+
+$#include "TypeDefine.h"
+
+${
+using namespace elfbox;
+$}
+
+struct Point2DFloat
+{
+    Point2DFloat(float rx, float ry);
+};
+
+
+struct Vector2DFloat
+{
+    Vector2DFloat(float rx, float ry);
+    float length();
+};
+
+struct RectFloat
+{
+    void setPosition(const Point2DFloat& position);
+    Point2DFloat getPosition();
+    Point2DFloat getCenter();
+    Point2DFloat getUpperLeft();
+    Point2DFloat getBottomLeft();
+    Point2DFloat getBottomRight();
+    Point2DFloat getUpperRight();
+    bool isInRect(const Point2DFloat& point);
+    bool isIntersectionRect(RectFloat rect);
+    bool isIncludeRect(RectFloat rect);
+};

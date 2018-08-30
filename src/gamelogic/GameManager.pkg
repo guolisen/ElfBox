@@ -1,5 +1,6 @@
 
 $#include <gamelogic/scene/Scene.h>
+$#include <gamelogic/scene/ISceneNode.h>
 $#include <gamelogic/IGameManager.h>
 $#include <script/detail/ScriptUtil.h>
 

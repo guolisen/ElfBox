@@ -10,8 +10,10 @@
 #include <gamelogic/IGameData.h>
 #include <gamelogic/IGameDirector.h>
 #include <gamelogic/IGameManager.h>
+#include <gamelogic/IGameSprite.h>
 #include <gamelogic/scene/IScene.h>
 #include <gamelogic/scene/ISceneManager.h>
+#include <gamelogic/scene/ISceneNode.h>
 #include <common/IObjectFactory.h>
 
 namespace elfbox
@@ -30,12 +32,15 @@ public:
 
     virtual void setCurrentScene(scene::ScenePtr newScene) override;
     virtual scene::ScenePtr sceneFactory() override;
+    virtual void registerSprite(const std::string& spriteName,
+                                scene::SceneNodePtr spriteNode);
 private:
     common::ContextPtr context_;
     common::ObjectFactoryPtr objFactory_;
     GameDirectorPtr gameDirector_;
     GameDataPtr gameData_;
     scene::SceneManagerPtr sceneMgr_;
+    std::map<std::string, GameSpritePtr> spriteMap_;
 };
 }
 }

@@ -104,6 +104,10 @@ struct Point2D
     {
         return Point2D<T>(x * other, y * other);
     }
+    T distance(Point2D<T> other)
+    {
+        return (T)abs(sqrt((other.x - x)*(other.x - x) + (other.y - y)*(other.y - y)));
+    }
 
     Point2D(): x(0), y(0) {}
     Point2D(T rx, T ry): x(rx), y(ry) {}
@@ -122,8 +126,8 @@ struct Vector2D : public Point2D<T>
 {
     T length()
     {
-        //return static_cast<T>(sqrt(x*x + y*y));
-        return static_cast<T>(0);
+        return static_cast<T>(sqrt(x*x + y*y));
+        //return static_cast<T>(0);
     }
 
     Vector2D(T rx, T ry): Point2D<T>(rx, ry) {}

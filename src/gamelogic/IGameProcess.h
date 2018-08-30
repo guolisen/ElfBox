@@ -17,7 +17,10 @@ class IGameProcess : public common::IObject
 ELF_OBJECT(IGameProcess, common::IObject);
 public:
     virtual ~IGameProcess() = default;
-
+    virtual void update(float timeStep) = 0;
+    virtual void kill() = 0;
+    virtual bool isActive() const = 0;
+    virtual bool isFinished() const = 0;
 private:
     common::ContextPtr context_;
 };

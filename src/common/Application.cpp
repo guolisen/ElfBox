@@ -185,6 +185,8 @@ void appMain()
 
     elfbox::gamelogic::GameDirectorPtr gameDirector =
         std::make_shared<elfbox::gamelogic::GameDirector>(context);
+    context->addComponent(gameDirector);
+
     elfbox::gamelogic::GameDataPtr gameData =
         std::make_shared<elfbox::gamelogic::GameData>(context);
     elfbox::scene::SceneManagerPtr sceneManager =
