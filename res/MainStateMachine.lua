@@ -79,6 +79,11 @@ function menuState.onEntry(sm)
 
 	print("LUA TTT3! ")
     pl_gameManager:setCurrentScene(scenePtr)
+	
+	sprite = pl_gameManager:getSprite("mainNpc")
+	spritePtr = sprite:get()
+	targetPoint = Point2DFloat:new_local(0, 1000);
+	spritePtr:move(0, targetPoint, 10)
 end
 function menuState.onUpdate(sm, timeStep)
 	--print("LUA menuState onUpdate!11111 ")

@@ -17,6 +17,7 @@ class IGameManager
 {
     virtual void setCurrentScene(ScenePtr newScene);
     virtual ScenePtr sceneFactory();
+    virtual GameSpritePtr getSprite(char* spriteName);
 };
 
 tolua_readonly tolua_property__get_set IGameManager* pl_gameManager;

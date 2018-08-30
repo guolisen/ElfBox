@@ -13,3 +13,8 @@ class IGameSprite
     virtual void move(int processLineId, Point2DFloat targetPoint, float speed);
 };
 
+class GameSpritePtr
+{
+public:
+    IGameSprite* get() const;
+}

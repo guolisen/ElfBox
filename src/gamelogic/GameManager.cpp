@@ -18,6 +18,7 @@ GameManager::GameManager(common::ContextPtr context,
     objFactory_(context_->getComponent<common::IObjectFactory>(nullptr)), gameDirector_(gameDirector),
     gameData_(gameData), sceneMgr_(sceneManager)
 {
+    gameDirector->createProcessLine();
 }
 
 void GameManager::setCurrentScene(scene::ScenePtr newScene)
@@ -38,5 +39,9 @@ void GameManager::registerSprite(const std::string& spriteName,
                                      std::make_shared<GameSprite>(context_, spriteNode)));
 }
 
+GameSpritePtr GameManager::getSprite(const std::string &spriteName)
+{
+    return spriteMap_[spriteName];
+}
 }
 }

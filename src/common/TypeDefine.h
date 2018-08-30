@@ -109,9 +109,9 @@ struct Point2D
         return (T)abs(sqrt((other.x - x)*(other.x - x) + (other.y - y)*(other.y - y)));
     }
 
-    Point2D(): x(0), y(0) {}
-    Point2D(T rx, T ry): x(rx), y(ry) {}
-    Point2D(const Point2D& other)
+    Point2D<T>(): x(0), y(0) {}
+    Point2D<T>(T rx, T ry): x(rx), y(ry) {}
+    Point2D<T>(const Point2D<T>& other)
     {
         x = other.x;
         y = other.y;
@@ -133,8 +133,15 @@ struct Vector2D : public Point2D<T>
     Vector2D(T rx, T ry): Point2D<T>(rx, ry) {}
     Vector2D(const Point2D<T> other)
     {
-        //x = other.x;
-        //y = other.y;
+        x = other.x;
+        y = other.y;
+    }
+    void normalize()
+    {
+        float length = sqrt(x*x + y*y);
+
+        x = x / length;
+        y = y / length;
     }
 };
 

@@ -34,7 +34,10 @@ private:
     bool isFinished_;
     bool isActive_;
     Point2DFloat targetPoint_;
+    Point2DFloat moveVec_;
     float walkSpeed_;
+    float elapsedTime_;
+    float animationSpeedTime_;
 };
 }
 }

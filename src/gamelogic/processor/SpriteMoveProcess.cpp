@@ -15,17 +15,32 @@ SpriteMoveProcess::SpriteMoveProcess(common::ContextPtr context,
                                      sceneNode_(sceneNode),
                                      isFinished_(false),
                                      isActive_(true),
-                                     walkSpeed_(0.0)
+                                     walkSpeed_(0.0),
+                                     elapsedTime_(0.0),
+                                     animationSpeedTime_(100.0)
 {
 }
 
 void SpriteMoveProcess::update(float timeStep)
 {
-    float moveStep = 5.0f * timeStep;
+    elapsedTime_ += timeStep * 1000;
+    if (elapsedTime_ <= animationSpeedTime_)
+    {
+        return;
+    }
+
+    elapsedTime_ = 0.0;
+
+    float moveStep = 300.0f * timeStep;
     RectFloat currentRect = sceneNode_->getNodeRect();
     Point2DFloat currentPosition = currentRect.getPosition();
 
-    Vector2DFloat vec = targetPoint_ - currentPosition;
+    Vector2DFloat moveStepVec(moveVec_.x, moveVec_.y) ;
+    moveStepVec.normalize();
+
+    moveStepVec = moveStepVec * moveStep;
+    
+    Vector2DFloat vec = currentPosition - targetPoint_;
     float distance = vec.length();
     if (moveStep > distance)
     {
@@ -34,7 +49,7 @@ void SpriteMoveProcess::update(float timeStep)
     }
 
     //jackNode_->Translate(Vector3::FORWARD * move);
-    sceneNode_->translate(vec * moveStep);
+    sceneNode_->translate(moveStepVec);
 }
 
 void SpriteMoveProcess::kill()
@@ -44,7 +59,12 @@ void SpriteMoveProcess::kill()
 
 void SpriteMoveProcess::move(Point2DFloat destinationPoint, float speed)
 {
-    targetPoint_ = destinationPoint;
+    moveVec_ = destinationPoint;
+
+    RectFloat currentRect = sceneNode_->getNodeRect();
+    Point2DFloat currentPosition = currentRect.getPosition();
+
+    targetPoint_ = currentPosition + moveVec_;
     walkSpeed_ = speed;
 }
 

@@ -32,6 +32,7 @@ public:
 
     virtual void setCurrentScene(scene::ScenePtr newScene) override;
     virtual scene::ScenePtr sceneFactory() override;
+    virtual GameSpritePtr getSprite(const std::string& spriteName);
     virtual void registerSprite(const std::string& spriteName,
                                 scene::SceneNodePtr spriteNode);
 private:

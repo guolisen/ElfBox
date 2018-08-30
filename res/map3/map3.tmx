@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="left-up" width="128" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="22">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="left-up" width="128" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="23">
  <tileset firstgid="1" name="Tileset" tilewidth="16" tileheight="16" tilecount="6096" columns="16">
   <image source="Tileset.png" width="256" height="6096"/>
  </tileset>
@@ -15,6 +15,41 @@
  <tileset firstgid="15521" name="184-Light01" tilewidth="32" tileheight="48" tilecount="16" columns="4">
   <image source="184-Light01.png" width="128" height="192"/>
   <tile id="0">
+   <animation>
+    <frame tileid="12" duration="100"/>
+    <frame tileid="13" duration="100"/>
+    <frame tileid="14" duration="100"/>
+    <frame tileid="15" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="15537" name="Doctor" tilewidth="32" tileheight="48" tilecount="16" columns="4">
+  <image source="Doctor.png" width="128" height="192"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="4">
+   <animation>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="8">
+   <animation>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+    <frame tileid="10" duration="100"/>
+    <frame tileid="11" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="12">
    <animation>
     <frame tileid="12" duration="100"/>
     <frame tileid="13" duration="100"/>
@@ -228,11 +263,15 @@
 </data>
  </layer>
  <objectgroup name="对象层 1" offsetx="-129.667" offsety="-95">
-  <object id="18" name="camera" x="836.667" y="383.333" width="640" height="480"/>
-  <object id="21" name="sp" type="NPC" x="1077.67" y="617" width="100" height="168">
+  <object id="18" name="mainCamera" x="836.667" y="383.333" width="640" height="480">
    <properties>
-    <property name="Sprite" type="bool" value="true"/>
-    <property name="name" value="br"/>
+    <property name="Type" value="Camera"/>
+   </properties>
+  </object>
+  <object id="21" name="mainNpc" type="Sprite" x="539.67" y="282" width="32" height="48">
+   <properties>
+    <property name="Animation" value="Doctor"/>
+    <property name="Type" value="Sprite"/>
    </properties>
   </object>
  </objectgroup>

@@ -41,12 +41,14 @@ public:
 private:
     Point2DFloat tilePositionToWorld(int tileX, int tileY);
     const Tmx::Tileset* getTileSet(int tileGId);
+    const Tmx::Tileset* getTileSetByName(const std::string& tileSetName);
     const Tmx::Tile* getTile(int tileGId, const Tmx::Tileset* tileSet);
     const Tmx::Image* getTileImage(int tileGId, const Tmx::Tileset* tileSet);
     bool setAnimation(std::shared_ptr<ISceneNode> node,
                       const Tmx::Image* tileSetImage,
                       float objectPixelWidth, float objectPixelHeight,
                       const Tmx::Tile* tile);
+    SceneNodePtr objectProcessor(const std::string& type, const Tmx::Object* object);
 
     common::ContextPtr context_;
     SceneNodeFactoryPtr nodeFactory_;

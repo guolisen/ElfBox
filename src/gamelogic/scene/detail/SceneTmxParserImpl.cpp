@@ -5,6 +5,8 @@
 #include <sstream>
 #include "SceneTmxParserImpl.h"
 #include "../component/AnimationComponent.h"
+#include <gamelogic/IGameManager.h>
+#include <gamelogic/GameSprite.h>
 
 namespace elfbox
 {
@@ -185,7 +187,7 @@ std::list<SceneNodePtr> SceneTmxParserImpl::Parser()
         }
         layerList.push_back(layer);
     }
-#if 0
+
 	SceneNodePtr objectLayer = std::make_shared<SceneNode>(context_, "ObjectLayer", nullptr);
     for (auto i = 0 ; i < sceneInfo_.numObjectGroups; ++i)
     {
@@ -195,41 +197,19 @@ std::list<SceneNodePtr> SceneTmxParserImpl::Parser()
         {
             const Tmx::Object* object = objectGroup->GetObject(j);
 
-            int tileGId = object->GetGid();
-            if (tileGId == 0) //polyLine
-                continue;
-            const Tmx::Tileset* tileSet = getTileSet(tileGId);
-            const Tmx::Image* tileSetImage = getTileImage(tileGId, tileSet);
-            if (!tileSetImage)
-            {
-                ELFBOX_LOGERROR(log_, "object tileId(%d) doesn't have Image", tileGId);
-                return std::list<scene::SceneNodePtr>();
-            }
+            //int tileGId = object->GetGid();
+            //if (tileGId == 0) //polyLine
+            //    continue;
 
-            float objectWorldX = object->GetX();
-            float objectWorldY = object->GetY() - tileSetImage->GetHeight();
-            float objectWorldWidth = object->GetWidth();
-            float objectWorldHeight = object->GetHeight();
-            float objectPixelWidth = tileSet->GetTileWidth();
-            float objectPixelHeight = tileSet->GetTileHeight();
+            auto objPropertiesMap = object->GetProperties().GetList();
+            SceneNodePtr tileNode = objectProcessor(objPropertiesMap["Type"], object);
 
-            RectFloat srcRect = { 0, 0, objectPixelWidth, objectPixelHeight };
-            RectFloat worldtRect = { objectWorldX, objectWorldY,
-                objectWorldWidth, objectWorldHeight };
-
-            SceneNodePtr tileNode = nodeFactory_->createNode<render::ImageDrawable>(
-                object->GetName(), tileSetImage->GetSource(), worldtRect, srcRect, 0);
-
-            auto propertiesMap = tileSet->GetProperties().GetList();
-            auto typeValue = propertiesMap["type"];
-            if (typeValue == "animation")
-                setAnimation(tileNode, tileSet);
-
-			objectLayer->addChild(tileNode);
+			if (tileNode)
+				objectLayer->addChild(tileNode);
         }
     }
 	layerList.push_back(objectLayer);
-#endif
+
     return layerList;
 }
 
@@ -280,6 +260,61 @@ const Tmx::Tile* SceneTmxParserImpl::getTile(int tileGId, const Tmx::Tileset* ti
         return tile;
     }
 
+    return nullptr;
+}
+
+SceneNodePtr SceneTmxParserImpl::objectProcessor(const std::string &type, const Tmx::Object* object)
+{
+    // change if() to std::map
+    if(type == "Sprite")
+    {
+        auto objPropertiesMap = object->GetProperties().GetList();
+        auto animationSet = objPropertiesMap["Animation"];
+        const Tmx::Tileset* tileSet = getTileSetByName(animationSet);
+        if (!tileSet)
+        {
+            printf("tileSet error\n");
+            return SceneNodePtr();
+        }
+        const Tmx::Image* tileSetImage = tileSet->GetImage();
+
+        float objectWorldX = object->GetX();
+        //float objectWorldY = object->GetY() - tileSetImage->GetHeight();
+        float objectWorldY = object->GetY();
+        float objectWorldWidth = object->GetWidth();
+        float objectWorldHeight = object->GetHeight();
+        float objectPixelWidth = tileSet->GetTileWidth();
+        float objectPixelHeight = tileSet->GetTileHeight();
+
+        RectFloat srcRect = { 0, 0, objectPixelWidth, objectPixelHeight };
+        RectFloat worldtRect = { objectWorldX, objectWorldY,
+            objectWorldWidth, objectWorldHeight };
+
+        SceneNodePtr tileNode = nodeFactory_->createNode<render::ImageDrawable>(
+            object->GetName(), tileSetImage->GetSource(), worldtRect, srcRect, 0);
+        setAnimation(tileNode, tileSetImage,
+                     tileSet->GetTileWidth(),
+                     tileSet->GetTileHeight(),
+                     tileSet->GetTile(0));
+
+        gamelogic::GameManagerPtr gameMgr = context_->getComponent<
+            gamelogic::IGameManager>(nullptr);
+        gameMgr->registerSprite(object->GetName(), tileNode);
+
+		return tileNode;
+    }
+
+    return SceneNodePtr();
+}
+
+const Tmx::Tileset* SceneTmxParserImpl::getTileSetByName(
+    const std::string& tileSetName)
+{
+    for (auto tileSet : tilesetList_)
+    {
+        if (tileSet->GetName() == tileSetName)
+            return tileSet;
+    }
     return nullptr;
 }
 }
