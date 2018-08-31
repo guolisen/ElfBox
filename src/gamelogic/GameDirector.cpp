@@ -43,21 +43,25 @@ void GameDirector::update(float timeStep)
         return;
     for (auto processLine : processQueue_)
     {
-        auto process = processLine.second.begin();
         for (;!processLine.second.empty();)
         {
-            process = processLine.second.begin();
-            if (!(*process)->isFinished())
-                break;
-            processLine.second.pop_front();
+            auto process = processLine.second.begin();
+            if ((*process)->getState() == ProcessStart)
+                (*process)->setUp();
+            if ((*process)->getState() == ProcessUpdate)
+            {
+                if (!(*process)->isActive())
+                    break;
+                (*process)->update(timeStep);
+            }
+            if ((*process)->getState() == ProcessFinish)
+            {
+                (*process)->tearDown();
+                processLine.second.pop_front();
+                continue;
+            }
+            break;
         }
-        if (processLine.second.empty())
-            continue;
-
-        if (!(*process)->isActive())
-           continue;
-
-        (*process)->update(timeStep);
     }
 }
 
@@ -69,7 +73,7 @@ int GameDirector::createProcessLine()
 
 int GameDirector::attach(int processLineNum, GameProcessPtr process)
 {
-    ProcessPause pp(this);
+    //ProcessPause pp(this);
     auto iter = processQueue_.find(processLineNum);
     if (iter == processQueue_.end())
         return -1;

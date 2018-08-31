@@ -21,23 +21,24 @@ public:
     SpriteMoveProcess(common::ContextPtr context, scene::SceneNodePtr sceneNode);
     virtual ~SpriteMoveProcess() = default;
 
+    virtual void setUp() override;
+    virtual void tearDown() override;
     virtual void update(float timeStep) override;
     virtual void kill() override;
     virtual bool isActive() const override {return isActive_;}
-    virtual bool isFinished() const override {return isFinished_;}
+    virtual ProcessState getState() const override {return processState_;}
 
     virtual void move(const Vector2DFloat& moveVector, float walkSpeed);
 
 private:
     common::ContextPtr context_;
     scene::SceneNodePtr sceneNode_;
-    bool isFinished_;
     bool isActive_;
     Point2DFloat targetPoint_;
-    Point2DFloat moveVec_;
-    float walkSpeed_;
+    Point2DFloat moveVector_;
     float elapsedTime_;
-    float animationSpeedTime_;
+    float moveStepTime_;
+    float moveStepPixel_;
 };
 }
 }

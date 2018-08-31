@@ -83,7 +83,9 @@ function menuState.onEntry(sm)
 	sprite = pl_gameManager:getSprite("mainNpc")
 	spritePtr = sprite:get()
 	targetPoint = Point2DFloat:new_local(0, 500);
-	spritePtr:move(0, 500, 500, 20)
+	spritePtr:move(0, 200, 200, 80)
+	spritePtr:move(0, -200, -200, 80)
+
 end
 function menuState.onUpdate(sm, timeStep)
 	--print("LUA menuState onUpdate!11111 ")
