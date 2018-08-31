@@ -22,7 +22,7 @@ public:
     GameSprite(common::ContextPtr context, scene::SceneNodePtr spriteNode);
     virtual ~GameSprite() = default;
 
-    virtual void move(int processLineId, Point2DFloat targetPoint, float speed) override;
+    virtual void move(int processLineId, float X, float Y, float speed) override;
     void moveTo(){};
 private:
     common::ContextPtr context_;

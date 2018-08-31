@@ -26,7 +26,7 @@ public:
     virtual bool isActive() const override {return isActive_;}
     virtual bool isFinished() const override {return isFinished_;}
 
-    virtual void move(Point2DFloat destinationPoint, float walkSpeed);
+    virtual void move(const Vector2DFloat& moveVector, float walkSpeed);
 
 private:
     common::ContextPtr context_;

@@ -5,6 +5,7 @@
 #ifndef ELFBOX_SCENENODE_H
 #define ELFBOX_SCENENODE_H
 
+#include <functional>
 #include <memory>
 #include <list>
 #include <vector>
@@ -67,17 +68,28 @@ public:
         componentMap_.insert(std::make_pair(componentName, component));
     }
 
-    virtual void move(Point2DFloat destinationPoint, int speed);
-    virtual void moveUpdate(float timeStep);
+    virtual void move(Vector2DFloat moveVector,
+                      float pixelStep, float stepTime,
+                      MoveCallBack callBack);
+
     //virtual bool setAnimation(const std::string animationName);
 private:
+    virtual void moveUpdate(float timeStep);
+
     common::ContextPtr context_;
     std::string nodeName_;
     render::DrawablePtr drawable_;
     Vector2DFloat worldVec_;
     std::list<std::shared_ptr<ISceneNode>> childList_;
     ComponentMap componentMap_;
-    std::vector<Point2DFloat> targetPosition_;
+
+    bool isMoveFinish_;
+    float elapsedTime_;
+    float moveStepTime_;
+    float moveStepPixel_;
+    Vector2DFloat moveVector_;
+    Point2DFloat  targetPoint_;
+    MoveCallBack  callBack_;
 };
 }
 }

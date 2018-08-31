@@ -17,12 +17,22 @@ GameSprite::GameSprite(common::ContextPtr context,
 {
 }
 
-void GameSprite::move(int processLineId, Point2DFloat targetPoint, float speed)
+void GameSprite::move(int processLineId, float X, float Y, float speed)
 {
-    std::shared_ptr<SpriteMoveProcess> moveProcess =
-        std::make_shared<SpriteMoveProcess>(context_, spriteNode_);
-    moveProcess->move(targetPoint, speed);
-    gameDirector_->attach(processLineId, moveProcess);
+    if (X != 0)
+    {
+        std::shared_ptr<SpriteMoveProcess> moveProcess =
+            std::make_shared<SpriteMoveProcess>(context_, spriteNode_);
+        moveProcess->move(Vector2DFloat(X, 0), speed);
+        gameDirector_->attach(processLineId, moveProcess);
+    }
+    if (Y != 0)
+    {
+        std::shared_ptr<SpriteMoveProcess> moveProcess =
+            std::make_shared<SpriteMoveProcess>(context_, spriteNode_);
+        moveProcess->move(Vector2DFloat(0, Y), speed);
+        gameDirector_->attach(processLineId, moveProcess);
+    }
 }
 
 }

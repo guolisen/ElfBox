@@ -10,7 +10,7 @@ $}
 
 class IGameSprite
 {
-    virtual void move(int processLineId, Point2DFloat targetPoint, float speed);
+    virtual void move(int processLineId, float X, float Y, float speed);
 };
 
 class GameSpritePtr

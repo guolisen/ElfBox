@@ -18,7 +18,7 @@ ELF_OBJECT(IGameSprite, common::IObject);
 public:
     virtual ~IGameSprite() = default;
 
-    virtual void move(int processLineId, Point2DFloat targetPoint, float speed) = 0;
+    virtual void move(int processLineId, float X, float Y, float speed) = 0;
 private:
     common::ContextPtr context_;
 };

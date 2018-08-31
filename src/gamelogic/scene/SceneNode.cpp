@@ -14,7 +14,9 @@ SceneNode::SceneNode(common::ContextPtr context,
                      const std::string& nodeName,
                      render::DrawablePtr drawable) :
     context_(context), nodeName_(nodeName),
-    drawable_(drawable), worldVec_(0,0) {}
+    drawable_(drawable), worldVec_(0,0), isMoveFinish_(true), elapsedTime_(0.0), moveStepTime_(100.0),
+    moveStepPixel_(100.0), moveVector_(Vector2DFloat(0.0, 0.0)), targetPoint_(Point2DFloat(0.0, 0.0))
+    {}
 
 bool SceneNode::initialize()
 {
@@ -95,34 +97,57 @@ RectFloat SceneNode::getNodeRect()
     return drawable_->getData().worldRect;
 }
 
-void SceneNode::move(Point2DFloat destinationPoint, int speed)
+void SceneNode::move(Vector2DFloat moveVector,
+                     float pixelStep, float stepTime,
+                     MoveCallBack callBack)
 {
-    //RectFloat currentRect = node_->getNodeRect();
-    //Point2DFloat currentPosition = currentRect.getPosition();
-    //Vector2DFloat vec = (Point2DFloat)(destinationPoint - currentPosition);
+    if (!isMoveFinish_)
+        return;
 
-    targetPosition_.push_back(destinationPoint);
+    moveStepTime_  = stepTime;
+    moveStepPixel_ = pixelStep;
+    callBack_ = callBack;
+    moveVector_ = moveVector;
+
+    RectFloat currentRect = getNodeRect();
+    Point2DFloat currentPosition = currentRect.getPosition();
+
+    targetPoint_ = currentPosition + moveVector_;
+    isMoveFinish_ = false;
 }
 
 void SceneNode::moveUpdate(float timeStep)
 {
-    if (targetPosition_.empty())
+    if (isMoveFinish_)
         return;
 
-    Point2DFloat nextPosition = targetPosition_[0];
-    float move = 5.0f * timeStep;
+    elapsedTime_ += timeStep * 1000;
+    if (elapsedTime_ <= moveStepTime_)
+    {
+        return;
+    }
+    elapsedTime_ = 0.0;
+
+    float moveStep = moveStepPixel_ * timeStep;
     RectFloat currentRect = getNodeRect();
     Point2DFloat currentPosition = currentRect.getPosition();
 
-    Vector2DFloat vec = nextPosition - currentPosition;
+    Vector2DFloat moveStepVecDelta = moveVector_;
+    moveStepVecDelta.normalize();
+    moveStepVecDelta = moveStepVecDelta * moveStep;
+
+    Vector2DFloat vec = currentPosition - targetPoint_;
     float distance = vec.length();
-    if (move > distance)
-        move = distance;
+    if (moveStep > distance)
+    {
+        moveStep = distance;
+        isMoveFinish_ = true;
+		if(callBack_)
+			callBack_();
+    }
 
     //jackNode_->Translate(Vector3::FORWARD * move);
-    translate(vec * move);
-    if (distance < 0.1f)
-        targetPosition_.clear();
+    translate(moveStepVecDelta);
 }
 
 }

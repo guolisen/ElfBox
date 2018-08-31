@@ -14,6 +14,9 @@ namespace elfbox
 {
 namespace scene
 {
+
+typedef std::function<void()> MoveCallBack;
+
 class ISceneNode : public common::IObject
 {
 ELF_OBJECT(ISceneNode, common::IObject);
@@ -45,8 +48,9 @@ public:
     {
         parentNode_ = parentNode;
     }
-    virtual void move(Point2DFloat destinationPoint, int speed) = 0;
-    virtual void moveUpdate(float timeStep) = 0;
+    virtual void move(Vector2DFloat moveVector,
+                      float pixelStep, float stepTime,
+                      MoveCallBack callBack) = 0;
 protected:
     std::shared_ptr<ISceneNode> parentNode_;
 };
