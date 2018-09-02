@@ -233,7 +233,6 @@ bool SceneTmxParserImpl::setAnimation(std::shared_ptr<ISceneNode> node,
     for(auto tile : animationSet)
     {
         auto propMap = tile->GetProperties().GetList();
-
         std::vector<RectFloat> frameVec;
         const std::vector<Tmx::AnimationFrame> &frames =
             tile->GetFrames();
@@ -259,9 +258,8 @@ bool SceneTmxParserImpl::setAnimation(std::shared_ptr<ISceneNode> node,
                 objectPixelWidth, objectPixelHeight,
                 100.0f);
 
-        auto propertiesMap = tile->GetProperties().GetList();
-        auto activateValue = propertiesMap["activate"];
-        if ("true" == activateValue)
+        auto activateValue = propMap["Activate"];
+        if (activateValue == "true")
         {
             animation->setActivate(true);
         }

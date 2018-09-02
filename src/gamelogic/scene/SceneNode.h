@@ -63,7 +63,6 @@ public:
                               AnimationPtr animation)
     {
         animation->setDrawable(drawable_);
-        animation->setActivate(true);
         animation->startup();
         animationMap_.insert(std::make_pair(animationName, animation));
     }
