@@ -12,12 +12,16 @@ namespace component
 {
 
 AnimationComponent::AnimationComponent(render::RenderMaterialPtr animationMaterial,
+                                       const std::string& animationName,
+                                       std::vector<RectFloat>&& frameVec,
                                        int maxFrame,
                                        int srcImageWidth, int srcImageHeight,
                                        int frameWidth, int frameHeight,
                                        float animationSpeedTime) :
     INodeComponent("Animation"),
     animationMaterial_(animationMaterial),
+    animationName_(animationName),
+    frameVec_(frameVec),
     currentFrame_(0),
     maxFrame_(maxFrame),
     srcImageWidth_(srcImageWidth),
@@ -69,15 +73,15 @@ void AnimationComponent::startup()
 
 void AnimationComponent::updateFrame()
 {
-    float srcFrameX = (currentFrame_ % srcFrameWidth_) * frameWidth_;
-    float srcFrameY = (currentFrame_ / srcFrameWidth_) * frameHeight_;
-    RectFloat srcRect = { srcFrameX, srcFrameY, (float)frameWidth_, (float)frameHeight_ };
-    drawable_->getData().sourceRect = srcRect;
+    //float srcFrameX = (currentFrame_ % srcFrameWidth_) * frameWidth_;
+    //float srcFrameY = (currentFrame_ / srcFrameWidth_) * frameHeight_;
+    //RectFloat srcRect = { srcFrameX, srcFrameY, (float)frameWidth_, (float)frameHeight_ };
+    drawable_->getData().sourceRect = frameVec_[currentFrame_];
 
-    Point2DFloat worldCenter = drawable_->getData().worldRect.getCenter();
-    RectFloat destRect = {worldCenter.x - frameWidth_ / 2.0f,
-        worldCenter.y - frameHeight_ / 2.0f, (float)frameWidth_, (float)frameHeight_ };
-    drawable_->getData().worldRect = destRect;
+    //Point2DFloat worldCenter = drawable_->getData().worldRect.getCenter();
+    //RectFloat destRect = {worldCenter.x - frameWidth_ / 2.0f,
+    //    worldCenter.y - frameHeight_ / 2.0f, (float)frameWidth_, (float)frameHeight_ };
+    //drawable_->getData().worldRect = destRect;
 }
 
 }

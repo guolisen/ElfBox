@@ -67,11 +67,19 @@ void RenderDeviceImpl::render(float timeStep)
     {
         RectFloat worldToCameraRect =
             camera_->worldToCamera(drawable->getData().worldRect);
+        //drawTestRect(worldToCameraRect);
         SDL_Rect srcRect = toSDLRect(drawable->getData().sourceRect);
         SDL_Rect destRect = toSDLRect(worldToCameraRect);
         SDL_RenderCopy((SDL_Renderer*)handle_,
                        (SDL_Texture*)drawable->getData().material->getMaterial(),
                        &srcRect, &destRect);
+    }
+
+    for (auto &drawable : drawableList_)
+    {
+       RectFloat worldToCameraRect =
+          camera_->worldToCamera(drawable->getData().worldRect);
+       //drawTestRect(worldToCameraRect);
     }
     SDL_SetRenderTarget((SDL_Renderer*)handle_, NULL);
 
@@ -81,11 +89,11 @@ void RenderDeviceImpl::render(float timeStep)
 
     SDL_RenderCopy((SDL_Renderer*)handle_, backgroundTexture_, &zoomCameraRect, &viewRect);
 
-    //for (auto &drawable : drawableList_)
+    for (auto &drawable : drawableList_)
     {
-        //RectFloat worldToCameraRect =
-         //   camera_->worldToCamera(drawable->getData().worldRect);
-        //drawTestRect(worldToCameraRect);
+        RectFloat worldToCameraRect =
+            camera_->worldToCamera(drawable->getData().worldRect);
+        drawTestRect(worldToCameraRect);
     }
 
     SDL_RenderPresent((SDL_Renderer*)handle_);

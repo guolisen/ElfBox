@@ -5,6 +5,7 @@
 #ifndef ELFBOX_ANIMATIONCOMPONENT_H
 #define ELFBOX_ANIMATIONCOMPONENT_H
 
+#include <vector>
 #include <common/IObject.h>
 #include <common/Context.h>
 
@@ -23,6 +24,8 @@ class AnimationComponent : public INodeComponent
 ELF_OBJECT(AnimationComponent, common::IObject);
 public:
     AnimationComponent(render::RenderMaterialPtr animationMaterial,
+                       const std::string& animationName,
+                       std::vector<RectFloat>&& frameVec,
                        int maxFrame,
                        int srcImageWidth, int srcImageHeight,
                        int frameWidth, int frameHeight,
@@ -78,7 +81,8 @@ private:
 
     render::RenderMaterialPtr animationMaterial_;
     render::RenderMaterialPtr backupMaterial_;
-
+    std::string animationName_;
+    std::vector<RectFloat> frameVec_;
     int currentFrame_;
     int maxFrame_;
     int srcImageWidth_;

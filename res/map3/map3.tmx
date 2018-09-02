@@ -26,6 +26,9 @@
  <tileset firstgid="15537" name="Doctor" tilewidth="32" tileheight="48" tilecount="16" columns="4">
   <image source="Doctor.png" width="128" height="192"/>
   <tile id="0">
+   <properties>
+    <property name="AnimationName" value="down"/>
+   </properties>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="1" duration="100"/>
@@ -34,6 +37,9 @@
    </animation>
   </tile>
   <tile id="4">
+   <properties>
+    <property name="AnimationName" value="left"/>
+   </properties>
    <animation>
     <frame tileid="4" duration="100"/>
     <frame tileid="5" duration="100"/>
@@ -42,6 +48,9 @@
    </animation>
   </tile>
   <tile id="8">
+   <properties>
+    <property name="AnimationName" value="right"/>
+   </properties>
    <animation>
     <frame tileid="8" duration="100"/>
     <frame tileid="9" duration="100"/>
@@ -50,6 +59,9 @@
    </animation>
   </tile>
   <tile id="12">
+   <properties>
+    <property name="AnimationName" value="up"/>
+   </properties>
    <animation>
     <frame tileid="12" duration="100"/>
     <frame tileid="13" duration="100"/>
@@ -268,7 +280,7 @@
     <property name="Type" value="Camera"/>
    </properties>
   </object>
-  <object id="21" name="mainNpc" type="Sprite" x="539.67" y="282" width="32" height="48">
+  <object id="21" name="mainNpc" type="Sprite" x="546.25" y="271.5" width="32" height="48">
    <properties>
     <property name="Animation" value="Doctor"/>
     <property name="Type" value="Sprite"/>
