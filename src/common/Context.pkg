@@ -13,7 +13,7 @@ public:
     Context();
     virtual ~Context();
 
-    void addComponent(IObjectPtr obj);
+    void addAnimation(IObjectPtr obj);
     IObjectPtr getComponent(const std::string& compoentType);
 };
 

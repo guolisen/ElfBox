@@ -20,7 +20,7 @@ namespace elfbox
 namespace scene
 {
 
-typedef std::map<std::string, NodeComponentPtr> ComponentMap;
+typedef std::map<std::string, AnimationPtr> AnimationMap;
 
 class SceneNode : public ISceneNode
 {
@@ -59,13 +59,13 @@ public:
         childList_.push_back(childNode);
     }
 
-    virtual void addComponent(const std::string& componentName,
-                              NodeComponentPtr component)
+    virtual void addAnimation(const std::string &animationName,
+                              AnimationPtr animation)
     {
-        component->setDrawable(drawable_);
-        component->setActivate(true);
-        component->startup();
-        componentMap_.insert(std::make_pair(componentName, component));
+        animation->setDrawable(drawable_);
+        animation->setActivate(true);
+        animation->startup();
+        animationMap_.insert(std::make_pair(animationName, animation));
     }
 
     virtual void move(Vector2DFloat moveVector,
@@ -81,7 +81,7 @@ private:
     render::DrawablePtr drawable_;
     Vector2DFloat worldVec_;
     std::list<std::shared_ptr<ISceneNode>> childList_;
-    ComponentMap componentMap_;
+    AnimationMap animationMap_;
 
     bool isMoveFinish_;
     float elapsedTime_;

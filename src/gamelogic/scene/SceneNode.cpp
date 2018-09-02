@@ -26,10 +26,10 @@ bool SceneNode::initialize()
 void SceneNode::update(float timeStep)
 {
     moveUpdate(timeStep);
-    for (auto& component : componentMap_)
+    for (auto& animation : animationMap_)
     {
-        if (component.second->isActivate())
-            component.second->update(timeStep);
+        if (animation.second->isActivate())
+            animation.second->update(timeStep);
     }
 
     for (auto& childNode : childList_)

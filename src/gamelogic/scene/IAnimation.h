@@ -14,13 +14,12 @@ namespace elfbox
 namespace scene
 {
 
-class INodeComponent : public common::IObject
+class IAnimation : public common::IObject
 {
-ELF_OBJECT(INodeComponent, common::IObject);
+ELF_OBJECT(IAnimation, common::IObject);
 public:
-    INodeComponent(const std::string& componentType):
-        componentType_(componentType), activate_(false) {}
-    virtual ~INodeComponent() = default;
+    IAnimation(): activate_(false) {}
+    virtual ~IAnimation() = default;
 
     virtual void startup() = 0;
     virtual void update(float timeStep) = 0;
@@ -52,7 +51,7 @@ protected:
     bool activate_;
 };
 
-typedef std::shared_ptr<INodeComponent> NodeComponentPtr;
+typedef std::shared_ptr<IAnimation> AnimationPtr;
 
 }
 }

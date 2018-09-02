@@ -2,25 +2,22 @@
 // Created by Lewis on 2017/3/15.
 //
 
-#include "AnimationComponent.h"
+#include "NodeAnimation.h"
 
 namespace elfbox
 {
 namespace scene
 {
-namespace component
+namespace animation
 {
 
-AnimationComponent::AnimationComponent(render::RenderMaterialPtr animationMaterial,
-                                       const std::string& animationName,
+NodeAnimation::NodeAnimation(render::RenderMaterialPtr animationMaterial,
                                        std::vector<RectFloat>&& frameVec,
                                        int maxFrame,
                                        int srcImageWidth, int srcImageHeight,
                                        int frameWidth, int frameHeight,
                                        float animationSpeedTime) :
-    INodeComponent("Animation"),
     animationMaterial_(animationMaterial),
-    animationName_(animationName),
     frameVec_(frameVec),
     currentFrame_(0),
     maxFrame_(maxFrame),
@@ -36,12 +33,12 @@ AnimationComponent::AnimationComponent(render::RenderMaterialPtr animationMateri
 
 }
 
-void AnimationComponent::teardown()
+void NodeAnimation::teardown()
 {
     //drawable_->getData().material = backupMaterial_;
 }
 
-void AnimationComponent::update(float timeStep)
+void NodeAnimation::update(float timeStep)
 {
     elapsedTime_ += timeStep * 1000;
     if (elapsedTime_ <= animationSpeedTime_)
@@ -50,9 +47,7 @@ void AnimationComponent::update(float timeStep)
     }
 
     int numFramesToAdvance = (int)(elapsedTime_ / animationSpeedTime_);
-
     elapsedTime_ -= (numFramesToAdvance * animationSpeedTime_);
-
     int desiredFrame = currentFrame_ + numFramesToAdvance;
 
     //if ((false == m_LoopingAnim) && (desiredFrame >= GetFrameCount()))
@@ -65,13 +60,13 @@ void AnimationComponent::update(float timeStep)
     updateFrame();
 }
 
-void AnimationComponent::startup()
+void NodeAnimation::startup()
 {
     //backupMaterial_ = drawable_->getData().material;
     //drawable_->getData().material = animationMaterial_;
 }
 
-void AnimationComponent::updateFrame()
+void NodeAnimation::updateFrame()
 {
     //float srcFrameX = (currentFrame_ % srcFrameWidth_) * frameWidth_;
     //float srcFrameY = (currentFrame_ / srcFrameWidth_) * frameHeight_;

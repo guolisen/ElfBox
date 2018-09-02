@@ -4,7 +4,7 @@
 
 #include <sstream>
 #include "SceneTmxParserImpl.h"
-#include "../component/AnimationComponent.h"
+#include "gamelogic/scene/component/NodeAnimation.h"
 #include <gamelogic/IGameManager.h>
 #include <gamelogic/GameSprite.h>
 
@@ -252,9 +252,9 @@ bool SceneTmxParserImpl::setAnimation(std::shared_ptr<ISceneNode> node,
             frameVec.push_back(RectFloat(tileSrcX, tileSrcY, tilePixelWidth, tilePixelHeight));
         }
 
-        NodeComponentPtr component =
-            std::make_shared<component::AnimationComponent>(
-                material, propMap["AnimationName"], std::move(frameVec), tile->GetFrames().size(),
+        AnimationPtr animation =
+            std::make_shared<animation::NodeAnimation>(
+                material, std::move(frameVec), tile->GetFrames().size(),
                 tileSetImage->GetWidth(), tileSetImage->GetHeight(),
                 objectPixelWidth, objectPixelHeight,
                 100.0f);
@@ -263,10 +263,9 @@ bool SceneTmxParserImpl::setAnimation(std::shared_ptr<ISceneNode> node,
         auto activateValue = propertiesMap["activate"];
         if ("true" == activateValue)
         {
-            component->setActivate(true);
+            animation->setActivate(true);
         }
-        auto nameValue = propertiesMap["name"];
-        node->addComponent(nameValue, component);
+        node->addAnimation(propMap["AnimationName"], animation);
     }
 
     return true;

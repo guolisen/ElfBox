@@ -8,7 +8,7 @@
 #include <memory>
 #include <list>
 #include <common/IObject.h>
-#include "INodeComponent.h"
+#include "IAnimation.h"
 
 namespace elfbox
 {
@@ -41,8 +41,8 @@ public:
     virtual std::string getNodeName() = 0;
 
     virtual void addChild(std::shared_ptr<ISceneNode> childNode) = 0;
-    virtual void addComponent(const std::string& componentName,
-                              NodeComponentPtr component) = 0;
+    virtual void addAnimation(const std::string &animationName,
+                              AnimationPtr animation) = 0;
 
     virtual void setParentNode(std::shared_ptr<ISceneNode> parentNode)
     {

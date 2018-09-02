@@ -9,28 +9,27 @@
 #include <common/IObject.h>
 #include <common/Context.h>
 
-#include "../INodeComponent.h"
+#include "gamelogic/scene/IAnimation.h"
 #include <render/IRenderMaterial.h>
 
 namespace elfbox
 {
 namespace scene
 {
-namespace component
+namespace animation
 {
 
-class AnimationComponent : public INodeComponent
+class NodeAnimation : public IAnimation
 {
-ELF_OBJECT(AnimationComponent, common::IObject);
+ELF_OBJECT(NodeAnimation, common::IObject);
 public:
-    AnimationComponent(render::RenderMaterialPtr animationMaterial,
-                       const std::string& animationName,
+    NodeAnimation(render::RenderMaterialPtr animationMaterial,
                        std::vector<RectFloat>&& frameVec,
                        int maxFrame,
                        int srcImageWidth, int srcImageHeight,
                        int frameWidth, int frameHeight,
                        float animationSpeedTime);
-    virtual ~AnimationComponent() = default;
+    virtual ~NodeAnimation() = default;
 
     virtual void startup();
     virtual void update(float timeStep);
@@ -81,7 +80,6 @@ private:
 
     render::RenderMaterialPtr animationMaterial_;
     render::RenderMaterialPtr backupMaterial_;
-    std::string animationName_;
     std::vector<RectFloat> frameVec_;
     int currentFrame_;
     int maxFrame_;
