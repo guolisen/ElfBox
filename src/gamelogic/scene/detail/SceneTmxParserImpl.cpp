@@ -4,7 +4,7 @@
 
 #include <sstream>
 #include "SceneTmxParserImpl.h"
-#include "gamelogic/scene/component/NodeAnimation.h"
+#include "gamelogic/scene/NodeAnimation.h"
 #include <gamelogic/IGameManager.h>
 #include <gamelogic/GameSprite.h>
 
